@@ -16,6 +16,13 @@ namespace HSNHospitalProject.Models
             // Add custom user claims here
             return userIdentity;
         }
+        /*
+         * This is the Model for user accounts, so here is where you would add new fields that will be added to the users table
+         * ie. the is_admin column will be added and will indicate whether or not a user is an admin
+         */
+
+        //is_admin column indicates whether or not a user is an admin
+        public bool is_admin { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -29,5 +36,15 @@ namespace HSNHospitalProject.Models
         {
             return new ApplicationDbContext();
         }
+
+        /* once your Models are made, you can add them here much like the line of code below and they should be added as a table
+        * once you add a migration and update the database.
+        * **REMEMBER TO ALWAYS PULL AND UPDATE DATABASE BEFORE ADDING A NEW MIGRATION**
+        * This will make sure you have implemented the newest migrations in the master before adding yours on top of them.
+        * (DON'T FORGET TO ALWAYS PULL BEFORE PUSHING)
+        * - Sam B
+        */
+        public System.Data.Entity.DbSet<HSNHospitalProject.Models.GalleryImages> GalleryImages { get; set; }
+        public System.Data.Entity.DbSet<HSNHospitalProject.Models.ActivityRecords> ActivityRecords { get; set; }
     }
 }
