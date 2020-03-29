@@ -1,0 +1,24 @@
+﻿@model HSNHospitalProject.Models.Department
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Department Details</h2>
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.departmentName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.departmentId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

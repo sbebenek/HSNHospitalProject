@@ -1,0 +1,30 @@
+﻿@model IEnumerable<HSNHospitalProject.Models.Department>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Department List</h2>
+<div>
+    @Html.ActionLink("Create New Department", "Create")
+</div>
+<table class="table">
+    <tr>
+        <th>
+            Name
+        </th>
+    </tr>
+    @foreach (var department in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => department.departmentName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = department.departmentId }) |
+                @Html.ActionLink("Details", "Details", new { id = department.departmentId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = department.departmentId })
+            </td>
+        </tr>
+    }
+</table>
