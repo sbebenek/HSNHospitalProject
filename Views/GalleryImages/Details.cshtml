@@ -1,0 +1,58 @@
+﻿@model HSNHospitalProject.Models.GalleryImages
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>GalleryImages</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.galleryimageref)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.galleryimageref)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.galleryimagetitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.galleryimagetitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.galleryimagealt)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.galleryimagealt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.galleryimagedate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.galleryimagedate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.galleryimagedescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.galleryimagedescription)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.galleryimageid }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

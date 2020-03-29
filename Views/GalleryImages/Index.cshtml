@@ -1,0 +1,57 @@
+﻿@model IEnumerable<HSNHospitalProject.Models.GalleryImages>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.galleryimageref)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.galleryimagetitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.galleryimagealt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.galleryimagedate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.galleryimagedescription)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.galleryimageref)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.galleryimagetitle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.galleryimagealt)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.galleryimagedate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.galleryimagedescription)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.galleryimageid }) |
+            @Html.ActionLink("Details", "Details", new { id=item.galleryimageid }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.galleryimageid })
+        </td>
+    </tr>
+}
+
+</table>
