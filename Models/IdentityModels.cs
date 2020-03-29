@@ -46,5 +46,7 @@ namespace HSNHospitalProject.Models
         */
         public System.Data.Entity.DbSet<HSNHospitalProject.Models.GalleryImages> GalleryImages { get; set; }
         public System.Data.Entity.DbSet<HSNHospitalProject.Models.ActivityRecords> ActivityRecords { get; set; }
+        public System.Data.Entity.DbSet<HSNHospitalProject.Models.Department> Departments { get; set; }
+        public System.Data.Entity.DbSet<HSNHospitalProject.Models.JobPost> JobPosts { get; set; }
     }
 }
