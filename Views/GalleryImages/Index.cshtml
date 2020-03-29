@@ -4,7 +4,21 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Image Gallery</h2>
+
+<!--Alert box indicating if image was added, edited or deleted-->
+@if (!String.IsNullOrEmpty(Request["add"]) && Request["add"].Equals("True"))
+{
+    <div class="alert alert-success">Artist successfully added.</div>
+}
+else if (!String.IsNullOrEmpty(Request["delete"]) && Request["delete"].Equals("True"))
+{
+    <div class="alert alert-success">Artist successfully deleted.</div>
+}
+else if (!String.IsNullOrEmpty(Request["update"]) && Request["update"].Equals("True"))
+{
+    <div class="alert alert-success">Artist successfully updated.</div>
+}
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -12,46 +26,47 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.galleryimageref)
+            Image
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.galleryimagetitle)
+            Title
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.galleryimagealt)
+            Alt Text
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.galleryimagedate)
+            Date Posted
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.galleryimagedescription)
+            Description
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.galleryimageref)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.galleryimagetitle)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.galleryimagealt)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.galleryimagedate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.galleryimagedescription)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.galleryimageid }) |
-            @Html.ActionLink("Details", "Details", new { id=item.galleryimageid }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.galleryimageid })
-        </td>
-    </tr>
-}
+    @foreach (var image in Model)
+    {
+        <tr>
+            <td>
+                <img class="thumbnail customimage-sml" src="~/Content/GalleryImages/@image.galleryimageref" style="max-width:50%"/>
+            </td>
+            <td>
+                @image.galleryimagetitle
+            </td>
+            <td>
+                @image.galleryimagealt
+            </td>
+            <td>
+                @image.galleryimagedate
+            </td>
+            <td>
+                @image.galleryimagedescription
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = image.galleryimageid }) |
+                @Html.ActionLink("Details", "Details", new { id = image.galleryimageid }) |
+                @Html.ActionLink("Delete", "Delete", new { id = image.galleryimageid })
+            </td>
+        </tr>
+    }
 
 </table>

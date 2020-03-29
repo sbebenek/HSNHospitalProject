@@ -4,68 +4,81 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
+<h2>Add a New Image</h2>
 
 
-@using (Html.BeginForm()) 
-{
+<form action="" method="post" enctype="multipart/form-data">
+
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>GalleryImages</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.galleryimageref, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.galleryimageref, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.galleryimageref, "", new { @class = "text-danger" })
+                <label for="galleryImagesTitle">Image Title: </label>
+                <div>
+                    <input type="text" name="galleryImagesTitle" id="galleryImagesTitle" class="form-control" />
+                </div>
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.galleryimagetitle, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.galleryimagetitle, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.galleryimagetitle, "", new { @class = "text-danger" })
+            <label for="galleryImageFile">Image: </label>
+            <div>
+                <input type="file" accept="image/*" name="galleryImageFile" id="galleryImageFile" class="form-control-file" onchange="loadFile(event)" />
             </div>
+        </div>
+        <div>
+            <!--Uploaded image will be printed here-->
+            <img id="output" class="" style="max-width:50%" />
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.galleryimagealt, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.galleryimagealt, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.galleryimagealt, "", new { @class = "text-danger" })
+                <label for="galleryImageAlt">Image Alt Text: </label>
+                <div>
+                    <input type="text" name="galleryImageAlt" id="galleryImageAlt" class="form-control" />
+                </div>
+                <p><small><em>This text will be read for screen reading software users, or if the image fails to load.</em></small></p>
+
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.galleryimagedate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.galleryimagedate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.galleryimagedate, "", new { @class = "text-danger" })
-            </div>
-        </div>
+        <!--Date posted will be today's date-->
 
         <div class="form-group">
-            @Html.LabelFor(model => model.galleryimagedescription, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.galleryimagedescription, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.galleryimagedescription, "", new { @class = "text-danger" })
+                <label for="galleryImagesDescription">Image Description: </label>
+                <div>
+                    <textarea rows="3" name="galleryImagesDescription" id="galleryImagesDescription" class="form-control"></textarea>
+                </div>
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Add" class="btn btn-default" />
             </div>
         </div>
     </div>
-}
+</form>
 
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+
+<!--code below from stack overflow - https://stackoverflow.com/questions/4459379/preview-an-image-before-it-is-uploaded-->
+<script>
+    /**
+     * This function takes the image file that was uploaded and displays it in the div with the id 'output'
+     */
+    var loadFile = function (event) {
+        var output = document.getElementById('output');
+        output.src = URL.createObjectURL(event.target.files[0]);
+    };
+</script>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

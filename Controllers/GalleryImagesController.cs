@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.SqlClient;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -17,7 +20,9 @@ namespace HSNHospitalProject.Controllers
         // GET: GalleryImages
         public ActionResult Index()
         {
-            return View(db.GalleryImages.ToList());
+            List<GalleryImages> galleryImages = db.GalleryImages.ToList();
+            Debug.WriteLine("List of all gallery images: " + galleryImages.ToString());
+            return View(galleryImages);
         }
 
         // GET: GalleryImages/Details/5
@@ -44,19 +49,92 @@ namespace HSNHospitalProject.Controllers
         // POST: GalleryImages/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "galleryimageid,galleryimageref,galleryimagetitle,galleryimagealt,galleryimagedate,galleryimagedescription")] GalleryImages galleryImages)
+        public ActionResult Create(string galleryImagesTitle, HttpPostedFileBase galleryImageFile, string galleryImageAlt, string galleryImagesDescription)
         {
+            GalleryImages galleryImage = new GalleryImages();
+
             //Bind takes form field values and puts them into a GalleryImages object
             //try to implement file upload on create
             if (ModelState.IsValid)
             {
-                //add the bound GalleryImages object from the method parameter and add it to the GalleryImages database
-                db.GalleryImages.Add(galleryImages);
+                galleryImage.galleryimagetitle = galleryImagesTitle;
+                galleryImage.galleryimagealt = galleryImageAlt;
+                galleryImage.galleryimagedate = DateTime.Now;
+                galleryImage.galleryimagedescription = galleryImagesDescription;
+                //I will upload the image at the next stage
+                galleryImage.galleryimageref = "";
+
+                //add the galleryImage object to the database and save changes
+                db.GalleryImages.Add(galleryImage);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+
+                //now that its added, I can get the ID and update at the ID with the image file named after the ID
+                int id = galleryImage.galleryimageid;
+                Debug.WriteLine("ID of newly added image is " + id);
+
+                //image uploading here
+                /**BELOW CODE BORROWED FROM CLASS EXAMPLE - https://github.com/christinebittle/PetGroomingMVC/blob/master/PetGrooming/Controllers/PetController.cs**/
+                string galleryImageExt = "";
+                //checking to see if an image was uploaded
+                if (galleryImageFile != null)
+                {
+                    Debug.WriteLine("File was uploaded...");
+                    //checking to see if the file size is greater than 0 (bytes)
+                    if (galleryImageFile.ContentLength > 0)
+                    {
+                        Debug.WriteLine("Successfully Identified Image");
+                        Debug.WriteLine("Image uploaded was " + galleryImageFile.FileName);
+
+                        //file extensioncheck taken from https://www.c-sharpcorner.com/article/file-upload-extension-validation-in-asp-net-mvc-and-javascript/
+                        var valtypes = new[] { "jpeg", "jpg", "png", "gif" };
+                        var extension = Path.GetExtension(galleryImageFile.FileName).Substring(1);
+
+                        if (valtypes.Contains(extension))
+                        {
+                            try
+                            {
+                                //file name is the id of the image
+                                string fileName = id + "." + extension;
+
+                                //get a direct file path to ~/Content/Artists/{id}.{extension}
+                                string path = Path.Combine(Server.MapPath("~/Content/GalleryImages/"), Path.GetFileName(fileName));
+
+                                //save the file
+
+                                //****@TODO: delete the old image if it exists, currently it will save new images with different filepaths instead of overwriting
+
+
+                                galleryImageFile.SaveAs(path); //will overwrite any existing file with this name (aka the old artist's image)
+                                                               //if these are all successful then we can set these fields
+                                galleryImageExt = fileName;
+                                Debug.WriteLine("Saving gallery image at " + path);
+
+
+                            }
+                            catch (Exception ex)
+                            {
+                                Debug.WriteLine("Gallery Image was not saved successfully.");
+                                Debug.WriteLine("Exception:" + ex);
+                            }
+
+                        }
+                    }
+                }//else, no file was uploaded. Don't save anything new.
+                
+
+                string query = "update GalleryImages set galleryimageref=@imageref where galleryimageid=@id";
+                SqlParameter[] sqlparams = new SqlParameter[2];
+                sqlparams[0] = new SqlParameter("@imageref", galleryImageExt);
+                sqlparams[1] = new SqlParameter("@id", id);
+
+                Debug.WriteLine("Setting galleryimageref = " + galleryImageExt + " for the image with id=" + id);
+
+                db.Database.ExecuteSqlCommand(query, sqlparams);
+                return RedirectToAction("Index", new { add = true });
+
             }
 
-            return View(galleryImages);
+            return View(galleryImage);
         }
 
         // GET: GalleryImages/Edit/5
