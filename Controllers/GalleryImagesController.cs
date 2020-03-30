@@ -339,5 +339,16 @@ namespace HSNHospitalProject.Controllers
             }
             base.Dispose(disposing);
         }
+
+        [HttpPost]
+        public ActionResult showDetails(int galleryimagesid)
+        {
+            Debug.WriteLine("Receiving galleryimagesid in the ajax call as " + galleryimagesid);
+            //grabbing the galleryImage object
+            GalleryImages galleryImages = db.GalleryImages.Find(galleryimagesid);
+            //returns a partial view with the given galleryImage and prints it back to whichever div the jquery call indicated in the view
+            //(in this case, it will be inside a modal window)
+            return PartialView("_showImage", galleryImages);
+        }
     }
 }

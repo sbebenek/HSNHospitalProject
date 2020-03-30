@@ -51,9 +51,9 @@ else if (!String.IsNullOrEmpty(Request["update"]) && Request["update"].Equals("T
 
     @foreach (var image in Model)
     {
-        <tr>
+        <tr onclick="showDetails(@image.galleryimageid);" style="cursor:pointer;">
             <td>
-                <img class="" src="~/Content/GalleryImages/@image.galleryimageref" style="max-width:50%" />
+                <img class="" src="~/Content/GalleryImages/@image.galleryimageref" style="max-width:50%" alt="@image.galleryimagealt"/>
             </td>
             <td>
                 @image.galleryimagetitle
@@ -68,11 +68,10 @@ else if (!String.IsNullOrEmpty(Request["update"]) && Request["update"].Equals("T
                 @image.galleryimagedescription
             </td>
             @if ((bool)TempData["isAdmin"] == true)
-                //Only print edit, delete, and details button if loggin in user is an admin
+            //Only print edit, delete, and details button if loggin in user is an admin
             {
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = image.galleryimageid }) |
-                    @Html.ActionLink("Details", "Details", new { id = image.galleryimageid }) |
                     @Html.ActionLink("Delete", "Delete", new { id = image.galleryimageid })
                 </td>
             }
@@ -80,3 +79,35 @@ else if (!String.IsNullOrEmpty(Request["update"]) && Request["update"].Equals("T
     }
 
 </table>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div id="imageDetails">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    /**
+     * This function does an ajax call to print image information to a hidden modal window, and then has that modal window appear.
+     */
+    function showDetails(id) {
+        $.ajax({
+            url: '@Url.Action("showDetails")',
+            //type: 'GET',
+            type: 'POST',
+            cache: false,
+            data: { galleryimagesid : id }
+        }).done(function (result) {
+            //output will be printed to the inside of the modal window
+            $('#imageDetails').html(result);
+        });
+        //activate the script that calls the Modal window appear
+        $("#exampleModalCenter").modal()
+    }
+
+</script>
