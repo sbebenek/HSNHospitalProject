@@ -11,4 +11,16 @@ namespace HSNHospitalProject.Models.ViewModels
         [Display(Name = "Name")]
         public string name { get; set; }
     }
+
+    public class DepartmentEditViewModel
+    {
+        public int id { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [DataType(DataType.Text)]
+        [Display(Name = "Name")]
+        public string name { get; set; }
+    }
+
 }
