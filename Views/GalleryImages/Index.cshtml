@@ -20,9 +20,12 @@ else if (!String.IsNullOrEmpty(Request["update"]) && Request["update"].Equals("T
     <div class="alert alert-success">Artist successfully updated.</div>
 }
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+@if ((bool)TempData["isAdmin"] == true)
+{
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+}
 <table class="table">
     <tr>
         <th>
@@ -40,14 +43,17 @@ else if (!String.IsNullOrEmpty(Request["update"]) && Request["update"].Equals("T
         <th>
             Description
         </th>
-        <th></th>
+        @if ((bool)TempData["isAdmin"] == true)
+        {
+            <th><!--column header for details, edit, delete buttons--></th>
+        }
     </tr>
 
     @foreach (var image in Model)
     {
         <tr>
             <td>
-                <img class="thumbnail customimage-sml" src="~/Content/GalleryImages/@image.galleryimageref" style="max-width:50%"/>
+                <img class="" src="~/Content/GalleryImages/@image.galleryimageref" style="max-width:50%" />
             </td>
             <td>
                 @image.galleryimagetitle
@@ -61,11 +67,15 @@ else if (!String.IsNullOrEmpty(Request["update"]) && Request["update"].Equals("T
             <td>
                 @image.galleryimagedescription
             </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = image.galleryimageid }) |
-                @Html.ActionLink("Details", "Details", new { id = image.galleryimageid }) |
-                @Html.ActionLink("Delete", "Delete", new { id = image.galleryimageid })
-            </td>
+            @if ((bool)TempData["isAdmin"] == true)
+                //Only print edit, delete, and details button if loggin in user is an admin
+            {
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = image.galleryimageid }) |
+                    @Html.ActionLink("Details", "Details", new { id = image.galleryimageid }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = image.galleryimageid })
+                </td>
+            }
         </tr>
     }
 
