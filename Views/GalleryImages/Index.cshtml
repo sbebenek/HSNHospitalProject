@@ -9,83 +9,54 @@
 <!--Alert box indicating if image was added, edited or deleted-->
 @if (!String.IsNullOrEmpty(Request["add"]) && Request["add"].Equals("True"))
 {
-    <div class="alert alert-success">Artist successfully added.</div>
+    <div class="alert alert-success">Image successfully added.</div>
 }
 else if (!String.IsNullOrEmpty(Request["delete"]) && Request["delete"].Equals("True"))
 {
-    <div class="alert alert-success">Artist successfully deleted.</div>
+    <div class="alert alert-success">Image successfully deleted.</div>
 }
 else if (!String.IsNullOrEmpty(Request["update"]) && Request["update"].Equals("True"))
 {
-    <div class="alert alert-success">Artist successfully updated.</div>
+    <div class="alert alert-success">Image successfully updated.</div>
 }
 
 @if ((bool)TempData["isAdmin"] == true)
 {
     <p>
-        @Html.ActionLink("Create New", "Create")
+        <a class="btn btn-primary" href="@Url.Action("Create")">Add New Image</a>
     </p>
 }
 <table class="table">
-    <tr>
-        <th>
-            Image
-        </th>
-        <th>
-            Title
-        </th>
-        <th>
-            Alt Text
-        </th>
-        <th>
-            Date Posted
-        </th>
-        <th>
-            Description
-        </th>
-        @if ((bool)TempData["isAdmin"] == true)
-        {
-            <th><!--column header for details, edit, delete buttons--></th>
-        }
-    </tr>
+
 
     @foreach (var image in Model)
     {
-        <tr onclick="showDetails(@image.galleryimageid);" style="cursor:pointer;">
-            <td>
-                <img class="" src="~/Content/GalleryImages/@image.galleryimageref" style="max-width:50%" alt="@image.galleryimagealt"/>
-            </td>
-            <td>
-                @image.galleryimagetitle
-            </td>
-            <td>
-                @image.galleryimagealt
-            </td>
-            <td>
-                @image.galleryimagedate
-            </td>
-            <td>
-                @image.galleryimagedescription
-            </td>
-            @if ((bool)TempData["isAdmin"] == true)
-            //Only print edit, delete, and details button if loggin in user is an admin
-            {
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = image.galleryimageid }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = image.galleryimageid })
-                </td>
-            }
-        </tr>
+
     }
 
 </table>
 
+<div class="row">
+    @foreach (var image in Model)
+    {
+        <div class="col-md-2">
+            <div class="panel panel-default" onclick="showDetails(@image.galleryimageid);" style="cursor:pointer;">
+                <div class="panel-body" style="padding:0; height: 15vh;">
+                    <img class="" src="~/Content/GalleryImages/@image.galleryimageref" style="width:100%; height:100%; object-fit: cover" alt="@image.galleryimagealt" />
+                </div>
+                <div class="panel-footer">@image.galleryimagetitle</div>
+            </div>
+        </div>
+
+    }
+</div>
+
 <!-- Modal -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
         <div class="modal-content">
             <div id="imageDetails">
-                
+
             </div>
         </div>
     </div>
