@@ -12,6 +12,7 @@ using System.Web.Mvc;
 using HSNHospitalProject.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using PagedList;
 
 namespace HSNHospitalProject.Controllers
 {
@@ -20,7 +21,7 @@ namespace HSNHospitalProject.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: GalleryImages
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
             List<GalleryImages> galleryImages = db.GalleryImages.ToList();
             Debug.WriteLine("List of all gallery images: " + galleryImages.ToString());
@@ -38,13 +39,18 @@ namespace HSNHospitalProject.Controllers
 
             //Pass whether or not this user is a logged in admin through the tempdata
             TempData["isAdmin"] = isAdmin;
-
-            return View(galleryImages);
+            //the amount of gallery images per page
+            int pageSize = 12;
+            //set the page number to 1 if it is not already set
+            int pageNumber = (page ?? 1);
+            //return View(students.ToPagedList(pageNumber, pageSize));
+            return View(galleryImages.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: GalleryImages/Details/5
         public ActionResult Details(int? id)
         {
+            //**THIS PAGE IS NO LONGER USED - REMOVE AT SOME POINT
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -54,16 +60,25 @@ namespace HSNHospitalProject.Controllers
             {
                 return HttpNotFound();
             }
-            return View(galleryImages);
+            //since it is not used, redirect to the list
+            return RedirectToAction("Index");
         }
 
         // GET: GalleryImages/Create
         public ActionResult Create()
         {
 
+            //check if the user is logged in (true if logged in)
             bool isLoggedIn = (System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
-            //below custom column check from https://stackoverflow.com/questions/31864400/how-get-custom-field-in-aspnetusers-table
-            bool isAdmin = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).is_admin;
+            //is admin is false by default
+            bool isAdmin = false;
+            //if the user is logged in, isAdmin = whether or not the user is an admin
+            if (isLoggedIn)
+            {
+                //below custom column check from https://stackoverflow.com/questions/31864400/how-get-custom-field-in-aspnetusers-table
+                isAdmin = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).is_admin;
+            }
+
             Debug.WriteLine("Is the user currently logged in? " + isLoggedIn);
             Debug.WriteLine("That user is " + this.User.Identity.Name);
             Debug.WriteLine("Is the user an admin? " + isAdmin);
@@ -168,9 +183,17 @@ namespace HSNHospitalProject.Controllers
         // GET: GalleryImages/Edit/5
         public ActionResult Edit(int? id)
         {
+            //check if the user is logged in (true if logged in)
             bool isLoggedIn = (System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
-            //below custom column check from https://stackoverflow.com/questions/31864400/how-get-custom-field-in-aspnetusers-table
-            bool isAdmin = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).is_admin;
+            //is admin is false by default
+            bool isAdmin = false;
+            //if the user is logged in, isAdmin = whether or not the user is an admin
+            if (isLoggedIn)
+            {
+                //below custom column check from https://stackoverflow.com/questions/31864400/how-get-custom-field-in-aspnetusers-table
+                isAdmin = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).is_admin;
+            }
+
             if (id == null)
             {
                 //change to redirect to 
@@ -303,6 +326,23 @@ namespace HSNHospitalProject.Controllers
         // GET: GalleryImages/Delete/5
         public ActionResult Delete(int? id)
         {
+            //check if the user is logged in (true if logged in)
+            bool isLoggedIn = (System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
+            //is admin is false by default
+            bool isAdmin = false;
+            //if the user is logged in, isAdmin = whether or not the user is an admin
+            if (isLoggedIn)
+            {
+                //below custom column check from https://stackoverflow.com/questions/31864400/how-get-custom-field-in-aspnetusers-table
+                isAdmin = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).is_admin;
+            }
+
+            //if the user isn't a logged or not an admin, redirect to the Index list view
+            if (!isLoggedIn || !isAdmin)
+            {
+                return RedirectToAction("Index");
+            }
+
             //have the delete page redirect if user is not a logged in admin
             if (id == null)
             {
@@ -328,7 +368,7 @@ namespace HSNHospitalProject.Controllers
             //remember to delete the image file from the server as well here.
             db.GalleryImages.Remove(galleryImages);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { delete = true});
         }
 
         protected override void Dispose(bool disposing)
@@ -343,6 +383,21 @@ namespace HSNHospitalProject.Controllers
         [HttpPost]
         public ActionResult showDetails(int galleryimagesid)
         {
+            //check if the user is logged in (true if logged in)
+            bool isLoggedIn = (System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
+            //is admin is false by default
+            bool isAdmin = false;
+            //if the user is logged in, isAdmin = whether or not the user is an admin
+            if (isLoggedIn)
+            {
+                //below custom column check from https://stackoverflow.com/questions/31864400/how-get-custom-field-in-aspnetusers-table
+                isAdmin = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).is_admin;
+            }
+
+            //Pass whether or not this user is a logged in admin through the tempdata
+            //only admins should be able to see edit and delete buttons
+            TempData["isAdmin"] = isAdmin;
+
             Debug.WriteLine("Receiving galleryimagesid in the ajax call as " + galleryimagesid);
             //grabbing the galleryImage object
             GalleryImages galleryImages = db.GalleryImages.Find(galleryimagesid);

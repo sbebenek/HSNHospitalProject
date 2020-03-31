@@ -9,12 +9,16 @@
 <div class="modal-body">
     <div class="container">
         <div class="row">
-            <div class="col-sm">
-                <img class="" src="~/Content/GalleryImages/@Model.galleryimageref" style="max-width:50%" alt="@Model.galleryimagealt"/>
+            <div class="col">
+                <div style="width:50%; float:left;">
+                    <img class="" src="~/Content/GalleryImages/@Model.galleryimageref" style="width:100%; height:50vh; object-fit: scale-down;" alt="@Model.galleryimagealt" />
+                </div>
             </div>
-            <div class="col-sm">
-                <p>@Model.galleryimagedescription</p>
-                <p><small><em>Posted on @Model.galleryimagedate.ToLongDateString()</em></small></p>
+            <div class="col">
+                <div style="width:50%; float:right; padding-left: 20px;">
+                    <p>@Model.galleryimagedescription</p>
+                    <p><small><em>Posted on @Model.galleryimagedate.ToLongDateString()</em></small></p>
+                </div>
             </div>
         </div>
     </div>
@@ -22,7 +26,10 @@
 </div>
 
 <div class="modal-footer">
-    <a href="@Url.Action("Edit", new { id = Model.galleryimageid})" class="btn btn-success">Edit</a>
-    <a href="@Url.Action("Delete", new { id = Model.galleryimageid})" class="btn btn-success">Delete</a>
+    @if (TempData["isAdmin"] != null && (bool) TempData["isAdmin"] == true) //if the tempdata is set and the user is an admin
+    {
+        <a href="@Url.Action("Edit", new { id = Model.galleryimageid})" class="btn btn-success">Edit</a>
+        <a href="@Url.Action("Delete", new { id = Model.galleryimageid})" class="btn btn-danger">Delete</a>
+    }
     <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
 </div>
