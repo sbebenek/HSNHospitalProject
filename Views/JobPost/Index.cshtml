@@ -1,0 +1,55 @@
+﻿@model IEnumerable<HSNHospitalProject.Models.JobPost>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<p>
+    @Html.ActionLink("Create New Job Post", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Type
+        </th>
+        <th>
+            Experience
+        </th>
+        <th>
+            Salary
+        </th>
+        <th>
+            Posted Date
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.jobPostName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.jobPostType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.jobPostExperience)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.jobPostSalary)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.jobPostPostedDate)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.jobPostId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.jobPostId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.jobPostId })
+            </td>
+        </tr>
+    }
+
+</table>

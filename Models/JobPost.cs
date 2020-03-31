@@ -37,7 +37,7 @@ namespace HSNHospitalProject.Models
         public DateTime jobPostPostedDate { get; set; }
 
         //JobPost has a closed date
-        public DateTime jobPostClosedDate { get; set; }
+        public Nullable<DateTime> jobPostClosedDate { get; set; }
 
         //JobPost has a content (description of the job itself)
         public string jobPostContent { get; set; }
