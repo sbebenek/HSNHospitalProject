@@ -12,6 +12,7 @@ using System.Web.Mvc;
 using HSNHospitalProject.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using PagedList;
 
 namespace HSNHospitalProject.Controllers
 {
@@ -20,7 +21,7 @@ namespace HSNHospitalProject.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: GalleryImages
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
             List<GalleryImages> galleryImages = db.GalleryImages.ToList();
             Debug.WriteLine("List of all gallery images: " + galleryImages.ToString());
@@ -38,13 +39,18 @@ namespace HSNHospitalProject.Controllers
 
             //Pass whether or not this user is a logged in admin through the tempdata
             TempData["isAdmin"] = isAdmin;
-
-            return View(galleryImages);
+            //the amount of gallery images per page
+            int pageSize = 12;
+            //set the page number to 1 if it is not already set
+            int pageNumber = (page ?? 1);
+            //return View(students.ToPagedList(pageNumber, pageSize));
+            return View(galleryImages.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: GalleryImages/Details/5
         public ActionResult Details(int? id)
         {
+            //**THIS PAGE IS NO LONGER USED - REMOVE AT SOME POINT
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -54,7 +60,8 @@ namespace HSNHospitalProject.Controllers
             {
                 return HttpNotFound();
             }
-            return View(galleryImages);
+            //since it is not used, redirect to the list
+            return RedirectToAction("Index");
         }
 
         // GET: GalleryImages/Create

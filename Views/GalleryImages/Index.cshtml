@@ -1,4 +1,8 @@
-﻿@model IEnumerable<HSNHospitalProject.Models.GalleryImages>
+﻿@model PagedList.IPagedList<HSNHospitalProject.Models.GalleryImages>
+<!--model IEnumerable<HSNHospitalProject.Models.GalleryImages>-->
+@using PagedList.Mvc;
+<!--Pagination used from asp.net tutorial - https://docs.microsoft.com/en-us/aspnet/mvc/overview/getting-started/getting-started-with-ef-using-mvc/sorting-filtering-and-paging-with-the-entity-framework-in-an-asp-net-mvc-application#add-paging-->
+
 
 @{
     ViewBag.Title = "Index";
@@ -49,6 +53,12 @@ else if (!String.IsNullOrEmpty(Request["update"]) && Request["update"].Equals("T
         </div>
 
     }
+</div>
+<div>
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+        new { page }))
 </div>
 
 <!-- Modal -->
