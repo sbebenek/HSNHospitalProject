@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Data.SqlClient;
 using HSNHospitalProject.Models;
 using HSNHospitalProject.Models.ViewModels;
+using PagedList;
 
 namespace HSNHospitalProject.Controllers
 {
@@ -18,9 +19,14 @@ namespace HSNHospitalProject.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: JobPost
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            return View(db.JobPosts.ToList());
+            List<JobPost> jobPosts = db.JobPosts.ToList();
+            //the amount of job posts per page
+            int pageSize = 10;
+            //set the page number to 1 if it is not already set
+            int pageNumber = (page ?? 1);
+            return View(jobPosts.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: JobPost/Details/8

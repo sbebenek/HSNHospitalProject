@@ -1,4 +1,6 @@
-﻿@model IEnumerable<HSNHospitalProject.Models.JobPost>
+﻿@model PagedList.IPagedList<HSNHospitalProject.Models.JobPost>
+
+@using PagedList.Mvc;
 
 @{
     ViewBag.Title = "Index";
@@ -7,6 +9,7 @@
 <p>
     @Html.ActionLink("Create New Job Post", "Create")
 </p>
+
 <table class="table">
     <tr>
         <th>
@@ -25,7 +28,6 @@
             Posted Date
         </th>
     </tr>
-
     @foreach (var item in Model)
     {
         <tr>
@@ -51,5 +53,11 @@
             </td>
         </tr>
     }
-
 </table>
+
+<div>
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+        new { page }))
+</div>
