@@ -147,6 +147,154 @@ namespace HSNHospitalProject.Controllers
             return View(model);
         }
 
+        // GET: JobPost/Edit/8
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                //change to redirect to 
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            //Debug Purpose to see if we are getting the id
+            Debug.WriteLine("I'm pulling data of " + id.ToString());
+
+            //Get the specific jobPost
+            JobPost jobPost = db.JobPosts.Find(id);
+
+            //Could not find the specific jobPost
+            if (jobPost == null)
+            {
+                return HttpNotFound();
+            }
+
+            //Must create a view model of the jobPost data
+            JobPostEditViewModel jobPostEditViewModel = new JobPostEditViewModel();
+            jobPostEditViewModel.id = jobPost.jobPostId;
+            jobPostEditViewModel.name = jobPost.jobPostName;
+            if (jobPost.jobPostType == JobType.Job.ToString()) {
+                jobPostEditViewModel.type = JobType.Job;
+            }
+            else if (jobPost.jobPostType == JobType.Volunteer.ToString()) {
+                jobPostEditViewModel.type = JobType.Volunteer;
+            }
+
+            jobPostEditViewModel.departmentId = jobPost.departmentId;
+            jobPostEditViewModel.allDepartments = GetAllDepartments();
+            jobPostEditViewModel.experience = jobPost.jobPostExperience;
+            jobPostEditViewModel.filled = jobPost.jobPostFilled;
+            jobPostEditViewModel.salary = jobPost.jobPostSalary;
+            jobPostEditViewModel.postedDate = jobPost.jobPostPostedDate;
+            jobPostEditViewModel.closedDate = jobPost.jobPostClosedDate;
+            jobPostEditViewModel.content = jobPost.jobPostContent;
+
+            //return the jobPost data 
+            return View(jobPostEditViewModel);
+        }
+
+        //When user submits the form to edit a JobPost
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(JobPostEditViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                //Debug Purpose to see if we are getting the data
+                Debug.WriteLine("I'm pulling data of id: " + model.id + "Name: " + model.name + ", Type: " + model.type + ", DepartmentId: " + model.departmentId
+                    + ", Experience: " + model.experience + ", Filled: " + model.filled +  ", Salary: " + model.salary
+                    + ", Posted Date: " + model.postedDate + ", Closed Date: " + model.closedDate + ", Content: " + model.content);
+
+                //Using object to edit a JobPost
+                JobPost jobPost = db.JobPosts.Find(model.id);
+                //Set the JobPost Type Depending on the enum
+                if (model.type == JobType.Job)
+                {
+                    jobPost.jobPostType = "Job";
+                }
+                else if (model.type == JobType.Volunteer)
+                {
+                    jobPost.jobPostType = "Volunteer";
+                }
+                //Something went wrong (should not happen)
+                else
+                {
+                    model.allDepartments = GetAllDepartments();
+                    return View(model);
+                }
+                jobPost.jobPostName = model.name;
+                jobPost.departmentId = model.departmentId;
+                jobPost.jobPostExperience = model.experience;
+                jobPost.jobPostFilled = model.filled;
+                jobPost.jobPostSalary = model.salary;
+                jobPost.jobPostPostedDate = model.postedDate;
+                if (model.filled)
+                {
+                    jobPost.jobPostClosedDate = DateTime.Now;
+                }
+                else
+                {
+                    jobPost.jobPostClosedDate = null;
+                }
+
+                jobPost.jobPostContent = model.content;
+
+                //Save the changes in the database
+                db.SaveChanges();
+
+                //Go back to the list of JobPost to see the added JobPost
+                return RedirectToAction("Index");
+            }
+
+            //Something failed, redisplay form
+            model.allDepartments = GetAllDepartments();
+            return View(model);
+        }
+
+        // GET: JobPost/Delete/8
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            //Debug Purpose to see if we are getting the id
+            Debug.WriteLine("I'm pulling data of " + id.ToString());
+
+            //Get the specific JobPost
+            JobPost jobPost = db.JobPosts.Find(id);
+
+            //Could not find the specific JobPost
+            if (jobPost == null)
+            {
+                return HttpNotFound();
+            }
+
+            //return the JobPost data 
+            return View(jobPost);
+        }
+
+        // POST: JobPost/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            //Debug Purpose to see if we are getting the id
+            Debug.WriteLine("I'm pulling data of " + id.ToString());
+
+            //Get the specific JobPost
+            JobPost jobPost = db.JobPosts.Find(id);
+
+            //Delete that specific JobPost from the database
+            db.JobPosts.Remove(jobPost);
+
+            //Save the changes on the database
+            db.SaveChanges();
+
+            //Go back to the list of JobPost to see the removed JobPost
+            return RedirectToAction("Index");
+        }
+
         public List<SelectListItem> GetAllDepartments()
         {
             List<SelectListItem> allDepartments = db.Departments.Select(x => new SelectListItem { Text = x.departmentName, Value = x.departmentId.ToString() })

@@ -281,6 +281,9 @@
     <Content Include="Views\Department\Delete.cshtml" />
     <Content Include="Views\JobPost\Index.cshtml" />
     <Content Include="Views\JobPost\Create.cshtml" />
+    <Content Include="Views\JobPost\Details.cshtml" />
+    <Content Include="Views\JobPost\Edit.cshtml" />
+    <Content Include="Views\JobPost\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

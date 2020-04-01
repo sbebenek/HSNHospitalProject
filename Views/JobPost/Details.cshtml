@@ -1,0 +1,88 @@
+﻿@model HSNHospitalProject.Models.JobPost
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Job Post Details</h2>
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.jobPostName)
+        </dd>
+
+        <dt>
+            Type
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.jobPostType)
+        </dd>
+
+        <dt>
+            Department
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.department.departmentName)
+        </dd>
+
+        <dt>
+            Experience
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.jobPostExperience)
+        </dd>
+
+        <dt>
+            Filled
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.jobPostFilled)
+        </dd>
+
+        <dt>
+            Salary
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.jobPostSalary)
+        </dd>
+
+        <dt>
+            Posted Date
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.jobPostPostedDate)
+        </dd>
+
+        <dt>
+            Closed Date
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.jobPostClosedDate)
+        </dd>
+
+        <dt>
+            Content
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.jobPostContent)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.jobPostId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

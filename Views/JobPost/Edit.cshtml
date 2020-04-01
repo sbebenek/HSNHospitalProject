@@ -1,12 +1,12 @@
 ﻿@using HSNHospitalProject.Models.ViewModels
 
-@model HSNHospitalProject.Models.ViewModels.JobPostCreateViewModel
+@model HSNHospitalProject.Models.ViewModels.JobPostEditViewModel
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Edit";
 }
 
-<h2>Create Job Post</h2>
+<h2>Edit Job Post</h2>
 
 @using (Html.BeginForm())
 {
@@ -22,10 +22,6 @@
             </div>
         </div>
 
-        <!-- 
-        Method for creating the drop down list for enum is referenced from:
-        https://www.tutorialsteacher.com/mvc/htmlhelper-dropdownlist-dropdownlistfor    
-        -->
         <div class="form-group">
             @Html.LabelFor(model => model.type, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -56,10 +52,30 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.filled, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.filled)
+                    @Html.ValidationMessageFor(model => model.filled, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.LabelFor(model => model.salary, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.salary, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.salary, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.postedDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.postedDate)
+                    @Html.ValidationMessageFor(model => model.postedDate, "", new { @class = "text-danger" })
+                </div>
             </div>
         </div>
 
@@ -73,7 +89,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </div>
     </div>
