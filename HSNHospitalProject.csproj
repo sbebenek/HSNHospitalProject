@@ -198,10 +198,15 @@
     <Compile Include="Migrations\202003311909267_Add-nullable-for-the-closedDate-in-jobPost-table.Designer.cs">
       <DependentUpon>202003311909267_Add-nullable-for-the-closedDate-in-jobPost-table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004012128514_create-donation-feature-table.cs" />
+    <Compile Include="Migrations\202004012128514_create-donation-feature-table.Designer.cs">
+      <DependentUpon>202004012128514_create-donation-feature-table.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ActivityRecords.cs" />
     <Compile Include="Models\Department.cs" />
+    <Compile Include="Models\Donation.cs" />
     <Compile Include="Models\GalleryImages.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\JobPost.cs" />
@@ -314,6 +319,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003311909267_Add-nullable-for-the-closedDate-in-jobPost-table.resx">
       <DependentUpon>202003311909267_Add-nullable-for-the-closedDate-in-jobPost-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004012128514_create-donation-feature-table.resx">
+      <DependentUpon>202004012128514_create-donation-feature-table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
