@@ -202,14 +202,9 @@
     <Compile Include="Migrations\202004012128514_create-donation-feature-table.Designer.cs">
       <DependentUpon>202004012128514_create-donation-feature-table.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202004020339339_article-table.cs" />
-    <Compile Include="Migrations\202004020339339_article-table.Designer.cs">
-      <DependentUpon>202004020339339_article-table.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ActivityRecords.cs" />
-    <Compile Include="Models\Article.cs" />
     <Compile Include="Models\Department.cs" />
     <Compile Include="Models\Donation.cs" />
     <Compile Include="Models\GalleryImages.cs" />
@@ -327,9 +322,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004012128514_create-donation-feature-table.resx">
       <DependentUpon>202004012128514_create-donation-feature-table.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202004020339339_article-table.resx">
-      <DependentUpon>202004020339339_article-table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
