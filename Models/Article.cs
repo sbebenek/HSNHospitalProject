@@ -24,7 +24,7 @@ namespace HSNHospitalProject.Models
 
         [Required]
         //a short view of the article, might be usefull for mobile views 
-        public string condesnsed { get; set; }
+        public string condensed { get; set; }
 
         [Required]
         //the actual content
