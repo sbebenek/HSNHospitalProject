@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Data.Entity;
 using System.ComponentModel.DataAnnotations;
-
+using System.ComponentModel.DataAnnotations.Schema;
 
 
 namespace HSNHospitalProject.Models
@@ -18,8 +19,10 @@ namespace HSNHospitalProject.Models
 
         [Required]
         public string articleBody { get; set; }
+
         public DateTime articleDatePosted { get; set; }
-        public DateTime articleDateLastEdit { get; set; }
+        
+        public DateTime? articleDateLastEdit { get; set; }
 
     }
 }

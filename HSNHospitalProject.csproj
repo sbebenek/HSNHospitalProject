@@ -175,6 +175,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ActivityRecordsController.cs" />
+    <Compile Include="Controllers\ArticleController.cs" />
     <Compile Include="Controllers\DepartmentController.cs" />
     <Compile Include="Controllers\GalleryImagesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -210,6 +211,10 @@
     <Compile Include="Migrations\202004030227066_articles.cs" />
     <Compile Include="Migrations\202004030227066_articles.Designer.cs">
       <DependentUpon>202004030227066_articles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004030516022_nullable edit date.cs" />
+    <Compile Include="Migrations\202004030516022_nullable edit date.Designer.cs">
+      <DependentUpon>202004030516022_nullable edit date.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -349,6 +354,8 @@
     <Content Include="Views\ActivityRecords\Details.cshtml" />
     <Content Include="Views\ActivityRecords\Edit.cshtml" />
     <Content Include="Views\ActivityRecords\Index.cshtml" />
+    <Content Include="Views\Article\Index.cshtml" />
+    <Content Include="Views\Article\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -386,6 +393,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004030227066_articles.resx">
       <DependentUpon>202004030227066_articles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004030516022_nullable edit date.resx">
+      <DependentUpon>202004030516022_nullable edit date.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

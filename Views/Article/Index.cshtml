@@ -1,0 +1,34 @@
+﻿@model List<HSNHospitalProject.Models.Article>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="container-fluid">
+    @foreach(var article in Model)
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">@article.articleTitle</h3>
+                <p class="text-muted">Date: @article.articleDatePosted.Date.ToString("dddd, dd MMMM yyyy")</p>
+            </div>
+            <div class="panel-body">
+                <p>@article.articleBody</p>
+            </div>
+            <div class="panel-body">
+                @if (!String.IsNullOrEmpty(article.articleDateLastEdit.ToString()))
+                {
+                    <p class="text-muted">Edited: @article.articleDateLastEdit.ToString()</p>
+                }
+            </div>
+            
+            
+        </div>
+
+    }
+
+
+
+
+
+</div>
