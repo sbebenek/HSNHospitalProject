@@ -7,6 +7,10 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using HSNHospitalProject.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using PagedList;
+
 
 namespace HSNHospitalProject.Controllers
 {
@@ -15,9 +19,31 @@ namespace HSNHospitalProject.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: ActivityRecords
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            return View(db.ActivityRecords.ToList());
+            List<ActivityRecords> records = db.ActivityRecords.ToList();
+
+            //check if the user is logged in (true if logged in)
+            bool isLoggedIn = (System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
+            //is admin is false by default
+            bool isAdmin = false;
+            //if the user is logged in, isAdmin = whether or not the user is an admin
+            if (isLoggedIn)
+            {
+                //below custom column check from https://stackoverflow.com/questions/31864400/how-get-custom-field-in-aspnetusers-table
+                isAdmin = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).is_admin;
+            }
+            if(!isAdmin)
+            {
+
+            }
+
+            //the amount of records shown per page
+            int pageSize = 20;
+            //set the page number to 1 if it is not already set
+            int pageNumber = (page ?? 1);
+
+            return View(records.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: ActivityRecords/Details/5
@@ -38,6 +64,7 @@ namespace HSNHospitalProject.Controllers
         // GET: ActivityRecords/Create
         public ActionResult Create()
         {
+            ViewBag.date = DateTime.Now.ToString("yyyy-MM-dd");
             return View();
         }
 
@@ -114,6 +141,14 @@ namespace HSNHospitalProject.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        //********DELETING OLDER THAN X MONTHS*******
+        //https://forums.asp.net/t/1218330.aspx?If+date+is+older+than+today+then+delete+record+
+        // DELETE FROM <your table name> WHERE  DateField < GETDATE()
+        //https://stackoverflow.com/questions/10978520/howto-asp-net-sql-query-where-datetime-greater-than
+        //WHERE PublishDate >= Getdate() -7
+
+
 
         protected override void Dispose(bool disposing)
         {

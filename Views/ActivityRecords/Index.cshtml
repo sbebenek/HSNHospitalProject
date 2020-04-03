@@ -1,4 +1,7 @@
-﻿@model IEnumerable<HSNHospitalProject.Models.ActivityRecords>
+﻿@model PagedList.IPagedList<HSNHospitalProject.Models.ActivityRecords>
+<!--model IEnumerable<HSNHospitalProject.Models.ActivityRecords>-->
+@using PagedList.Mvc;
+
 
 @{
     ViewBag.Title = "Index";
@@ -9,31 +12,48 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
+<table class="table table-hover">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.activityrecorddate)
+            Date
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.activityrecordrating)
+            Rating
         </th>
         <th></th>
+        <!--<th>Delete button will go here</th>-->
     </tr>
+    @if (Model.ToList().Count == 0)//if there are no records in the database
+    {
+        <tr><td>The list is currently empty.</td><td></td><td></td></tr>
+    }
+    else
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.activityrecorddate.ToString("dddd, dd MMMM yyyy")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.activityrecordrating)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.activityrecordid }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.activityrecordid }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.activityrecordid })
+                </td>
+            </tr>
+        }
+    }
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.activityrecorddate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.activityrecordrating)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.activityrecordid }) |
-            @Html.ActionLink("Details", "Details", new { id=item.activityrecordid }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.activityrecordid })
-        </td>
-    </tr>
-}
+
 
 </table>
+
+<div>
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+        new { page }))
+</div>

@@ -30,15 +30,7 @@ else if (!String.IsNullOrEmpty(Request["update"]) && Request["update"].Equals("T
         <a class="btn btn-primary" href="@Url.Action("Create")">Add New Image</a>
     </p>
 }
-<table class="table">
 
-
-    @foreach (var image in Model)
-    {
-
-    }
-
-</table>
 
 <div class="row">
     @foreach (var image in Model)
