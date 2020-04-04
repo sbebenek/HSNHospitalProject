@@ -1,0 +1,12 @@
+﻿@model HSNHospitalProject.Models.ActivityRecords
+
+<div class="modal-body">
+    <p>Are you sure you want to delete the record for @Model.activityrecorddate.ToString("dddd, dd MMMM yyyy")?</p>
+
+</div>
+
+<div class="modal-footer">
+    <a href="@Url.Action("Delete", new { id = Model.activityrecordid})" class="btn btn-danger">Delete</a>
+
+    <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+</div>

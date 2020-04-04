@@ -351,11 +351,11 @@
     <Content Include="Views\JobPost\Delete.cshtml" />
     <Content Include="Views\ActivityRecords\Create.cshtml" />
     <Content Include="Views\ActivityRecords\Delete.cshtml" />
-    <Content Include="Views\ActivityRecords\Details.cshtml" />
     <Content Include="Views\ActivityRecords\Edit.cshtml" />
     <Content Include="Views\ActivityRecords\Index.cshtml" />
     <Content Include="Views\Article\Index.cshtml" />
     <Content Include="Views\Article\Create.cshtml" />
+    <Content Include="Views\Shared\_ShowDeleteInfo.cshtml" />
     <Content Include="Views\Article\Update.cshtml" />
   </ItemGroup>
   <ItemGroup>
