@@ -17,9 +17,30 @@ namespace HSNHospitalProject.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        public ActionResult Index()
+        public ActionResult Index(string articleSearchKey,int pagenum=0)
         {
-            List<Article> articles = db.Articles.ToList();
+            List<Article> articles = db.Articles.Where(a => (articleSearchKey != null) ? a.articleTitle.Contains(articleSearchKey) : true).ToList();
+            int perpage = 3;
+            int articleCount = articles.Count();
+            int maxpage = (int)Math.Ceiling((decimal)articleCount / perpage) - 1;
+            if (maxpage < 0) maxpage = 0;
+            if (pagenum < 0) pagenum = 0;
+            if (pagenum > maxpage) pagenum = maxpage;
+            int start = (int)(perpage * pagenum);
+            ViewData["pagenum"] = pagenum;
+            ViewData["pagesummary"] = "";
+            if (maxpage > 0)
+            {
+                ViewData["pagesummary"] = (pagenum + 1) + " of " + (maxpage + 1);
+                articles = db.Articles
+                    .Where(a => (articleSearchKey != null) ? a.articleTitle.Contains(articleSearchKey) : true)
+                    .OrderBy(a => a.articleId)
+                    .Skip(start)
+                    .Take(perpage)
+                    .ToList();
+            }
+
+            
 
             return View(articles);
         }
@@ -27,6 +48,34 @@ namespace HSNHospitalProject.Controllers
         public ActionResult Create()
         {
             return View();
+        }
+
+        public ActionResult Update(int id)
+        {
+            Article article = db.Articles.SqlQuery("select * from articles where articleId=@articleId", new SqlParameter("@articleId", id)).FirstOrDefault();
+
+            if (article == null)
+            {
+                return HttpNotFound();
+
+            }
+            return View(article);
+        }
+
+        [HttpPost]
+        public ActionResult Update(Article article, int id)
+        {
+            string query = "update articles set articleTitle = @articleTitle, articleBody = @articleBody,articleDateLastEdit = @articleDateLastEdit where articleId = @id";
+
+            SqlParameter[] sqlparams = new SqlParameter[4];
+            sqlparams[0] = new SqlParameter("@articleTitle", article.articleTitle);
+            sqlparams[1] = new SqlParameter("@articleBody", article.articleBody);
+            sqlparams[2] = new SqlParameter("@articleDateLastEdit", DateTime.Now);
+            sqlparams[3] = new SqlParameter("@id", id);
+
+            db.Database.ExecuteSqlCommand(query, sqlparams);
+            return RedirectToAction("Index");
+
         }
 
         [HttpPost]

@@ -7,15 +7,16 @@
 
 <form method="post" action="/Article/Create/@Model">
 
-    @Html.LabelFor(model => model.articleTitle,"Title")
+    @Html.LabelFor(model => model.articleTitle, "Title")
     <div>
         @Html.EditorFor(model => model.articleTitle)
     </div>
 
-    @Html.LabelFor(model => model.articleBody,"Enter content")
+    @Html.LabelFor(model => model.articleBody, "Enter content")
     <div>
-        @Html.TextAreaFor(model => model.articleBody, new {@class = "form-control form-control full articleBody",rows=15,cols=100})
-        
+        @Html.TextAreaFor(model => model.articleBody, new { @class = "form-control form-control full articleBody", rows = 15, cols = 100 })
+
     </div>
-    <input type="submit" id="submit" class="btn btn-primary" value="Post Article"/>
+    <input type="submit" id="submit" class="btn btn-primary" value="Post Article" />
 </form>
+

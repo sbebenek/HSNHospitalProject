@@ -3,32 +3,49 @@
 @{
     ViewBag.Title = "Index";
 }
+<h2>News</h2>
 
-<div class="container-fluid">
-    @foreach(var article in Model)
+
+<form style="margin-bottom:1rem;" action="/Article/Index" method="GET">
+    <input class="form-control" type="text" name="articleSearchKey" id="articleSearchKey" />
+    <input style="margin-top:1rem" class="btn" type="submit" value="Search" />
+</form>
+
+
+
+<div class="container mt-3">
+
+    @foreach (var article in Model)
     {
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">@article.articleTitle</h3>
-                <p class="text-muted">Date: @article.articleDatePosted.Date.ToString("dddd, dd MMMM yyyy")</p>
+                <h2 class="panel-title"><a href="/Article/Update/@article.articleId">@article.articleTitle</a></h2>
+                @*format the date*@
+                <p class="text-muted">@article.articleDatePosted.Date.ToString("dddd, dd MMMM yyyy")</p>
             </div>
             <div class="panel-body">
                 <p>@article.articleBody</p>
             </div>
             <div class="panel-body">
+                @*check if there is an edit date, couldve also checked if the last edit date was after the post date
+                    instead of making it nullable*@
                 @if (!String.IsNullOrEmpty(article.articleDateLastEdit.ToString()))
                 {
-                    <p class="text-muted">Edited: @article.articleDateLastEdit.ToString()</p>
+                    <p class="text-muted">Edited: @article.articleDateLastEdit.Value.ToString("dddd, dd MMMM yyyy").</p>
+                    @*articleDateLastEdit is nullable and cant use .Date so we use .Value to format the date instead*@
                 }
             </div>
-            
-            
+
+
         </div>
 
     }
 
-
-
-
-
+</div>
+<div class="paginate">
+    @{
+        <a class="btn btn-primary" href="/Article/Index?pagenum=@((int)ViewData["pagenum"]-1)&groomsearchkey=@ViewData["articleSearchKey"]">Prev</a>
+        @ViewData["pagesummary"]
+        <a class="btn btn-primary" href="/Article/Index?pagenum=@((int)ViewData["pagenum"]+1)&groomsearchkey=@ViewData["articleSearchKey"]">Next</a>
+    }
 </div>
