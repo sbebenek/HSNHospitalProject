@@ -2,7 +2,7 @@
     ViewBag.Title = "Home Page";
 }
 <!--Loading the graph generator script-->
-<script type="text/javascript" src="~/Scripts/GraphGenerator.js"></script>
+<!--<script type="text/javascript" src="~/Scripts/GraphGenerator.js"></script>-->
 
 <div class="jumbotron">
     <h1>ASP.NET</h1>
@@ -37,25 +37,28 @@
     <div id="graph"></div>
 </div>
 
-<script>
-    window.onload = startGraphGeneration();
-    /**
-     * Sam Bebenek -
-     * This function does an ajax call to start grabbing info from the db to start generating the activity graph and print it to the page. This will be called
-     * only once the page is loaded, so that users won't have to wait for the graph to load before seeing the rest of the page.
-     */
-    function startGraphGeneration() {
-        $.ajax({
-            url: '@Url.Action("startGraph")',
-            //type: 'GET',
-            type: 'POST',
-            cache: false,
-            data: { submit : true }
-        }).done(function (result) {
-            //output will be printed to the inside of the modal window
-            $('#graphScript').html(result);
-        });
-        console.log("startGraph AJAX was called");
-    }
-
-</script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jquery") @*For unobtrusive-ajax*@
+    <script>
+        $(document).ready(startGraphGeneration());
+       
+        /**
+         * Sam Bebenek -
+         * This function does an ajax call to start grabbing info from the db to start generating the activity graph and print it to the page. This will be called
+         * only once the page is loaded, so that users won't have to wait for the graph to load before seeing the rest of the page.
+         */
+        function startGraphGeneration() {
+            $.ajax({
+                url: '@Url.Action("startGraph")',
+                //type: 'GET',
+                type: 'POST',
+                cache: false,
+                data: { submit: true }
+            }).done(function (result) {
+                //output will be printed to the inside of the modal window
+                $('#graphScript').html(result);
+            });
+            console.log("startGraph jQuery AJAX was called");
+        }
+    </script>
+}

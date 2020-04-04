@@ -16,7 +16,7 @@
 
         <div class="form-actions no-color">
             <input type="hidden" name="confirm" value="true" />
-            <input type="hidden" name="numberOfMonths" value="true" />
+            <input type="hidden" name="numberOfMonths" value="@ViewBag.numMonths" />
             <a href="@Url.Action("Index")" class="btn btn-default">Back to List</a>
             <input type="submit" value="Delete" class="btn btn-danger" />
 

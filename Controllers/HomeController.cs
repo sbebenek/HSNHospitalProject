@@ -30,10 +30,9 @@ namespace HSNHospitalProject.Controllers
         }
 
         /// <summary>
-        /// 
+        /// This action calculates the average rating of each weekday, passes it to the partial view that
+        /// contains a js function that draws the graph, and returns the _StartGraph partial view
         /// </summary>
-        /// <param name="activityrecordsid"></param>
-        /// <returns></returns>
         [HttpPost]
         public ActionResult startGraph()
         {

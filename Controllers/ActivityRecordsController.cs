@@ -233,8 +233,29 @@ namespace HSNHospitalProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteMultiple(bool confirm, int numberOfMonths)
         {
-
-            return RedirectToAction("Index", new { delete = true });
+            //TODO: finish deleteing where all records all older than numberOfMonths
+            if(confirm == true)
+            {
+                DateTime deleteDate = DateTime.Today.AddMonths(0 - (int)numberOfMonths);
+                List<ActivityRecords> recordsToBeDeleted = db.ActivityRecords.Where(record => record.activityrecorddate < deleteDate).ToList();
+                foreach (var record in recordsToBeDeleted)
+                {
+                    //remove each row one by one
+                    db.ActivityRecords.Remove(record);
+                }
+                try
+                {
+                    //save changes in the database
+                    db.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Something went wrong when trying to remove all records older than " + deleteDate.ToLongDateString() + "from the database.");
+                    Console.WriteLine(e);
+                }
+                return RedirectToAction("Index", new { delete = true });
+            }
+            else return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
 
