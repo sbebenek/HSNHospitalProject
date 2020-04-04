@@ -35,14 +35,14 @@ namespace HSNHospitalProject.Controllers
                 //below custom column check from https://stackoverflow.com/questions/31864400/how-get-custom-field-in-aspnetusers-table
                 isAdmin = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).is_admin;
             }
-            if(!isAdmin)
+            if (!isAdmin)
             {
                 //redirect to login page if not a logged in admin
                 //return RedirectToAction("Login", "AccountController");
             }
 
             //the amount of records shown per page
-            int pageSize = 20;
+            int pageSize = 10;
             //set the page number to 1 if it is not already set
             int pageNumber = (page ?? 1);
 
@@ -52,17 +52,7 @@ namespace HSNHospitalProject.Controllers
         // GET: ActivityRecords/Details/5
         /*public ActionResult Details(int? id)
         {
-            //THIS PAGE WILL NOT BE USED. REMOVE AT SOME POINT
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ActivityRecords activityRecords = db.ActivityRecords.Find(id);
-            if (activityRecords == null)
-            {
-                return HttpNotFound();
-            }
-            return View(activityRecords);
+            //DETAILS PAGE WILL NOT BE USED. REMOVE AT SOME POINT
         }*/
 
         // GET: ActivityRecords/Create
@@ -98,11 +88,26 @@ namespace HSNHospitalProject.Controllers
             //******TODO: DON"T ADD IF A RECORD AT THAT DATE ALREADY EXISTS
             if (ModelState.IsValid)
             {
+                //checking to see if a record already exists with this date
+                ActivityRecords existingRecord = db.ActivityRecords.Where(record => record.activityrecorddate == activityRecords.activityrecorddate).FirstOrDefault();
+
+                //if a record with that date already exists
+                if (existingRecord != null)
+                {
+                    Debug.WriteLine("An activity record with the date you are trying to add already exists: " + existingRecord.ToString());
+                    ViewBag.existingDate = existingRecord.activityrecorddate.ToLongDateString();
+                    ViewBag.existingId = existingRecord.activityrecordid;
+                    //return to the view and indicate a record with that date already exists, and prompt if the user wants to update that existing record instead
+                    return View();
+                }
+
+                //else, a record with that date
+                Debug.WriteLine("A record with the date you are trying to add does not yet exist. Adding it to the database...");
                 db.ActivityRecords.Add(activityRecords);
                 db.SaveChanges();
                 return RedirectToAction("Index", new { add = true });
             }
-            
+
 
             return View(activityRecords);
         }
@@ -205,12 +210,34 @@ namespace HSNHospitalProject.Controllers
         // DELETE FROM <your table name> WHERE  DateField < GETDATE()
         //https://stackoverflow.com/questions/10978520/howto-asp-net-sql-query-where-datetime-greater-than
         //WHERE PublishDate >= Getdate() -7
-        public ActionResult DeleteMultiple()
+        [HttpGet]
+        public ActionResult DeleteMultiple(int? numberOfMonths)
         {
-            return View();
+            //if the form was submitted empty or with a negative number
+            if (numberOfMonths == null || numberOfMonths < 0)
+            {
+                ViewBag.errorMessage = "Required field. Must be 0 or greater.";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ViewBag.numMonths = numberOfMonths;
+                DateTime deleteDate = DateTime.Today.AddMonths(0 - (int)numberOfMonths);
+                ViewBag.deleteDate = deleteDate.ToLongDateString();
+                ViewBag.deleteCount = db.ActivityRecords.Where(record => record.activityrecorddate < deleteDate).Count();
+                return View();
+            }
         }
 
-       
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteMultiple(bool confirm, int numberOfMonths)
+        {
+
+            return RedirectToAction("Index", new { delete = true });
+        }
+
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

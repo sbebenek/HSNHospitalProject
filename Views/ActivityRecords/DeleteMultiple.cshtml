@@ -1,0 +1,25 @@
+﻿@model IEnumerable<HSNHospitalProject.Models.ActivityRecords>
+
+@{
+    ViewBag.Title = "DeleteMultiple";
+}
+
+<h2>Delete All Records Older Than @ViewBag.numMonths Months</h2>
+
+<div>
+    <br />
+    <p>Are you absolutely sure you want to delete all records older than @ViewBag.numMonths months? This will delete @ViewBag.deleteCount records that exist before @ViewBag.deleteDate.</p>
+    <br />
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="hidden" name="confirm" value="true" />
+            <input type="hidden" name="numberOfMonths" value="true" />
+            <a href="@Url.Action("Index")" class="btn btn-default">Back to List</a>
+            <input type="submit" value="Delete" class="btn btn-danger" />
+
+        </div>
+    }
+</div>

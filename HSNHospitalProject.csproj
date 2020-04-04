@@ -285,6 +285,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\GraphGenerator.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
@@ -357,6 +358,8 @@
     <Content Include="Views\Article\Create.cshtml" />
     <Content Include="Views\Shared\_ShowDeleteInfo.cshtml" />
     <Content Include="Views\Article\Update.cshtml" />
+    <Content Include="Views\ActivityRecords\DeleteMultiple.cshtml" />
+    <Content Include="Views\Shared\_StartGraph.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

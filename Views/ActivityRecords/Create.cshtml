@@ -6,8 +6,16 @@
 
 
 
-<h2>Create</h2>
+<h2>Create an Activity Record</h2>
 
+@if (ViewBag.existingId != null)
+{
+<div class="alert alert-warning" role="alert">
+    <strong>Notice: </strong><span>A record for the date @ViewBag.existingDate already exists. Would you like to update it instead?</span>
+    <br />
+    <a href="@Url.Action("Edit", new { id = ViewBag.existingId})" class="btn btn-warning">Update</a>
+</div>
+}
 
 @using (Html.BeginForm())
 {

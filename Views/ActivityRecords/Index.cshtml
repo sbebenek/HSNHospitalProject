@@ -12,15 +12,15 @@
 <!--Alert box indicating if a record was added, edited or deleted-->
 @if (!String.IsNullOrEmpty(Request["add"]) && Request["add"].Equals("True"))
 {
-    <div class="alert alert-success">Record successfully added.</div>
+    <div class="alert alert-success alert-dismissable">Record successfully added.</div>
 }
 else if (!String.IsNullOrEmpty(Request["delete"]) && Request["delete"].Equals("True"))
 {
-    <div class="alert alert-success">Record successfully deleted.</div>
+    <div class="alert alert-success alert-dismissable">Record successfully deleted.</div>
 }
 else if (!String.IsNullOrEmpty(Request["update"]) && Request["update"].Equals("True"))
 {
-    <div class="alert alert-success">Record successfully updated.</div>
+    <div class="alert alert-success alert-dismissable">Record successfully updated.</div>
 }
 
 
@@ -83,9 +83,11 @@ else if (!String.IsNullOrEmpty(Request["update"]) && Request["update"].Equals("T
 </div>
 
 <div class="pull-right">
-    <form action="@Url.Action("DeleteMultiple")" method="POST" class="form-group">
+    <form action="@Url.Action("DeleteMultiple")" method="GET" class="form-group">
         <p>
-            Delete all records older than <input type="number" name="numberOfMonths" class="form-control" /> months? <input type="submit" value="Delete" class="btn btn-sm btn-danger" />
+            Delete all records older than <input type="number" name="numberOfMonths" class="form-control" /> months? 
+            <span>@ViewBag.errorMessage</span>
+            <input type="submit" value="Delete" class="btn btn-sm btn-danger" />
         </p>
     </form>
 </div>
