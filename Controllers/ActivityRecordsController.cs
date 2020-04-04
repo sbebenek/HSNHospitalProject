@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -22,6 +23,7 @@ namespace HSNHospitalProject.Controllers
         public ActionResult Index(int? page)
         {
             List<ActivityRecords> records = db.ActivityRecords.ToList();
+            records.Sort((x, y) => DateTime.Compare(y.activityrecorddate, x.activityrecorddate));
 
             //check if the user is logged in (true if logged in)
             bool isLoggedIn = (System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
@@ -35,7 +37,8 @@ namespace HSNHospitalProject.Controllers
             }
             if(!isAdmin)
             {
-
+                //redirect to login page if not a logged in admin
+                //return RedirectToAction("Login", "AccountController");
             }
 
             //the amount of records shown per page
@@ -47,8 +50,9 @@ namespace HSNHospitalProject.Controllers
         }
 
         // GET: ActivityRecords/Details/5
-        public ActionResult Details(int? id)
+        /*public ActionResult Details(int? id)
         {
+            //THIS PAGE WILL NOT BE USED. REMOVE AT SOME POINT
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -59,11 +63,27 @@ namespace HSNHospitalProject.Controllers
                 return HttpNotFound();
             }
             return View(activityRecords);
-        }
+        }*/
 
         // GET: ActivityRecords/Create
         public ActionResult Create()
         {
+            //check if the user is logged in (true if logged in)
+            bool isLoggedIn = (System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
+            //is admin is false by default
+            bool isAdmin = false;
+            //if the user is logged in, isAdmin = whether or not the user is an admin
+            if (isLoggedIn)
+            {
+                //below custom column check from https://stackoverflow.com/questions/31864400/how-get-custom-field-in-aspnetusers-table
+                isAdmin = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).is_admin;
+            }
+            if (!isAdmin)
+            {
+                //redirect to login page if not a logged in admin
+                //return RedirectToAction("Login", "AccountController");
+            }
+
             ViewBag.date = DateTime.Now.ToString("yyyy-MM-dd");
             return View();
         }
@@ -75,12 +95,14 @@ namespace HSNHospitalProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "activityrecordid,activityrecorddate,activityrecordrating")] ActivityRecords activityRecords)
         {
+            //******TODO: DON"T ADD IF A RECORD AT THAT DATE ALREADY EXISTS
             if (ModelState.IsValid)
             {
                 db.ActivityRecords.Add(activityRecords);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { add = true });
             }
+            
 
             return View(activityRecords);
         }
@@ -88,6 +110,22 @@ namespace HSNHospitalProject.Controllers
         // GET: ActivityRecords/Edit/5
         public ActionResult Edit(int? id)
         {
+            //check if the user is logged in (true if logged in)
+            bool isLoggedIn = (System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
+            //is admin is false by default
+            bool isAdmin = false;
+            //if the user is logged in, isAdmin = whether or not the user is an admin
+            if (isLoggedIn)
+            {
+                //below custom column check from https://stackoverflow.com/questions/31864400/how-get-custom-field-in-aspnetusers-table
+                isAdmin = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).is_admin;
+            }
+            if (!isAdmin)
+            {
+                //redirect to login page if not a logged in admin
+                //return RedirectToAction("Login", "AccountController");
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -111,7 +149,7 @@ namespace HSNHospitalProject.Controllers
             {
                 db.Entry(activityRecords).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { update = true });
             }
             return View(activityRecords);
         }
@@ -119,6 +157,22 @@ namespace HSNHospitalProject.Controllers
         // GET: ActivityRecords/Delete/5
         public ActionResult Delete(int? id)
         {
+            //check if the user is logged in (true if logged in)
+            bool isLoggedIn = (System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
+            //is admin is false by default
+            bool isAdmin = false;
+            //if the user is logged in, isAdmin = whether or not the user is an admin
+            if (isLoggedIn)
+            {
+                //below custom column check from https://stackoverflow.com/questions/31864400/how-get-custom-field-in-aspnetusers-table
+                isAdmin = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).is_admin;
+            }
+            if (!isAdmin)
+            {
+                //redirect to login page if not a logged in admin
+                //return RedirectToAction("Login", "AccountController");
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -128,7 +182,9 @@ namespace HSNHospitalProject.Controllers
             {
                 return HttpNotFound();
             }
-            return View(activityRecords);
+            db.ActivityRecords.Remove(activityRecords);
+            db.SaveChanges();
+            return RedirectToAction("Index", new { delete = true });
         }
 
         // POST: ActivityRecords/Delete/5
@@ -136,9 +192,11 @@ namespace HSNHospitalProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            ActivityRecords activityRecords = db.ActivityRecords.Find(id);
-            db.ActivityRecords.Remove(activityRecords);
-            db.SaveChanges();
+            /* ActivityRecords activityRecords = db.ActivityRecords.Find(id);
+             db.ActivityRecords.Remove(activityRecords);
+             db.SaveChanges();*/
+            // a delete form shouldnt normally submit so this shouldn't run but in case it does
+            Debug.WriteLine("The Delete Post form submitted! but how?");
             return RedirectToAction("Index");
         }
 
@@ -147,9 +205,12 @@ namespace HSNHospitalProject.Controllers
         // DELETE FROM <your table name> WHERE  DateField < GETDATE()
         //https://stackoverflow.com/questions/10978520/howto-asp-net-sql-query-where-datetime-greater-than
         //WHERE PublishDate >= Getdate() -7
+        public ActionResult DeleteMultiple()
+        {
+            return View();
+        }
 
-
-
+       
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -157,6 +218,18 @@ namespace HSNHospitalProject.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        [HttpPost]
+        public ActionResult showDeleteInfo(int activityrecordsid)
+        {
+
+            Debug.WriteLine("Receiving activityrecordsid in the ajax call as " + activityrecordsid);
+            //grabbing the activity records object
+            ActivityRecords activityRecords = db.ActivityRecords.Find(activityrecordsid);
+            //returns a partial view with the given galleryImage and prints it back to whichever div the jquery call indicated in the view
+            //(in this case, it will be inside a modal window)
+            return PartialView("_ShowDeleteInfo", activityRecords);
         }
     }
 }
