@@ -31,17 +31,22 @@
         <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
     </div>
 
-    <!--The script returned from the partial view that begins drawing the graph will be printed in the below div-->
-    <div id="graphScript"></div>
-    <!--The graph will be printed to the div below-->
-    <div id="graph"></div>
+</div>
+<!--The script returned from the partial view that begins drawing the graph will be printed in the below div-->
+<div id="graphScript"></div>
+<!--The graph will be printed to the div below-->
+<div>
+    <div class="loader" id="loader"></div>
+    <canvas id="graph">
+    </canvas>
 </div>
 
+
 @section Scripts {
-    @Scripts.Render("~/bundles/jquery") @*For unobtrusive-ajax*@
+    @Scripts.Render("~/bundles/jquery") @*ASP loads bundle scripts in the layout after the body, so load it here to use jQuery on window.onload before that is able to load*@
     <script>
         $(document).ready(startGraphGeneration());
-       
+
         /**
          * Sam Bebenek -
          * This function does an ajax call to start grabbing info from the db to start generating the activity graph and print it to the page. This will be called
@@ -55,7 +60,9 @@
                 cache: false,
                 data: { submit: true }
             }).done(function (result) {
-                //output will be printed to the inside of the modal window
+                //remove the loader icon
+                $("#loader").remove();
+                //output will be printed to the cavnas
                 $('#graphScript').html(result);
             });
             console.log("startGraph jQuery AJAX was called");

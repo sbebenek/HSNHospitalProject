@@ -184,6 +184,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\GraphValueHolder.cs" />
     <Compile Include="Migrations\202003290316259_initial.cs" />
     <Compile Include="Migrations\202003290316259_initial.Designer.cs">
       <DependentUpon>202003290316259_initial.cs</DependentUpon>

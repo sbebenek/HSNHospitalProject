@@ -1,5 +1,9 @@
-﻿<script>
-    //generateGraph(divId, sundayVal, mondayVal, tuesdayVal, wednesdayVal, thursdayVal, fridayVal, saturdayVal);
-    console.log("The graphScript div on the home page has been filled with the script from the _StartGraph partial view.")
+﻿@model HSNHospitalProject.Helpers.GraphValueHolder
+
+<script src="~/Scripts/GraphGenerator.js" type="text/javascript"></script>
+<script>
+    generateGraph("@Model.canvasId", @Model.sundayVal, @Model.mondayVal, @Model.tuesdayVal, @Model.wednesdayVal, @Model.thursdayVal, @Model.fridayVal, @Model.saturdayVal);
+    console.log("The graphScript div on the home page has been filled with the script from the _StartGraph partial view.");
+    console.log("@Model.printValues()");
 </script>
 <div>*pretend the graph is here*</div>
