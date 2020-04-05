@@ -46,4 +46,9 @@ If there are errors at any point when following these steps, let us know, but <s
 
 -ALWAYS PULL BEFORE PUSHING. No matter what. Github should stop you from pushing if there are any changes to pull, but it is better to be safe than sorry.
 
--Sam
+
+
+
+
+
+-from Sam's Email
