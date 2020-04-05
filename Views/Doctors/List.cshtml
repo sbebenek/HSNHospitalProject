@@ -1,0 +1,14 @@
+﻿@model  List<HSNHospitalProject.Models.Doctors>
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>List</h2>
+<div>
+    @foreach (var doctors in @Model)
+    {
+        <div style="margin-top:1em"><a href="/Doctors/show/@doctors.doctorId">@doctors.doctorFName @doctors.doctorLName</a></div>
+
+    }
+</div>
+

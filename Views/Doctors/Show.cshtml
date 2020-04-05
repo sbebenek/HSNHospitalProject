@@ -1,0 +1,21 @@
+﻿@model HSNHospitalProject.Models.Doctors
+@{
+    ViewBag.Title = "Show";
+}
+
+
+<div>
+    <div style="margin-top:1em;color:forestgreen;font-size:x-large">Detail of @Model.doctorFName @Model.doctorLName</div>
+    <div style="margin-left:5em">Email:@Model.doctorEAddress</div>
+    <div style="margin-left:5em">Date of Birth:@Model.doctorDOB</div>
+    <div style="margin-left:5em">Phone Number:@Model.doctorPNumber</div>
+    <div style="margin-left:5em">Join Date:@Model.doctorJoinDate</div>
+    <div style="margin-left:5em">Department:@Model.Department.departmentName</div>
+    <div class="btn-warning" style="margin:1em;font-size:20px;text-align:center">
+        <a href="/Doctors/Update/@Model.doctorId">Update</a>
+    </div>
+    <div class="btn-warning" style="margin:1em;font-size:20px;text-align:center">
+        <a class="navlink" href="/Doctors/DeleteConfirm/@Model.doctorId">Delete</a>
+    </div>
+</div>
+
