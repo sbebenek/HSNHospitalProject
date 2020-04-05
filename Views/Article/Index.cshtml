@@ -44,8 +44,8 @@
 </div>
 <div class="paginate">
     @{
-        <a class="btn btn-primary" href="/Article/Index?pagenum=@((int)ViewData["pagenum"]-1)&groomsearchkey=@ViewData["articleSearchKey"]">Prev</a>
+        <a class="btn btn-primary" href="/Article/Index?pagenum=@((int)ViewData["pagenum"]-1)&articleSearchKey=@ViewData["articleSearchKey"]">Prev</a>
         @ViewData["pagesummary"]
-        <a class="btn btn-primary" href="/Article/Index?pagenum=@((int)ViewData["pagenum"]+1)&groomsearchkey=@ViewData["articleSearchKey"]">Next</a>
+        <a class="btn btn-primary" href="/Article/Index?pagenum=@((int)ViewData["pagenum"]+1)&articleSearchKey=@ViewData["articleSearchKey"]">Next</a>
     }
 </div>
