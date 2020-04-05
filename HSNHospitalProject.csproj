@@ -216,6 +216,14 @@
     <Compile Include="Migrations\202004030516022_nullable edit date.Designer.cs">
       <DependentUpon>202004030516022_nullable edit date.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004040525299_article RTE.cs" />
+    <Compile Include="Migrations\202004040525299_article RTE.Designer.cs">
+      <DependentUpon>202004040525299_article RTE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004040546106_atricle rte2.cs" />
+    <Compile Include="Migrations\202004040546106_atricle rte2.Designer.cs">
+      <DependentUpon>202004040546106_atricle rte2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ActivityRecords.cs" />
@@ -400,6 +408,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004030516022_nullable edit date.resx">
       <DependentUpon>202004030516022_nullable edit date.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004040525299_article RTE.resx">
+      <DependentUpon>202004040525299_article RTE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004040546106_atricle rte2.resx">
+      <DependentUpon>202004040546106_atricle rte2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -24,7 +24,7 @@
                 <p class="text-muted">@article.articleDatePosted.Date.ToString("dddd, dd MMMM yyyy")</p>
             </div>
             <div class="panel-body">
-                <p>@article.articleBody</p>
+                @Html.Raw(article.articleBody)
             </div>
             <div class="panel-body">
                 @*check if there is an edit date, couldve also checked if the last edit date was after the post date

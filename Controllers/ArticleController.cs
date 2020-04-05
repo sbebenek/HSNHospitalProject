@@ -81,6 +81,7 @@ namespace HSNHospitalProject.Controllers
         [HttpPost]
         public ActionResult Create(Article article)
         {
+            
             string query = "insert into articles (articleTitle,articleBody,articleDatePosted)" +
                 "values (@articleTitle,@articleBody,@articleDatePosted)";
             SqlParameter[] sqlParameters = new SqlParameter[3];
