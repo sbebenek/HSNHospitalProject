@@ -45,3 +45,5 @@ If there are errors at any point when following these steps, let us know, but <s
 -If you have gotten ANY errors when doing the last two tips (pulling or updating the database), DO NOT PUSH YOUR CODE. Asp.net is really finnicky, and if your project is broken and you push, it is possible that it may break irreparably for anyone that pulls the repo in the future. 
 
 -ALWAYS PULL BEFORE PUSHING. No matter what. Github should stop you from pushing if there are any changes to pull, but it is better to be safe than sorry.
+
+-Sam
