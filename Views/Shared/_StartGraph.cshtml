@@ -1,9 +1,13 @@
 ﻿@model HSNHospitalProject.Helpers.GraphValueHolder
 
+<h3>How Busy Are We Today?</h3>
+<!--Below is the canvas the generateGraph method will be drawing to-->
+<canvas id="graph"></canvas>
 <script src="~/Scripts/GraphGenerator.js" type="text/javascript"></script>
 <script>
-    generateGraph("@Model.canvasId", @Model.sundayVal, @Model.mondayVal, @Model.tuesdayVal, @Model.wednesdayVal, @Model.thursdayVal, @Model.fridayVal, @Model.saturdayVal);
+    //change the width and height values in the last 2 paramaters to change the width and the height (set in px)
+    generateGraph("@Model.canvasId", @Model.sundayVal, @Model.mondayVal, @Model.tuesdayVal, @Model.wednesdayVal, @Model.thursdayVal, @Model.fridayVal, @Model.saturdayVal, 300, 200);
     console.log("The graphScript div on the home page has been filled with the script from the _StartGraph partial view.");
     console.log("@Model.printValues()");
 </script>
-<div>*pretend the graph is here*</div>
+<!--Today's Activity: High/Average/Low-->

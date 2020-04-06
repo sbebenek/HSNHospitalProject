@@ -33,11 +33,12 @@
 
 </div>
 <!--The script returned from the partial view that begins drawing the graph will be printed in the below div-->
-<div id="graphScript"></div>
-<!--The graph will be printed to the div below-->
-<div>
+<!--The canvas will be put into the below div below, and the graph will draw to that canvas-->
+<div id="graphScript" class="flex-container">
     <div class="loader" id="loader"></div>
-    <canvas id="graph">
+</div>
+<div>
+    <canvas id=""><!--This canvas is no longer used-->
     </canvas>
 </div>
 
