@@ -15,7 +15,7 @@
         <a href="/Doctors/Update/@Model.doctorId">Update</a>
     </div>
     <div class="btn-warning" style="margin:1em;font-size:20px;text-align:center">
-        <a class="navlink" href="/Doctors/DeleteConfirm/@Model.doctorId">Delete</a>
+        <a class="navlink" onClick="javascript: return confirm('Are you really want to delete this?');" href="/Doctors/Delete/@Model.doctorId">Delete</a>
     </div>
 </div>
 

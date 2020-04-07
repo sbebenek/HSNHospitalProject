@@ -11,5 +11,7 @@ namespace HSNHospitalProject.Models.ViewModels
         public virtual Doctors Doctors { get; set; }
         //list of department
         public List<Department> departments { get; set; }
+        //list of doctors 
+        public List<Doctors> doctors { get; set; }
     }
 }
