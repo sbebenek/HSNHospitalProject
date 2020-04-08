@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using HSNHospitalProject.Helpers;
 using HSNHospitalProject.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -25,7 +26,7 @@ namespace HSNHospitalProject.Controllers
             List<ActivityRecords> records = db.ActivityRecords.ToList();
             records.Sort((x, y) => DateTime.Compare(y.activityrecorddate, x.activityrecorddate));
 
-            //check if the user is logged in (true if logged in)
+            /*//check if the user is logged in (true if logged in)
             bool isLoggedIn = (System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
             //is admin is false by default
             bool isAdmin = false;
@@ -38,8 +39,12 @@ namespace HSNHospitalProject.Controllers
             if (!isAdmin)
             {
                 //redirect to login page if not a logged in admin
-                //return RedirectToAction("Login", "AccountController");
-            }
+                return RedirectToAction("Login", "AccountController");
+            } */
+
+            LoggedInChecker.isLoggedIn();
+            LoggedInChecker.isAdmin();
+            LoggedInChecker.loggedInUserId();
 
             //the amount of records shown per page
             int pageSize = 10;
