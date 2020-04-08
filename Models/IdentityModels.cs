@@ -50,5 +50,10 @@ namespace HSNHospitalProject.Models
         public System.Data.Entity.DbSet<HSNHospitalProject.Models.JobPost> JobPosts { get; set; }
 
         public System.Data.Entity.DbSet<HSNHospitalProject.Models.Donation> Donations { get; set; }
+
+        public System.Data.Entity.DbSet<HSNHospitalProject.Models.Article> Articles { get; set; }
+        public System.Data.Entity.DbSet<HSNHospitalProject.Models.Doctors> Doctors { get; set; }
+        public System.Data.Entity.DbSet<HSNHospitalProject.Models.Appointments> Appointments { get; set; }
+        public System.Data.Entity.DbSet<HSNHospitalProject.Models.Patients> Patients { get; set; }
     }
 }

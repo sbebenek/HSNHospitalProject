@@ -1,0 +1,134 @@
+﻿@model PagedList.IPagedList<HSNHospitalProject.Models.ActivityRecords>
+<!--model IEnumerable<HSNHospitalProject.Models.ActivityRecords>-->
+@using PagedList.Mvc;
+
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Hospital Traffic Activity Records</h2>
+
+<!--Alert box indicating if a record was added, edited or deleted-->
+@if (!String.IsNullOrEmpty(Request["add"]) && Request["add"].Equals("True"))
+{
+    <div class="alert alert-success alert-dismissable">Record successfully added.</div>
+}
+else if (!String.IsNullOrEmpty(Request["delete"]) && Request["delete"].Equals("True"))
+{
+    <div class="alert alert-success alert-dismissable">Record successfully deleted.</div>
+}
+else if (!String.IsNullOrEmpty(Request["update"]) && Request["update"].Equals("True"))
+{
+    <div class="alert alert-success alert-dismissable">Record successfully updated.</div>
+}
+
+
+<p>
+    The Hospital Traffic Graph on the home page shows how busy the hospital is on average per weekday.<br />
+    Below is a list of all Hospital Activity Records that will be used to generate the graph on the home page.<br />
+    Click the button below to add a new record, which the system will then take into account for calculcating the average activity level for that weekday.
+</p>
+
+<div>
+    <a href="@Url.Action("Create")" class="btn btn-success">Add New Record</a>
+</div>
+<br />
+<table class="table table-hover">
+    <tr>
+        <th>
+            Date
+        </th>
+        <th>
+            Rating
+        </th>
+        <th></th>
+        <th></th>
+    </tr>
+    @if (Model.ToList().Count == 0)//if there are no records in the database
+    {
+        <tr><td>The list is currently empty.</td><td></td><td></td></tr>
+    }
+    else
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.activityrecorddate.ToString("dddd, dd MMMM yyyy")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.activityrecordrating)
+                </td>
+                <td>
+                    <a href="@Url.Action("Edit", new { id = item.activityrecordid})" class="btn btn-info">Update</a>
+                </td>
+                <td>
+                    <button class="btn btn-danger" onclick="showDetails(@item.activityrecordid);">Delete</button>
+                    <!--Add delete confirm modal for deleting individual records-->
+                </td>
+            </tr>
+        }
+    }
+
+
+
+</table>
+
+<div>
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+        new { page }))
+</div>
+
+<div class="pull-right">
+    <form action="@Url.Action("DeleteMultiple")" method="GET" class="form-group">
+        <p>
+            Delete all records older than <input type="number" name="numberOfMonths" class="form-control" /> months? 
+            <span>@ViewBag.errorMessage</span>
+            <input type="submit" value="Delete" class="btn btn-sm btn-danger" />
+        </p>
+    </form>
+</div>
+<br />
+<div style="clear:both"></div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="deleteInfo">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    /**
+     * This function does an ajax call to print the information shown in the delete confirm modal, as well as a delete button
+     */
+    function showDetails(id) {
+        $.ajax({
+            url: '@Url.Action("showDeleteInfo")',
+            //type: 'GET',
+            type: 'POST',
+            cache: false,
+            data: { activityrecordsid : id }
+        }).done(function (result) {
+            //output will be printed to the inside of the modal window
+            $('#deleteInfo').html(result);
+        });
+        console.log("Ajax was called");
+        //activate the script that calls the Modal window appear
+        $("#exampleModalCenter").modal()
+    }
+
+</script>

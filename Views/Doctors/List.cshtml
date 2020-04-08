@@ -1,0 +1,72 @@
+﻿@model List<HSNHospitalProject.Models.Doctors>
+@{
+    ViewBag.Title = "List";
+}
+<form method="GET" action="/Doctors/List">
+    <input type="text" name="searchkey" id="searchkey" />
+    <input type="submit" name="submit" value="Search" />
+</form>
+<a href="/Doctors/Add">Add Doctor Information</a>
+@*<h2>Search by the department:</h2>
+<select style="margin-top:1em" id="departmentId" type="text" name="departmentId">
+    @{
+        foreach (var department in @Model.departments)
+        {
+            <option value="@department.departmentId">@department.departmentName</option>
+        }
+    }
+</select>*@
+<div class="paginate">
+    @{
+        <a href="/Doctors/List?pagenum=@((int)ViewData["pagenum"]-1)&searchkey=@ViewData["searchkey"]">Prev</a>
+        @ViewData["pagesummary"]
+        <a href="/Doctors/List?pagenum=@((int)ViewData["pagenum"]+1)&searchkey=@ViewData["searchkey"]">Next</a>
+    }
+</div>
+<h2>List</h2>
+<div>
+    @foreach (var doctors in @Model)
+    {
+        <div style="margin-top:1em"><a href="/Doctors/show/@doctors.doctorId">@doctors.doctorFName @doctors.doctorLName</a></div>
+
+    }
+</div>
+@*
+    //this is the script file for ajax 
+    //get the value form the department dropdown and then show the doctor 
+    //who are working in that deparment
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $('#departmentId').change(function () {
+            var selected_department = $(this).val();
+        });
+        $.ajax({
+            type: 'GET',
+            traditional: true,
+            async: false,
+            cache:false,
+            url: '/Doctors/List',
+            context: document.body,
+            success: function (result) {
+                alert(result);
+            }
+        })
+        function getDoctorList() {
+            var Doctor = {};
+            var DoctorList = [];
+            for (var i = 0; i <= 5; i++) {
+                Doctor["doctorFName"] = i;
+                Doctor["doctorLName"] = i;
+                DoctorList.push(Doctor);
+            }
+            return JSON.stringify(DoctorList);
+        }
+
+    })
+</script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+*@
+

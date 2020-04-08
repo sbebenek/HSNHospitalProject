@@ -1,0 +1,39 @@
+﻿@model HSNHospitalProject.Models.Patients
+@{
+    ViewBag.Title = "Edit";
+}
+
+<form method="POST" action="/Patients/Edit/@Model.patientId">
+    <h2 style="color:darkgreen;text-align:center">Update information of @Model.patientFName @Model.patientLName</h2>
+    <div>
+        <label>First Name:</label>
+        <input class="form-control" type="text" name="f_name" value="@Model.patientFName" />
+    </div>
+    <div>
+        <label>Last Name:</label>
+        <input class="form-control" type="text" name="l_name" value="@Model.patientLName" />
+    </div>
+    <div>
+        <label>Date of Birth:</label>
+        <input class="form-control" type="text" name="dob" value="@Model.patientDOB" />
+    </div>
+    <div>
+        <label>Phone Number:</label>
+        <input class="form-control" type="text" name="p_number" value="@Model.patientPNumber" />
+    </div>
+    <div>
+        <label>Email Address:</label>
+        <input class="form-control" type="text" name="e_address" value="@Model.patientEAddress" />
+    </div>
+    <div>
+        <label>Address:</label>
+        <input class="form-control" type="text" name="address" value="@Model.patientHAddress" />
+    </div>
+    <div>
+        <label>Health Card Number:</label>
+        <input class="form-control" type="text" name="health_number" value="@Model.patientHealthCard" />
+    </div>
+    <div class="btn-warning" style="margin:1em;text-align:center;">
+        <input type="submit" name="submit" class="btn-warning" style="font-size:20px;color:green" value="Update" />
+    </div>
+</form>

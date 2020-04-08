@@ -1,0 +1,66 @@
+﻿@model HSNHospitalProject.Models.ActivityRecords
+
+@{
+    ViewBag.Title = "Create";
+}
+
+
+
+<h2>Create an Activity Record</h2>
+
+@if (ViewBag.existingId != null)
+{
+<div class="alert alert-warning" role="alert">
+    <strong>Notice: </strong><span>A record for the date @ViewBag.existingDate already exists. Would you like to update it instead?</span>
+    <br />
+    <a href="@Url.Action("Edit", new { id = ViewBag.existingId})" class="btn btn-warning">Update</a>
+</div>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>ActivityRecords</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <label class="control-label col-md-2" for="date">Date: </label>
+            <div class="col-md-10">
+                <input type="date" id="date" class="form-control" name="activityrecorddate" value="@ViewBag.date">
+                @Html.ValidationMessageFor(model => model.activityrecorddate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <p>Please enter a rating from 1-10, with 10 being the busiest the Hospital can be.</p>
+        <div class="form-group">
+            <label class="control-label col-md-2">Rating (from 1 - 10 ): </label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.activityrecordrating, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.activityrecordrating, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<script type="text/javascript">
+    $(function () {
+        $("#date").datepicker({ dateFormat: 'MM-dd-yy' }).datepicker("setDate", "0");
+    });
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+

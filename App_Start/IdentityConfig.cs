@@ -105,5 +105,7 @@ namespace HSNHospitalProject
         {
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
         }
+        
+        
     }
 }

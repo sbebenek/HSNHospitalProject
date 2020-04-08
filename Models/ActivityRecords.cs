@@ -11,11 +11,19 @@ namespace HSNHospitalProject.Models
         [Key]
         public int activityrecordid { get; set; }
 
-        //the weekday the rating was made (Idk if this is the best way but 
-        //use the DateTime object in the controller to get the weekday as a string and store that)
-        public string activityrecorddate { get; set; }
 
-        //the rating of how busy a given day was, from 1-10
+        /// <summary>
+        /// The weekday the rating was made, in the DateTime format.
+        /// </summary>
+        [Required(ErrorMessage = "Please enter a date.")]
+        public DateTime activityrecorddate { get; set; }
+
+        /// <summary>
+        /// The rating of how busy a day was, on a scale from 1-10.
+        /// The exact value set is up to the jurisdication of the person making the record
+        /// </summary>
+        [Required(ErrorMessage = "Please enter a number from 1-10.")]
+        [Range(1,10, ErrorMessage = "Please enter a number from 1-10.")]
         public int activityrecordrating { get; set; }
     }
 }

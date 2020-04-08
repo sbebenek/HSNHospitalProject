@@ -1,0 +1,62 @@
+﻿@model HSNHospitalProject.Models.ViewModels.AddAppointment
+@{
+    ViewBag.Title = "Edit";
+}
+
+<form method="POST" action="/Appointments/Edit/@Model.Appointment.appointmentId">
+    <h2 style="color:darkgreen;text-align:center">Appointment Details:</h2>
+    <div>
+        @*store the date*@
+        @{
+            string Date = Model.Appointment.appointmentDate.ToString("yyyy-MM-dd");
+            string Time = Model.Appointment.appointmentDate.ToString("Hmm");
+            string DoctorId = Model.Appointment.doctorId.ToString();
+
+        }
+
+        <label>Appointment Date:</label>
+        <input class="form-control" type="text" name="a_date" value="@Date" />
+    </div>
+    <div>
+        <label>Appointment Time:</label>
+        <select name="a_time">
+            @{
+                var i = 1000; //hospital timing start form 10am
+            }
+            @while (i <= 1700)
+            {
+                string meridian = " AM";
+                if (i >= 1200)
+                {
+                    meridian = " PM";
+                }
+                string atime = (i % 1200).ToString("00:00") + meridian;
+                if (atime.StartsWith("00")) { atime = "12" + atime.Substring(2); }
+
+                string selected = "";
+                if (i.ToString() == Time) { selected = "selected"; }
+                <option value="@i" @selected>@atime</option>
+                i = i + ((i % 100 == 30) ? 70 : 30);
+            }
+        </select>
+    </div>
+    <div>
+        <label>Doctor Name:</label>
+        <select name="d_name">
+            @foreach (var doctor in Model.Doctors)
+            {
+                string selected = "";
+                //if(DoctorId = doctor.doctorId.ToString()) { selected = "selected"; }
+                <option value="@doctor.doctorId">@doctor.doctorFName @doctor.doctorLName</option>
+            }
+        </select>
+    </div>
+    <div>
+        <label>Appointment Reason:</label>
+        <input class="form-control" type="text" name="a_reason" value="@Model.Appointment.appointmentReason" />
+    </div>
+    <div class="btn-warning" style="margin:1em;text-align:center;">
+        <input type="submit" name="submit" class="btn-warning" style="font-size:20px;color:green" value="Update" />
+    </div>
+</form>
+

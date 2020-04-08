@@ -1,0 +1,48 @@
+﻿@model HSNHospitalProject.Models.ViewModels.DoctorDepartment
+@{
+    ViewBag.Title = "Add";
+}
+
+<h2 style="color:darkgreen;text-align:center">Doctor Information</h2>
+<form method="POST" action="/Doctors/Add">
+    <div>
+        <label>First Name:</label>
+        <input class="form-control" type="text" name="f_name" />
+    </div>
+    <div>
+        <label>Last Name:</label>
+        <input class="form-control" type="text" name="l_name" />
+    </div>
+    <div>
+        <label>Date of Birth:</label>
+        <input class="form-control" type="text" name="dob" />
+    </div>
+    <div>
+        <label>Phone Number:</label>
+        <input class="form-control" type="text" name="p_number" />
+    </div>
+    <div>
+        <label>Email Address:</label>
+        <input class="form-control" type="text" name="e_address" />
+    </div>
+    <div style="font-size:15px">
+        <span style="color:black;font-weight:bold">Department:</span><br />
+        <select style="margin-top:1em" id="departmentId" type="text" name="departmentId">
+            @{
+                foreach (var department in @Model.departments)
+                {
+                    <option value="@department.departmentId">@department.departmentName</option>
+                }
+            }
+        </select>
+    </div>
+    <div>
+        <label>Join Date:</label>
+        <input class="form-control" type="text" name="join_date" />
+    </div>
+    <div class="btn-warning" style="margin:1em;text-align:center;">
+        <input type="submit" name="submit" class="btn-warning" style="font-size:20px;color:green" value="Add" />
+    </div>
+</form>
+
+

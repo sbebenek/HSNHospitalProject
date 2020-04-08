@@ -1,0 +1,27 @@
+﻿@model List<HSNHospitalProject.Models.Patients>
+@{
+    ViewBag.Title = "List";
+}
+<div>
+    @foreach (var patient in @Model)
+    {
+
+        <h2 style="margin-top:1em">@patient.patientFName @patient.patientLName</h2>
+        <div style="margin-left:5em">Patient Date of Birth: @patient.patientDOB</div>
+        <div style="margin-left:5em">Patient Email Address: @patient.patientEAddress</div>
+        <div style="margin-left:5em">Patient Phone Number: @patient.patientPNumber</div>
+        <div style="margin-left:5em">Patient Home Address @patient.patientHAddress</div>
+        <div style="margin-left:5em">Patient Health Card Number @patient.patientHealthCard</div>
+        <div class="btn-warning" style="margin:1em;font-size:20px;text-align:center">
+            <a class="navlink" onClick="javascript: return confirm('Are you really want to delete this?');" href="/Patients/Delete/@patient.patientId">Delete</a>
+        </div>
+        <div class="btn-warning" style="margin:1em;font-size:20px;text-align:center">
+            <a class="navlink" href="/Patients/Edit/@patient.patientId">Edit</a>
+        </div>
+    }
+
+</div>
+
+
+
+

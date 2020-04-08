@@ -189,14 +189,21 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ActivityRecordsController.cs" />
+    <Compile Include="Controllers\AppointmentsController.cs" />
+    <Compile Include="Controllers\ArticleController.cs" />
     <Compile Include="Controllers\DepartmentController.cs" />
+    <Compile Include="Controllers\DoctorsController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\GalleryImagesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JobPostController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\PatientsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\GraphValueHolder.cs" />
     <Compile Include="Migrations\202003290316259_initial.cs" />
     <Compile Include="Migrations\202003290316259_initial.Designer.cs">
       <DependentUpon>202003290316259_initial.cs</DependentUpon>
@@ -217,18 +224,48 @@
     <Compile Include="Migrations\202004012128514_create-donation-feature-table.Designer.cs">
       <DependentUpon>202004012128514_create-donation-feature-table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004022230395_change-recorddate-type.cs" />
+    <Compile Include="Migrations\202004022230395_change-recorddate-type.Designer.cs">
+      <DependentUpon>202004022230395_change-recorddate-type.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004030227066_articles.cs" />
+    <Compile Include="Migrations\202004030227066_articles.Designer.cs">
+      <DependentUpon>202004030227066_articles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004030516022_nullable edit date.cs" />
+    <Compile Include="Migrations\202004030516022_nullable edit date.Designer.cs">
+      <DependentUpon>202004030516022_nullable edit date.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004040525299_article RTE.cs" />
+    <Compile Include="Migrations\202004040525299_article RTE.Designer.cs">
+      <DependentUpon>202004040525299_article RTE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004040546106_atricle rte2.cs" />
+    <Compile Include="Migrations\202004040546106_atricle rte2.Designer.cs">
+      <DependentUpon>202004040546106_atricle rte2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004052247037_patients.cs" />
+    <Compile Include="Migrations\202004052247037_patients.Designer.cs">
+      <DependentUpon>202004052247037_patients.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ActivityRecords.cs" />
+    <Compile Include="Models\Appointments.cs" />
+    <Compile Include="Models\Article.cs" />
     <Compile Include="Models\Department.cs" />
+    <Compile Include="Models\Doctors.cs" />
     <Compile Include="Models\Donation.cs" />
     <Compile Include="Models\DonationController.cs" />
     <Compile Include="Models\GalleryImages.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\JobPost.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Patients.cs" />
+    <Compile Include="Models\ViewModels\AddAppointment.cs" />
     <Compile Include="Models\ViewModels\DepartmentViewModels.cs" />
     <Compile Include="Models\ViewModels\DonationViewModels.cs" />
+    <Compile Include="Models\ViewModels\DoctorDepartment.cs" />
     <Compile Include="Models\ViewModels\JobPostViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -239,18 +276,64 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\themes\base\accordion.css" />
+    <Content Include="Content\themes\base\all.css" />
+    <Content Include="Content\themes\base\autocomplete.css" />
+    <Content Include="Content\themes\base\base.css" />
+    <Content Include="Content\themes\base\button.css" />
+    <Content Include="Content\themes\base\core.css" />
+    <Content Include="Content\themes\base\datepicker.css" />
+    <Content Include="Content\themes\base\dialog.css" />
+    <Content Include="Content\themes\base\draggable.css" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_444444_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_555555_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_777620_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_777777_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\themes\base\jquery-ui.css" />
+    <Content Include="Content\themes\base\jquery-ui.min.css" />
+    <Content Include="Content\themes\base\menu.css" />
+    <Content Include="Content\themes\base\progressbar.css" />
+    <Content Include="Content\themes\base\resizable.css" />
+    <Content Include="Content\themes\base\selectable.css" />
+    <Content Include="Content\themes\base\selectmenu.css" />
+    <Content Include="Content\themes\base\slider.css" />
+    <Content Include="Content\themes\base\sortable.css" />
+    <Content Include="Content\themes\base\spinner.css" />
+    <Content Include="Content\themes\base\tabs.css" />
+    <Content Include="Content\themes\base\theme.css" />
+    <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <None Include="Scripts\jquery-3.3.1.intellisense.js" />
-    <Content Include="Scripts\jquery-3.3.1.js" />
-    <Content Include="Scripts\jquery-3.3.1.min.js" />
-    <Content Include="Scripts\jquery-3.3.1.slim.js" />
-    <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
+    <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\GraphGenerator.js" />
+    <Content Include="Scripts\jquery-3.4.1.js" />
+    <Content Include="Scripts\jquery-3.4.1.min.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.4.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-ui-1.12.1.js" />
+    <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -311,6 +394,29 @@
     <Content Include="Views\Donation\Details.cshtml" />
     <Content Include="Views\Donation\CardPayment.cshtml" />
     <Content Include="Views\Donation\Delete.cshtml" />
+    <Content Include="Views\ActivityRecords\Create.cshtml" />
+    <Content Include="Views\ActivityRecords\Delete.cshtml" />
+    <Content Include="Views\ActivityRecords\Edit.cshtml" />
+    <Content Include="Views\ActivityRecords\Index.cshtml" />
+    <Content Include="Views\Article\Index.cshtml" />
+    <Content Include="Views\Article\Create.cshtml" />
+    <Content Include="Views\Shared\_ShowDeleteInfo.cshtml" />
+    <Content Include="Views\Article\Update.cshtml" />
+    <Content Include="Views\ActivityRecords\DeleteMultiple.cshtml" />
+    <Content Include="Views\Shared\_StartGraph.cshtml" />
+    <Content Include="Views\Appointments\Add.cshtml" />
+    <Content Include="Views\Appointments\Edit.cshtml" />
+    <Content Include="Views\Appointments\List.cshtml" />
+    <Content Include="Views\Appointments\Show.cshtml" />
+    <Content Include="Views\Doctors\Add.cshtml" />
+    <Content Include="Views\Doctors\DeleteConfirm.cshtml" />
+    <Content Include="Views\Doctors\List.cshtml" />
+    <Content Include="Views\Doctors\Show.cshtml" />
+    <Content Include="Views\Doctors\Update.cshtml" />
+    <Content Include="Views\Patients\Add.cshtml" />
+    <Content Include="Views\Patients\Edit.cshtml" />
+    <Content Include="Views\Patients\List.cshtml" />
+    <Content Include="Views\Error\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -326,8 +432,6 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="packages.config" />
-    <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
-    <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202003290316259_initial.resx">
@@ -344,6 +448,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004012128514_create-donation-feature-table.resx">
       <DependentUpon>202004012128514_create-donation-feature-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004022230395_change-recorddate-type.resx">
+      <DependentUpon>202004022230395_change-recorddate-type.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004030227066_articles.resx">
+      <DependentUpon>202004030227066_articles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004030516022_nullable edit date.resx">
+      <DependentUpon>202004030516022_nullable edit date.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004040525299_article RTE.resx">
+      <DependentUpon>202004040525299_article RTE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004040546106_atricle rte2.resx">
+      <DependentUpon>202004040546106_atricle rte2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004052247037_patients.resx">
+      <DependentUpon>202004052247037_patients.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
