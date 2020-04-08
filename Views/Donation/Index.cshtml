@@ -1,0 +1,57 @@
+﻿@model IEnumerable<HSNHospitalProject.Models.Donation>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Donation List</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Amount
+        </th>
+        <th>
+            Email
+        </th>
+        <th>
+            Anonymous
+        </th>
+        <th>
+            Receipt Id
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.donationName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.donationAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.donationEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.donationAnonymous)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.donationReceiptId)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.donationId }) |
+                @Html.ActionLink("Refund", "Delete", new { id = item.donationId })
+            </td>
+        </tr>
+    }
+
+</table>

@@ -1,0 +1,51 @@
+﻿@model HSNHospitalProject.Models.Donation
+
+<div>
+    <h4>Donation</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.donationName)
+        </dd>
+
+        <dt>
+            Amount
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.donationAmount)
+        </dd>
+
+        <dt>
+            Email
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.donationEmail)
+        </dd>
+
+        <dt>
+            Anonymous
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.donationAnonymous)
+        </dd>
+
+        <dt>
+            ReceiptId
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.donationReceiptId)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

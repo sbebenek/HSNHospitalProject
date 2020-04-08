@@ -1,0 +1,87 @@
+﻿@model HSNHospitalProject.Models.ViewModels.DonationCreateViewModel
+
+<!--
+Using the Payment Confirm from Stripe API
+Code Referenced from: https://stripe.com/docs/payments/accept-a-payment
+-->
+<script src="https://js.stripe.com/v3/"></script>
+<script type="text/javascript" src="~/Scripts/jquery-3.3.1.min.js"></script>
+
+<script type="text/javascript" language="javascript">
+    var stripe = Stripe('pk_test_EZdAsZKuNAogXuBTiryOQ7Wt00k0Ktx8oX');
+    var elements = stripe.elements();
+    var style = {
+        base: {
+            color: "#32325d",
+        }
+    };
+
+    $(document).ready(function () {
+        var card = elements.create("card", { style: style });
+        card.mount("#card-element");
+
+        card.addEventListener('change', function (event) {
+            var displayError = document.getElementById('card-errors');
+            if (event.error) {
+                displayError.textContent = event.error.message;
+            }
+            else {
+                displayError.textContent = '';
+            }
+        });
+
+        var form = document.getElementById('payment-form');
+
+        form.addEventListener('submit', function (ev) {
+            ev.preventDefault();
+            var clientSecret = document.querySelector('#buttonSubmit').dataset.secret;
+            var clientName = document.querySelector('#buttonSubmit').dataset.name;
+            stripe.confirmCardPayment(clientSecret, {
+                payment_method: {
+                    card: card,
+                    billing_details: {
+                        name: clientName
+                    }
+                }
+            }).then(function (result) {
+                if (result.error) {
+                    // Show error to your customer (e.g., insufficient funds)
+                    console.log(result.error.message);
+                }
+                else {
+                    // The payment has been processed!
+                    if (result.paymentIntent.status === 'succeeded') {
+                        // Show a success message to your customer
+                        // There's a risk of the customer closing the window before callback
+                        // execution. Set up a webhook or plugin to listen for the
+                        // payment_intent.succeeded event that handles any business critical
+                        // post-payment actions.
+
+                        var submitForm = document.getElementById('payment-form');
+                        //var hiddentInput = document.createElement('input');
+                        //hiddentInput.setAttribute('type', 'hidden');
+                        //hiddentInput.setAttribute('name', 'test');
+                        //hiddentInput.setAttribute('value', 0);
+                        //submitForm.appendChild(hiddentInput);
+                        submitForm.submit();
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+<div>
+    @Html.ActionLink("Cancel Payment", "CancelPayment", new { id = @ViewData["id"] })
+</div>
+
+<form id="payment-form" action="/Donation/CardPayment" method="POST">
+    <div id="card-element">
+        <!-- Elements will create input elements here -->
+    </div>
+
+    <!-- We'll put the error messages in this element -->
+    <div id="card-errors" role="alert"></div>
+
+    <button id="buttonSubmit" data-secret="@ViewData["clientSecret"]" data-name="@ViewData["clientName"]">Pay</button>
+</form>
