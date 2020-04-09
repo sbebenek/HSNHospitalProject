@@ -99,16 +99,41 @@ namespace HSNHospitalProject.Controllers
         {
             GalleryImages galleryImage = new GalleryImages();
 
+
             //Bind takes form field values and puts them into a GalleryImages object
             //try to implement file upload on create
             if (ModelState.IsValid)
             {
+                Debug.WriteLine("Title: " + galleryImagesTitle);
+                Debug.WriteLine("Alt: " + galleryImageAlt);
+                Debug.WriteLine("Description: " + galleryImagesDescription);
+                Debug.WriteLine("");
                 galleryImage.galleryimagetitle = galleryImagesTitle;
                 galleryImage.galleryimagealt = galleryImageAlt;
                 galleryImage.galleryimagedate = DateTime.Now;
                 galleryImage.galleryimagedescription = galleryImagesDescription;
                 //I will upload the image at the next stage
                 galleryImage.galleryimageref = "";
+
+                //NULL IMAGE VALIDATION
+                if (galleryImageFile == null)
+                {
+                    Debug.WriteLine("File uploaded: null");
+                    ModelState.AddModelError("", "Image required (JPEG, JPG, GIF, and PNG only)");
+                    return View();
+                }
+
+                //FILETYPE VALIDATION
+                //file extensioncheck taken from https://www.c-sharpcorner.com/article/file-upload-extension-validation-in-asp-net-mvc-and-javascript/
+                var valtypes = new[] { "jpeg", "jpg", "png", "gif" };
+                var extension = Path.GetExtension(galleryImageFile.FileName).Substring(1);
+                if (!valtypes.Contains(extension))
+                {
+                    Debug.WriteLine("File uploaded was of wrong filetype: " + galleryImageFile.FileName);
+                    ModelState.AddModelError("", "Image must be of JPEG, JPG, GIF, or PNG filetypes only");
+                    return View();
+                }
+
 
                 //add the galleryImage object to the database and save changes
                 db.GalleryImages.Add(galleryImage);
@@ -131,9 +156,7 @@ namespace HSNHospitalProject.Controllers
                         Debug.WriteLine("Successfully Identified Image");
                         Debug.WriteLine("Image uploaded was " + galleryImageFile.FileName);
 
-                        //file extensioncheck taken from https://www.c-sharpcorner.com/article/file-upload-extension-validation-in-asp-net-mvc-and-javascript/
-                        var valtypes = new[] { "jpeg", "jpg", "png", "gif" };
-                        var extension = Path.GetExtension(galleryImageFile.FileName).Substring(1);
+
 
                         if (valtypes.Contains(extension))
                         {
@@ -161,6 +184,11 @@ namespace HSNHospitalProject.Controllers
                             }
 
                         }
+                        else //image uploaded wasn't the right file type
+                        {
+                            ModelState.AddModelError("", "File must be an image (JPEG, JPG, GIF, and PNG only)");
+                            return View();
+                        }
                     }
                 }//else, no file was uploaded. Don't save anything new.
 
@@ -175,7 +203,7 @@ namespace HSNHospitalProject.Controllers
                 db.Database.ExecuteSqlCommand(query, sqlparams);
                 return RedirectToAction("Index", new { add = true });
 
-            }
+            }//end of if(model.isvalid)
 
             return View(galleryImage);
         }
@@ -227,7 +255,7 @@ namespace HSNHospitalProject.Controllers
                 galleryImage.galleryimagealt = galleryImageAlt;
                 galleryImage.galleryimagedate = DateTime.Now;
                 galleryImage.galleryimagedescription = galleryImagesDescription;
-                
+
                 //Probably should put below code in a method at some point
                 /**BELOW CODE BORROWED FROM CLASS EXAMPLE - https://github.com/christinebittle/PetGroomingMVC/blob/master/PetGrooming/Controllers/PetController.cs**/
                 string galleryImageExt = "";
@@ -287,7 +315,7 @@ namespace HSNHospitalProject.Controllers
                     if (thisImage == null)
                     {
                         Debug.WriteLine("Somehow GalleryImage wasn't found when checking what its old extension was?");
-                    } 
+                    }
                     //if there exists a current image for this entry
                     else if (thisImage.galleryimageref != null)
                     {
@@ -368,7 +396,7 @@ namespace HSNHospitalProject.Controllers
             //remember to delete the image file from the server as well here.
             db.GalleryImages.Remove(galleryImages);
             db.SaveChanges();
-            return RedirectToAction("Index", new { delete = true});
+            return RedirectToAction("Index", new { delete = true });
         }
 
         protected override void Dispose(bool disposing)

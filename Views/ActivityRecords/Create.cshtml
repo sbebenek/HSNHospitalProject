@@ -10,11 +10,11 @@
 
 @if (ViewBag.existingId != null)
 {
-<div class="alert alert-warning" role="alert">
-    <strong>Notice: </strong><span>A record for the date @ViewBag.existingDate already exists. Would you like to update it instead?</span>
-    <br />
-    <a href="@Url.Action("Edit", new { id = ViewBag.existingId})" class="btn btn-warning">Update</a>
-</div>
+    <div class="alert alert-warning" role="alert">
+        <strong>Notice: </strong><span>A record for the date @ViewBag.existingDate already exists. Would you like to update it instead?</span>
+        <br />
+        <a href="@Url.Action("Edit", new { id = ViewBag.existingId})" class="btn btn-warning">Update</a>
+    </div>
 }
 
 @using (Html.BeginForm())
@@ -22,7 +22,7 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>ActivityRecords</h4>
+        <!--<h4>ActivityRecords</h4>-->
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">

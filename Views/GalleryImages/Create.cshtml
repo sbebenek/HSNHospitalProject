@@ -6,19 +6,20 @@
 
 <h2>Add a New Image</h2>
 
-
-<form action="" method="post" enctype="multipart/form-data">
-
+<!--<form action="" method="post" enctype="multipart/form-data">-->
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
         <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             <div class="col-md-10">
                 <label for="galleryImagesTitle">Image Title: </label>
                 <div>
-                    <input type="text" name="galleryImagesTitle" id="galleryImagesTitle" class="form-control" />
+                    @Html.EditorFor(model => model.galleryimagetitle, new { htmlAttributes = new { @class = "form-control", Name = "galleryImagesTitle" } })
+                    <!--<input type="text" name="galleryImagesTitle" id="galleryImagesTitle" class="form-control" />-->
                     @Html.ValidationMessageFor(model => model.galleryimagetitle, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -39,7 +40,8 @@
             <div class="col-md-10">
                 <label for="galleryImageAlt">Image Alt Text: </label>
                 <div>
-                    <input type="text" name="galleryImageAlt" id="galleryImageAlt" class="form-control" />
+                    @Html.EditorFor(model => model.galleryimagealt, new { htmlAttributes = new { @class = "form-control", Name = "galleryImageAlt" } })
+                    <!--<input type="text" name="galleryImageAlt" id="galleryImageAlt" class="form-control" />-->
                     @Html.ValidationMessageFor(model => model.galleryimagealt, "", new { @class = "text-danger" })
                 </div>
                 <p><small><em>This text will be read for screen reading software users, or if the image fails to load.</em></small></p>
@@ -53,9 +55,10 @@
             <div class="col-md-10">
                 <label for="galleryImagesDescription">Image Description: </label>
                 <div>
-                    <textarea rows="3" name="galleryImagesDescription" id="galleryImagesDescription" class="form-control"></textarea>
-                    @Html.ValidationMessageFor(model => model.galleryimagedescription, "", new { @class = "text-danger" })
+                    @Html.TextAreaFor(model => model.galleryimagedescription, new { cols = 35, @rows = 3, Name = "galleryImagesDescription" })
+                    <!--<textarea rows="3" name="galleryImagesDescription" id="galleryImagesDescription" class="form-control"></textarea>-->
                 </div>
+                @Html.ValidationMessageFor(model => model.galleryimagedescription, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -65,7 +68,8 @@
             </div>
         </div>
     </div>
-</form>
+}
+<!--</form>-->
 
 <div>
     @Html.ActionLink("Back to List", "Index")
