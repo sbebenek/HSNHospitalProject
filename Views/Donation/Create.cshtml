@@ -4,7 +4,13 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Create Donation</h2>
+<h2>Donate</h2>
+
+<!-- Alert box indicating if donation was added (only for non admin) -->
+@if (!String.IsNullOrEmpty(Request["add"]) && Request["add"].Equals("True"))
+{
+    <div class="alert alert-success">You have successfully donated money.</div>
+}
 
 <form action="/Donation/Create" method="post" id="donationForm">
     @Html.AntiForgeryToken()
@@ -43,45 +49,45 @@
                     @Html.ValidationMessageFor(model => model.anonymous, "", new { @class = "text-danger" })
                 </div>
             </div>
-        </div>    
+        </div>
 
         @* Old Version (Not safe)
-        <div class="form-group">
-            @Html.LabelFor(model => model.number, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.number, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.number, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.number, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.number, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.number, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.expMonth, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.expMonth, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.expMonth, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.expMonth, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.expMonth, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.expMonth, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.expYear, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.expYear, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.expYear, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.expYear, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.expYear, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.expYear, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.cvc, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.cvc, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.cvc, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.cvc, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.cvc, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.cvc, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
         *@
-        
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Go to Payment Info" class="btn btn-default" />
             </div>
         </div>
     </div>

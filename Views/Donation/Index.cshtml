@@ -1,4 +1,6 @@
-﻿@model IEnumerable<HSNHospitalProject.Models.Donation>
+﻿@model PagedList.IPagedList<HSNHospitalProject.Models.ViewModels.DonationIndexViewModel>
+
+@using PagedList.Mvc;
 
 @{
     ViewBag.Title = "Index";
@@ -6,52 +8,62 @@
 
 <h2>Donation List</h2>
 
+<!-- Alert box indicating if donation was added or deleted -->
+@if (!String.IsNullOrEmpty(Request["add"]) && Request["add"].Equals("True"))
+{
+    <div class="alert alert-success">You have successfully donated.</div>
+}
+else if (!String.IsNullOrEmpty(Request["delete"]) && Request["delete"].Equals("True"))
+{
+    <div class="alert alert-danger">The refund was successful.</div>
+}
+
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New Donation", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-2">
             Name
-        </th>
-        <th>
+        </div>
+        <div class="col-lg-2">
             Amount
-        </th>
-        <th>
+        </div>
+        <div class="col-lg-2">
             Email
-        </th>
-        <th>
+        </div>
+        <div class="col-lg-2">
             Anonymous
-        </th>
-        <th>
-            Receipt Id
-        </th>
-        <th></th>
-    </tr>
+        </div>
+        <div div class="col-lg-2"></div>
+    </div>
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.donationName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.donationAmount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.donationEmail)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.donationAnonymous)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.donationReceiptId)
-            </td>
-            <td>
-                @Html.ActionLink("Details", "Details", new { id = item.donationId }) |
-                @Html.ActionLink("Refund", "Delete", new { id = item.donationId })
-            </td>
-        </tr>
+        <div class="row">
+            <div class="col-lg-2">
+                @Html.DisplayFor(modelItem => item.name)
+            </div>
+            <div class="col-lg-2">
+                @Html.DisplayFor(modelItem => item.amount)
+            </div>
+            <div class="col-lg-2">
+                @Html.DisplayFor(modelItem => item.email)
+            </div>
+            <div class="col-lg-2">
+                @Html.DisplayFor(modelItem => item.anonymous)
+            </div>
+            <div class="col-lg-2">
+                @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                @Html.ActionLink("Refund", "Delete", new { id = item.id })
+            </div>
+        </div>
     }
 
-</table>
+</div>
+
+<div>
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+</div>
