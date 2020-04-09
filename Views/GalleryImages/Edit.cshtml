@@ -20,7 +20,9 @@
             <div class="col-md-10">
                 <label for="galleryImagesTitle">Image Title: </label>
                 <div>
-                    <input type="text" name="galleryImagesTitle" id="galleryImagesTitle" class="form-control" value="@Model.galleryimagetitle"/>
+                    <input type="text" name="galleryImagesTitle" id="galleryImagesTitle" class="form-control" value="@Model.galleryimagetitle" />
+                    @Html.ValidationMessage("titleError", new { @class = "text-danger" })
+
                 </div>
             </div>
         </div>
@@ -30,6 +32,7 @@
             <div>
                 <input type="file" accept="image/*" name="galleryImageFile" id="galleryImageFile" class="form-control-file" onchange="loadFile(event)" />
             </div>
+            @Html.ValidationMessage("fileError", new { @class = "text-danger" })
         </div>
         <div>
             <!--Uploaded image will be printed here-->
@@ -41,8 +44,10 @@
             <div class="col-md-10">
                 <label for="galleryImageAlt">Image Alt Text: </label>
                 <div>
-                    <input type="text" name="galleryImageAlt" id="galleryImageAlt" class="form-control" value="@Model.galleryimagealt"/>
+                    <input type="text" name="galleryImageAlt" id="galleryImageAlt" class="form-control" value="@Model.galleryimagealt" />
                 </div>
+                @Html.ValidationMessage("altError", new { @class = "text-danger" })
+
                 <p><small><em>This text will be read for screen reading software users, or if the image fails to load.</em></small></p>
 
             </div>
@@ -56,6 +61,7 @@
                 <div>
                     <textarea rows="3" name="galleryImagesDescription" id="galleryImagesDescription" class="form-control">@Model.galleryimagedescription</textarea>
                 </div>
+                @Html.ValidationMessage("descriptionError", new { @class = "text-danger" })
             </div>
         </div>
 
