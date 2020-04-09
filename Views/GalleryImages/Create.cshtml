@@ -6,9 +6,8 @@
 
 <h2>Add a New Image</h2>
 
-<!--<form action="" method="post" enctype="multipart/form-data">-->
-@using (Html.BeginForm())
-{
+<form action="" method="post" enctype="multipart/form-data">
+
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.AntiForgeryToken()
 
@@ -18,9 +17,9 @@
             <div class="col-md-10">
                 <label for="galleryImagesTitle">Image Title: </label>
                 <div>
-                    @Html.EditorFor(model => model.galleryimagetitle, new { htmlAttributes = new { @class = "form-control", Name = "galleryImagesTitle" } })
-                    <!--<input type="text" name="galleryImagesTitle" id="galleryImagesTitle" class="form-control" />-->
-                    @Html.ValidationMessageFor(model => model.galleryimagetitle, "", new { @class = "text-danger" })
+                    <!--Html.EditorFor(model => model.galleryimagetitle, new { htmlAttributes = new { atclass = "form-control", Name = "galleryImagesTitle" } })-->
+                    <input type="text" name="galleryImagesTitle" id="galleryImagesTitle" class="form-control" value="@Model.galleryimagetitle" />
+                    @Html.ValidationMessage("titleError", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
@@ -30,6 +29,7 @@
             <div>
                 <input type="file" accept="image/*" name="galleryImageFile" id="galleryImageFile" class="form-control-file" onchange="loadFile(event)" />
             </div>
+            @Html.ValidationMessage("fileError", new { @class = "text-danger" })
         </div>
         <div>
             <!--Uploaded image will be printed here-->
@@ -40,9 +40,8 @@
             <div class="col-md-10">
                 <label for="galleryImageAlt">Image Alt Text: </label>
                 <div>
-                    @Html.EditorFor(model => model.galleryimagealt, new { htmlAttributes = new { @class = "form-control", Name = "galleryImageAlt" } })
-                    <!--<input type="text" name="galleryImageAlt" id="galleryImageAlt" class="form-control" />-->
-                    @Html.ValidationMessageFor(model => model.galleryimagealt, "", new { @class = "text-danger" })
+                    <input type="text" name="galleryImageAlt" id="galleryImageAlt" class="form-control" value="@Model.galleryimagealt" />
+                    @Html.ValidationMessage("altError", new { @class = "text-danger" })
                 </div>
                 <p><small><em>This text will be read for screen reading software users, or if the image fails to load.</em></small></p>
 
@@ -55,10 +54,10 @@
             <div class="col-md-10">
                 <label for="galleryImagesDescription">Image Description: </label>
                 <div>
-                    @Html.TextAreaFor(model => model.galleryimagedescription, new { cols = 35, @rows = 3, Name = "galleryImagesDescription" })
-                    <!--<textarea rows="3" name="galleryImagesDescription" id="galleryImagesDescription" class="form-control"></textarea>-->
+                    <textarea rows="3" name="galleryImagesDescription" id="galleryImagesDescription" class="form-control">@Model.galleryimagedescription</textarea>
                 </div>
-                @Html.ValidationMessageFor(model => model.galleryimagedescription, "", new { @class = "text-danger" })
+                @Html.ValidationMessage("descriptionError", new { @class = "text-danger" })
+
             </div>
         </div>
 
@@ -68,8 +67,8 @@
             </div>
         </div>
     </div>
-}
-<!--</form>-->
+
+</form>
 
 <div>
     @Html.ActionLink("Back to List", "Index")

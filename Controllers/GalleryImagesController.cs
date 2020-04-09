@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using HSNHospitalProject.Helpers;
 using HSNHospitalProject.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -68,28 +69,20 @@ namespace HSNHospitalProject.Controllers
         public ActionResult Create()
         {
 
-            //check if the user is logged in (true if logged in)
-            bool isLoggedIn = (System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
-            //is admin is false by default
-            bool isAdmin = false;
-            //if the user is logged in, isAdmin = whether or not the user is an admin
-            if (isLoggedIn)
+            if (!LoggedInChecker.isAdmin())
             {
-                //below custom column check from https://stackoverflow.com/questions/31864400/how-get-custom-field-in-aspnetusers-table
-                isAdmin = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).is_admin;
-            }
-
-            Debug.WriteLine("Is the user currently logged in? " + isLoggedIn);
-            Debug.WriteLine("That user is " + this.User.Identity.Name);
-            Debug.WriteLine("Is the user an admin? " + isAdmin);
-
-            //if the user isn't a logged or not an admin, redirect to the Index list view
-            if (!isLoggedIn || !isAdmin)
-            {
+                //redirect to gallery list page if not a logged in admin
                 return RedirectToAction("Index");
             }
+            GalleryImages galleryImage = new GalleryImages();
+            galleryImage.galleryimagetitle = "";
+            galleryImage.galleryimagealt = "";
+            galleryImage.galleryimagedate = DateTime.Now;
+            galleryImage.galleryimagedescription = "";
+            galleryImage.galleryimageref = "";
 
-            return View();
+            //passing the view an empty string to fill form fields with empty values. Those fields will be filled with user inputs if the form fails validation
+            return View(galleryImage);
         }
 
         // POST: GalleryImages/Create
@@ -100,8 +93,10 @@ namespace HSNHospitalProject.Controllers
             GalleryImages galleryImage = new GalleryImages();
 
 
-            //Bind takes form field values and puts them into a GalleryImages object
-            //try to implement file upload on create
+            //since I am not using bind in the create method parameters, I cannot use asp razor jquery client validation, as it needs razor input fields,
+            //and adding a name attribute to be able to get the form fields as parameters inside those razor fields stops the jquery from printing an error
+            //message for some reason, so I need to do custom server-side validation instead.
+            //Thus, ModelState.isValid will always be true
             if (ModelState.IsValid)
             {
                 Debug.WriteLine("Title: " + galleryImagesTitle);
@@ -115,27 +110,62 @@ namespace HSNHospitalProject.Controllers
                 //I will upload the image at the next stage
                 galleryImage.galleryimageref = "";
 
+
+                //****VALIDATION****/
+                bool isValid = true;
+
+                //EMPTY FIELD VALIDATION
+                if (galleryImagesTitle == null || galleryImagesTitle == "")
+                {
+                    Debug.WriteLine("Validation failed: title field was empty");
+                    ModelState.AddModelError("titleError", "* Required field");
+                    isValid = false;
+                }
+                if (galleryImageAlt == null || galleryImageAlt == "")
+                {
+                    Debug.WriteLine("Validation failed: alt field was empty");
+                    ModelState.AddModelError("altError", "* Required field");
+                    isValid = false;
+                }
+                if (galleryImagesDescription == null || galleryImagesDescription == "")
+                {
+                    Debug.WriteLine("Validation failed: description field was empty");
+                    ModelState.AddModelError("descriptionError", "* Required field");
+                    isValid = false;
+                }
                 //NULL IMAGE VALIDATION
                 if (galleryImageFile == null)
                 {
                     Debug.WriteLine("File uploaded: null");
-                    ModelState.AddModelError("", "Image required (JPEG, JPG, GIF, and PNG only)");
-                    return View();
+                    ModelState.AddModelError("fileError", "* Image required (JPEG, JPG, GIF, and PNG only)");
+                    isValid = false;
                 }
+
 
                 //FILETYPE VALIDATION
                 //file extensioncheck taken from https://www.c-sharpcorner.com/article/file-upload-extension-validation-in-asp-net-mvc-and-javascript/
                 var valtypes = new[] { "jpeg", "jpg", "png", "gif" };
-                var extension = Path.GetExtension(galleryImageFile.FileName).Substring(1);
-                if (!valtypes.Contains(extension))
+                var extension = "";
+                if (galleryImageFile != null)
                 {
-                    Debug.WriteLine("File uploaded was of wrong filetype: " + galleryImageFile.FileName);
-                    ModelState.AddModelError("", "Image must be of JPEG, JPG, GIF, or PNG filetypes only");
-                    return View();
+                    extension = Path.GetExtension(galleryImageFile.FileName).Substring(1);
+                    if (!valtypes.Contains(extension))
+                    {
+                        Debug.WriteLine("File uploaded was of wrong filetype: " + galleryImageFile.FileName);
+                        ModelState.AddModelError("fileError", "* Image must be of JPEG, JPG, GIF, or PNG filetypes only");
+                        isValid = false;
+                    }
+                }
+
+                if (!isValid)
+                {
+                    //returning the submitted galleryImage to refill form fields
+                    return View(galleryImage);
                 }
 
 
                 //add the galleryImage object to the database and save changes
+                Debug.WriteLine("Validation passed! Saving image...");
                 db.GalleryImages.Add(galleryImage);
                 db.SaveChanges();
 
