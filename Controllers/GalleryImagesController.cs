@@ -241,15 +241,10 @@ namespace HSNHospitalProject.Controllers
         // GET: GalleryImages/Edit/5
         public ActionResult Edit(int? id)
         {
-            //check if the user is logged in (true if logged in)
-            bool isLoggedIn = (System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
-            //is admin is false by default
-            bool isAdmin = false;
-            //if the user is logged in, isAdmin = whether or not the user is an admin
-            if (isLoggedIn)
+            if (!LoggedInChecker.isAdmin())
             {
-                //below custom column check from https://stackoverflow.com/questions/31864400/how-get-custom-field-in-aspnetusers-table
-                isAdmin = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).is_admin;
+                //redirect to gallery list page if not a logged in admin
+                return RedirectToAction("Index");
             }
 
             if (id == null)
@@ -257,34 +252,83 @@ namespace HSNHospitalProject.Controllers
                 //change to redirect to 
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             GalleryImages galleryImages = db.GalleryImages.Find(id);
             if (galleryImages == null)
             {
                 return HttpNotFound();
             }
-            //if the user isn't a logged or not an admin, redirect to the Index list view
-            if (!isLoggedIn || !isAdmin)
-            {
-                return RedirectToAction("Index");
-            }
-
+            
             return View(galleryImages);
         }
 
         // POST: GalleryImages/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int galleryImagesId, string galleryImagesTitle, HttpPostedFileBase galleryImageFile, string galleryImageAlt, string galleryImagesDescription)
+        public ActionResult Edit(int galleryImagesId, string oldGalleryImageRef, string galleryImagesTitle, HttpPostedFileBase galleryImageFile, string galleryImageAlt, string galleryImagesDescription)
         {
             GalleryImages galleryImage = new GalleryImages();
 
             //since the page will automatically redirect if not a logged in admin, only an admin will be able to submit this form.
             if (ModelState.IsValid)
             {
+                galleryImage.galleryimageid = galleryImagesId;
                 galleryImage.galleryimagetitle = galleryImagesTitle;
                 galleryImage.galleryimagealt = galleryImageAlt;
                 galleryImage.galleryimagedate = DateTime.Now;
                 galleryImage.galleryimagedescription = galleryImagesDescription;
+                galleryImage.galleryimageref = oldGalleryImageRef; //set to the old ref in case it doesn't pass validation and needs to be sent back to the view
+
+                /******VALIDATION*******/
+                bool isValid = true;
+
+                //EMPTY FIELD VALIDATION
+                if (galleryImagesTitle == null || galleryImagesTitle == "")
+                {
+                    Debug.WriteLine("Validation failed: title field was empty");
+                    ModelState.AddModelError("titleError", "* Required field");
+                    isValid = false;
+                }
+                if (galleryImageAlt == null || galleryImageAlt == "")
+                {
+                    Debug.WriteLine("Validation failed: alt field was empty");
+                    ModelState.AddModelError("altError", "* Required field");
+                    isValid = false;
+                }
+                if (galleryImagesDescription == null || galleryImagesDescription == "")
+                {
+                    Debug.WriteLine("Validation failed: description field was empty");
+                    ModelState.AddModelError("descriptionError", "* Required field");
+                    isValid = false;
+                }
+
+                //if no file was uploaded, the picture will not change, so we do not have to check for null image files
+                
+
+                //FILETYPE VALIDATION
+                //file extensioncheck taken from https://www.c-sharpcorner.com/article/file-upload-extension-validation-in-asp-net-mvc-and-javascript/
+                var valtypes = new[] { "jpeg", "jpg", "png", "gif" };
+                var extension = "";
+                if (galleryImageFile != null)
+                {
+                    extension = Path.GetExtension(galleryImageFile.FileName).Substring(1);
+                    if (!valtypes.Contains(extension))
+                    {
+                        Debug.WriteLine("File uploaded was of wrong filetype: " + galleryImageFile.FileName);
+                        ModelState.AddModelError("fileError", "* Image must be of JPEG, JPG, GIF, or PNG filetypes only");
+                        isValid = false;
+                    }
+                }
+
+                if (!isValid)
+                {
+                    //returning the submitted galleryImage to refill form fields
+                    return View(galleryImage);
+                }
+
+
+                //add the galleryImage object to the database and save changes
+                Debug.WriteLine("Validation passed! Updating image...");
 
                 //Probably should put below code in a method at some point
                 /**BELOW CODE BORROWED FROM CLASS EXAMPLE - https://github.com/christinebittle/PetGroomingMVC/blob/master/PetGrooming/Controllers/PetController.cs**/
@@ -300,8 +344,8 @@ namespace HSNHospitalProject.Controllers
                         Debug.WriteLine("Image uploaded was " + galleryImageFile.FileName);
 
                         //file extensioncheck taken from https://www.c-sharpcorner.com/article/file-upload-extension-validation-in-asp-net-mvc-and-javascript/
-                        var valtypes = new[] { "jpeg", "jpg", "png", "gif" };
-                        var extension = Path.GetExtension(galleryImageFile.FileName).Substring(1);
+                        //var valtypes = new[] { "jpeg", "jpg", "png", "gif" };
+                        //var extension = Path.GetExtension(galleryImageFile.FileName).Substring(1);
 
                         if (valtypes.Contains(extension))
                         {
