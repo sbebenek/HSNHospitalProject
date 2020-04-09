@@ -69,3 +69,9 @@ textarea {
     align-items: center;
     justify-content: center;
 }
+
+.admin-graph-selections {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}

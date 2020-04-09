@@ -249,6 +249,10 @@
     <Compile Include="Migrations\202004052247037_patients.Designer.cs">
       <DependentUpon>202004052247037_patients.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004090054097_gallery-validation.cs" />
+    <Compile Include="Migrations\202004090054097_gallery-validation.Designer.cs">
+      <DependentUpon>202004090054097_gallery-validation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ActivityRecords.cs" />
@@ -467,6 +471,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004052247037_patients.resx">
       <DependentUpon>202004052247037_patients.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004090054097_gallery-validation.resx">
+      <DependentUpon>202004090054097_gallery-validation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

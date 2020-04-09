@@ -26,25 +26,11 @@ namespace HSNHospitalProject.Controllers
             List<ActivityRecords> records = db.ActivityRecords.ToList();
             records.Sort((x, y) => DateTime.Compare(y.activityrecorddate, x.activityrecorddate));
 
-            /*//check if the user is logged in (true if logged in)
-            bool isLoggedIn = (System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
-            //is admin is false by default
-            bool isAdmin = false;
-            //if the user is logged in, isAdmin = whether or not the user is an admin
-            if (isLoggedIn)
-            {
-                //below custom column check from https://stackoverflow.com/questions/31864400/how-get-custom-field-in-aspnetusers-table
-                isAdmin = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).is_admin;
-            }
-            if (!isAdmin)
+            if(!LoggedInChecker.isAdmin())
             {
                 //redirect to login page if not a logged in admin
                 return RedirectToAction("Login", "AccountController");
-            } */
-
-            LoggedInChecker.isLoggedIn();
-            LoggedInChecker.isAdmin();
-            LoggedInChecker.loggedInUserId();
+            }
 
             //the amount of records shown per page
             int pageSize = 10;
@@ -63,20 +49,10 @@ namespace HSNHospitalProject.Controllers
         // GET: ActivityRecords/Create
         public ActionResult Create()
         {
-            //check if the user is logged in (true if logged in)
-            bool isLoggedIn = (System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
-            //is admin is false by default
-            bool isAdmin = false;
-            //if the user is logged in, isAdmin = whether or not the user is an admin
-            if (isLoggedIn)
-            {
-                //below custom column check from https://stackoverflow.com/questions/31864400/how-get-custom-field-in-aspnetusers-table
-                isAdmin = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).is_admin;
-            }
-            if (!isAdmin)
+            if (!LoggedInChecker.isAdmin())
             {
                 //redirect to login page if not a logged in admin
-                //return RedirectToAction("Login", "AccountController");
+                return RedirectToAction("Login", "AccountController");
             }
 
             ViewBag.date = DateTime.Now.ToString("yyyy-MM-dd");
@@ -90,7 +66,6 @@ namespace HSNHospitalProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "activityrecordid,activityrecorddate,activityrecordrating")] ActivityRecords activityRecords)
         {
-            //******TODO: DON"T ADD IF A RECORD AT THAT DATE ALREADY EXISTS
             if (ModelState.IsValid)
             {
                 //checking to see if a record already exists with this date
@@ -120,20 +95,10 @@ namespace HSNHospitalProject.Controllers
         // GET: ActivityRecords/Edit/5
         public ActionResult Edit(int? id)
         {
-            //check if the user is logged in (true if logged in)
-            bool isLoggedIn = (System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
-            //is admin is false by default
-            bool isAdmin = false;
-            //if the user is logged in, isAdmin = whether or not the user is an admin
-            if (isLoggedIn)
-            {
-                //below custom column check from https://stackoverflow.com/questions/31864400/how-get-custom-field-in-aspnetusers-table
-                isAdmin = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).is_admin;
-            }
-            if (!isAdmin)
+            if (!LoggedInChecker.isAdmin())
             {
                 //redirect to login page if not a logged in admin
-                //return RedirectToAction("Login", "AccountController");
+                return RedirectToAction("Login", "AccountController");
             }
 
             if (id == null)
@@ -167,20 +132,10 @@ namespace HSNHospitalProject.Controllers
         // GET: ActivityRecords/Delete/5
         public ActionResult Delete(int? id)
         {
-            //check if the user is logged in (true if logged in)
-            bool isLoggedIn = (System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
-            //is admin is false by default
-            bool isAdmin = false;
-            //if the user is logged in, isAdmin = whether or not the user is an admin
-            if (isLoggedIn)
-            {
-                //below custom column check from https://stackoverflow.com/questions/31864400/how-get-custom-field-in-aspnetusers-table
-                isAdmin = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).is_admin;
-            }
-            if (!isAdmin)
+            if (!LoggedInChecker.isAdmin())
             {
                 //redirect to login page if not a logged in admin
-                //return RedirectToAction("Login", "AccountController");
+                return RedirectToAction("Login", "AccountController");
             }
 
             if (id == null)
@@ -218,6 +173,17 @@ namespace HSNHospitalProject.Controllers
         [HttpGet]
         public ActionResult DeleteMultiple(int? numberOfMonths)
         {
+            if (!LoggedInChecker.isAdmin())
+            {
+                //redirect to login page if not a logged in admin
+                return RedirectToAction("Login", "AccountController");
+            }
+
+            if (numberOfMonths == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             //if the form was submitted empty or with a negative number
             if (numberOfMonths == null || numberOfMonths < 0)
             {

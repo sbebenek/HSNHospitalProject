@@ -22,21 +22,24 @@ namespace HSNHospitalProject.Models
         /// <summary>
         /// The title of the image
         /// </summary>
+        [Required(ErrorMessage = "* This field is required.")]
         public string galleryimagetitle { get; set; }
 
         /// <summary>
         /// the alt text for the image
         /// </summary>
+        [Required(ErrorMessage = "* This field is required.")]
         public string galleryimagealt { get; set; }
 
         /// <summary>
-        /// the date the image was posted (In a DateTime object)
+        /// the date the image was posted (In a DateTime object). Automatically set by server
         /// </summary>
         public DateTime galleryimagedate { get; set; }
 
         /// <summary>
         /// A description of the image
         /// </summary>
+        [Required(ErrorMessage = "* This field is required.")]
         public string galleryimagedescription { get; set; }
     }
 }
