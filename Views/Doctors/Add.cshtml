@@ -5,6 +5,7 @@
 
 <h2 style="color:darkgreen;text-align:center">Doctor Information</h2>
 <form method="POST" action="/Doctors/Add">
+    @Html.AntiForgeryToken()
     <div>
         <label>First Name:</label>
         <input class="form-control" type="text" name="f_name" />
@@ -15,11 +16,12 @@
     </div>
     <div>
         <label>Date of Birth:</label>
-        <input class="form-control" type="text" name="dob" />
+        <input class="form-control" type="text" name="dob" /> 
     </div>
     <div>
         <label>Phone Number:</label>
         <input class="form-control" type="text" name="p_number" />
+
     </div>
     <div>
         <label>Email Address:</label>
@@ -38,11 +40,25 @@
     </div>
     <div>
         <label>Join Date:</label>
-        <input class="form-control" type="text" name="join_date" />
+        @Html.ValidationSummary(true)
+        @Html.EditorFor(model => model.date, new { @name = "join_date" })
+        @Html.ValidationMessageFor(model => model.date)
+    </div>
+    <div>
+        <label>Working days:</label>
+        <input class="form-control" type="text" name="work_days" />
     </div>
     <div class="btn-warning" style="margin:1em;text-align:center;">
         <input type="submit" name="submit" class="btn-warning" style="font-size:20px;color:green" value="Add" />
     </div>
 </form>
+
+<div>
+    @Html.ActionLink("Back to List", "List")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
 
 

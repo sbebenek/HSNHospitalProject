@@ -205,6 +205,7 @@
     </Compile>
     <Compile Include="Helpers\GraphValueHolder.cs" />
     <Compile Include="Helpers\LoggedInChecker.cs" />
+    <Compile Include="Logs\LoggedIn.cs" />
     <Compile Include="Migrations\202003290316259_initial.cs" />
     <Compile Include="Migrations\202003290316259_initial.Designer.cs">
       <DependentUpon>202003290316259_initial.cs</DependentUpon>
@@ -252,6 +253,14 @@
     <Compile Include="Migrations\202004090054097_gallery-validation.cs" />
     <Compile Include="Migrations\202004090054097_gallery-validation.Designer.cs">
       <DependentUpon>202004090054097_gallery-validation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004090205089_working.cs" />
+    <Compile Include="Migrations\202004090205089_working.Designer.cs">
+      <DependentUpon>202004090205089_working.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004090311418_DataAnnotations.cs" />
+    <Compile Include="Migrations\202004090311418_DataAnnotations.Designer.cs">
+      <DependentUpon>202004090311418_DataAnnotations.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -474,6 +483,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004090054097_gallery-validation.resx">
       <DependentUpon>202004090054097_gallery-validation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004090205089_working.resx">
+      <DependentUpon>202004090205089_working.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004090311418_DataAnnotations.resx">
+      <DependentUpon>202004090311418_DataAnnotations.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -28,6 +28,7 @@
     @foreach (var doctors in @Model)
     {
         <div style="margin-top:1em"><a href="/Doctors/show/@doctors.doctorId">@doctors.doctorFName @doctors.doctorLName</a></div>
+        <div style="margin-left:5em">Working Hours:@doctors.doctorWorkingDays</div>
 
     }
 </div>

@@ -15,6 +15,7 @@ using System.Globalization;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using HSNHospitalProject.Logs;
 
 
 namespace HSNHospitalProject.Controllers
@@ -26,8 +27,8 @@ namespace HSNHospitalProject.Controllers
         // GET: Doctor
         public ActionResult List(string searchkey, int pagenum =0)
         {
-            bool loggedIn = (System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
-            if(loggedIn == true)
+           
+            if(LoggedIn.isLoggedIn() || LoggedIn.isAdmin())
             {
                 string query = "select * from doctors";
                 List<SqlParameter> sqlparams = new List<SqlParameter>();
@@ -109,52 +110,65 @@ namespace HSNHospitalProject.Controllers
         {
             string user = User.Identity.GetUserId();
             
-            if (id == null)
+            if (LoggedIn.isAdmin())
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                Doctors doctors = db.Doctors.Find(id);
+                return View(doctors);
             }
-            Doctors doctors = db.Doctors.Find(id);
-            if (doctors == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("List", "Doctors");
             }
-            return View(doctors);
+            
+            
         }
 
         // GET: Doctor/Create
         public ActionResult Add()
         {
-            DoctorDepartment viewmodel = new DoctorDepartment();
-            viewmodel.departments = db.Departments.ToList();
-            return View(viewmodel);
+            if (LoggedIn.isAdmin())
+            {
+
+                DoctorDepartment viewmodel = new DoctorDepartment();
+                viewmodel.departments = db.Departments.ToList();
+                return View(viewmodel);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Error");
+            }
         }
 
         // POST: Doctor/Create
         [HttpPost]
-        public ActionResult Add(string f_name, string l_name, string dob, string p_number, string e_address, string join_date, int departmentId)
+        [ValidateAntiForgeryToken]
+        public ActionResult Add( DoctorDepartment model ,string f_name, string l_name, string dob, string p_number, string e_address, string join_date, string work_days, int departmentId)
         {
-            bool admin = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).is_admin;
-            if(admin == true)
-            {
-                string query = "insert into doctors (doctorFName , doctorLName, doctorDOB, doctorPNumber, doctorEAddress, doctorJoinDate, departmentID) values(@f_name, @l_name, @dob, @p_number,@e_address, @join_date, @departmentID)";
-                SqlParameter[] sqlparams = new SqlParameter[7];
-                sqlparams[0] = new SqlParameter("@f_name", f_name);
-                sqlparams[1] = new SqlParameter("@l_name", l_name);
-                sqlparams[2] = new SqlParameter("@dob", dob);
-                sqlparams[3] = new SqlParameter("@p_number", p_number);
-                sqlparams[4] = new SqlParameter("@e_address", e_address);
-                sqlparams[5] = new SqlParameter("@join_date", join_date);
-                sqlparams[6] = new SqlParameter("@departmentId", departmentId);
+            
 
-                db.Database.ExecuteSqlCommand(query, sqlparams);
-                return RedirectToAction("List");
+            if (ModelState.IsValid)
+            {
+                Debug.WriteLine("this is my join date" + model.date);
+                if (LoggedIn.isAdmin() && model.date != "")
+                {
+
+                    string query = "insert into doctors (doctorFName , doctorLName, doctorDOB, doctorPNumber, doctorEAddress, doctorJoinDate, doctorWorkingDays,departmentID) values(@f_name, @l_name, @dob, @p_number,@e_address, @join_date, @work_days,@departmentID)";
+                    SqlParameter[] sqlparams = new SqlParameter[8];
+                    sqlparams[0] = new SqlParameter("@f_name", f_name);
+                    sqlparams[1] = new SqlParameter("@l_name", l_name);
+                    sqlparams[2] = new SqlParameter("@dob", dob);
+                    sqlparams[3] = new SqlParameter("@p_number", p_number);
+                    sqlparams[4] = new SqlParameter("@e_address", e_address);
+                    sqlparams[5] = new SqlParameter("@join_date", join_date);
+                    sqlparams[6] = new SqlParameter("@departmentId", departmentId);
+                    sqlparams[7] = new SqlParameter("@work_days", work_days);
+
+                    db.Database.ExecuteSqlCommand(query, sqlparams);
+                    return RedirectToAction("List");
+                }
 
             }
-            else
-            {
-                return Redirect("https://localhost:44315/Error/Index");
-
-            }
+              return View(model);
 
 
         }
@@ -163,8 +177,7 @@ namespace HSNHospitalProject.Controllers
         public ActionResult Update(string id)
         {
 
-            bool admin = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).is_admin;
-            if(admin == true)
+            if (LoggedIn.isAdmin())
             {
                 string query = "select * from doctors where doctorId =@id";
                 var Parameter = new SqlParameter("@id", id);
@@ -175,26 +188,25 @@ namespace HSNHospitalProject.Controllers
                 viewmodel.departments = departments;
                 viewmodel.Doctors = doctors;
                 return View(viewmodel);
-                
-
             }
             else
             {
-                return Redirect("https://localhost:44315/Error/Index");
-
+                return RedirectToAction("Index", "ErrorController");
             }
+
+           
 
         }
 
         // POST: Doctor/Edit/5
         [HttpPost]
-        public ActionResult Update(string id, string f_name, string l_name, string dob, string p_number, string e_address, string join_date, int departmentId)
+        public ActionResult Update(string id, string f_name, string l_name, string dob, string p_number, string e_address, string join_date, string work_days,int departmentId)
         {
-            bool admin = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).is_admin;
-            if(admin == true)
+            if (LoggedIn.isAdmin())
             {
-                string query = "Update doctors set doctorFName = @f_name, doctorLName=@l_name, doctorDOB =@dob, doctorPNumber=@p_number, doctorEAddress = @e_address,doctorJoinDate = @join_date, departmentId=@departmentId where doctorId =@id";
-                SqlParameter[] sqlparams = new SqlParameter[8];
+
+                string query = "Update doctors set doctorFName = @f_name, doctorLName=@l_name, doctorDOB =@dob, doctorPNumber=@p_number, doctorEAddress = @e_address,doctorJoinDate = @join_date, doctorWorkingDays = @work_days,departmentId=@departmentId where doctorId =@id";
+                SqlParameter[] sqlparams = new SqlParameter[9];
                 sqlparams[0] = new SqlParameter("@f_name", f_name);
                 sqlparams[1] = new SqlParameter("@l_name", l_name);
                 sqlparams[2] = new SqlParameter("@dob", dob);
@@ -203,17 +215,18 @@ namespace HSNHospitalProject.Controllers
                 sqlparams[5] = new SqlParameter("@join_date", join_date);
                 sqlparams[6] = new SqlParameter("@departmentId", departmentId);
                 sqlparams[7] = new SqlParameter("@id", id);
+                sqlparams[8] = new SqlParameter("@work_days", work_days);
 
                 db.Database.ExecuteSqlCommand(query, sqlparams);
                 return RedirectToAction("List");
 
+
+
             }
             else
             {
-                return Redirect("https://localhost:44315/Error/Index");
-
+                return RedirectToAction("Index", "ErrorController");
             }
-
 
             
         }
@@ -230,8 +243,7 @@ namespace HSNHospitalProject.Controllers
         // POST: Doctor/Delete/5
         public ActionResult Delete(string id)
         {
-            bool admin = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).is_admin;
-            if(admin == true)
+            if (LoggedIn.isAdmin())
             {
                 string query = "delete from doctors where doctorId=@id";
                 SqlParameter param = new SqlParameter("@id", id);
@@ -240,8 +252,8 @@ namespace HSNHospitalProject.Controllers
             }
             else
             {
-                return Redirect("https://localhost:44315/Error/Index");
-            
+                return RedirectToAction("Index", "ErrorController");
+
             }
             
         }

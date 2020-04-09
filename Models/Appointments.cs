@@ -12,6 +12,10 @@ namespace HSNHospitalProject.Models
     {
         [Key]
         public int appointmentId { get; set; }
+
+        [Display(Name = "appointmentDate")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime appointmentDate { get; set; }
         public string appointmentReferenceNumebr { get; set; }
         public string appointmentReason { get; set; }
