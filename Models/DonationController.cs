@@ -11,6 +11,9 @@ using System.Data.SqlClient;
 using HSNHospitalProject.Models;
 using HSNHospitalProject.Models.ViewModels;
 using Stripe;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using PagedList;
 
 namespace HSNHospitalProject.Models
 {
@@ -19,9 +22,26 @@ namespace HSNHospitalProject.Models
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Donation
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            return View(db.Donations.ToList());
+            //Check if the user has the permission (admin)
+            if (!IsAdmin())
+            {
+                //redirect to the home page
+                return RedirectToAction("Create");
+            }
+
+            List<Donation> donations = db.Donations.ToList();
+            List<DonationIndexViewModel> viewDonation = new List<DonationIndexViewModel>();
+            for (int i = 0; i < donations.Count; i++)
+            {
+                viewDonation.Add(new DonationIndexViewModel(donations[i]));
+            }
+            //the amount of donations per page
+            int pageSize = 10;
+            //set the page number to 1 if it is not already set
+            int pageNumber = (page ?? 1);
+            return View(viewDonation.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Donation/Details/8
@@ -69,7 +89,8 @@ namespace HSNHospitalProject.Models
 
                 Donation newDonation = new Donation();
                 newDonation.donationName = model.name;
-                newDonation.donationAmount = model.amount;
+                //Convert the Dollar CAD value to Cents value
+                newDonation.donationAmount = (int)(model.amount * 100);
                 newDonation.donationEmail = model.email;
                 newDonation.donationAnonymous = model.anonymous;
 
@@ -79,7 +100,7 @@ namespace HSNHospitalProject.Models
                 var options = new PaymentIntentCreateOptions
                 {
                     Amount = model.amount,
-                    Currency = "usd",
+                    Currency = "cad",
                     // Verify your integration in this guide by including this parameter
                     Metadata = new Dictionary<string, string>
                     {
@@ -161,10 +182,10 @@ namespace HSNHospitalProject.Models
             //Debug Purpose to see if we are getting the id
             Debug.WriteLine("I'm pulling data of " + id.ToString());
 
-            //Get the specific department
+            //Get the specific donation
             Donation donation = db.Donations.Find(id);
 
-            //Could not find the specific department
+            //Could not find the specific donation
             if (donation == null)
             {
                 return HttpNotFound();
@@ -175,7 +196,7 @@ namespace HSNHospitalProject.Models
             PaymentIntentCreateOptions options = new PaymentIntentCreateOptions
             {
                 Amount = donation.donationAmount,
-                Currency = "usd",
+                Currency = "cad",
                 // Verify your integration in this guide by including this parameter
                 Metadata = new Dictionary<string, string>
                 {
@@ -184,7 +205,34 @@ namespace HSNHospitalProject.Models
             };
 
             PaymentIntentService service = new PaymentIntentService();
-            PaymentIntent paymentIntent = service.Create(options);
+            PaymentIntent paymentIntent = new PaymentIntent();
+
+            //Loop is for trying to connect using the service (may fail, so try again)
+            int retry = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                try
+                {
+                    paymentIntent = service.Create(options);
+                    break;
+                }
+                catch (Exception e)
+                {
+                    retry++;
+                }
+            }
+            //We failed 3 times, so return to the index page of the donation
+            if (retry == 3) {
+                //Delete the Donation from the table
+                db.Donations.Remove(donation);
+
+                //Save the changes on the database
+                db.SaveChanges();
+
+                //Go back to the list of Donation
+                return RedirectToAction("Index");
+            }
+
             ViewData["id"] = id;
             ViewData["clientSecret"] = paymentIntent.ClientSecret;
             ViewData["clientName"] = db.Donations.Find(id).donationName;
@@ -201,8 +249,15 @@ namespace HSNHospitalProject.Models
         //When user submits the form of the card info. and was successful
         [HttpPost]
         public ActionResult CardPayment() {
-            //Go back to the list of Donation to see the added Donation
-            return Redirect("Index");
+            //Go back to see the added Donation
+
+            //Go back to the list of Donation if user is admin            
+            if (IsAdmin())
+            {
+                return RedirectToAction("Index", new { add = true });
+            }
+            //Not a admin, so show message in the Create Page
+            return RedirectToAction("Create", new { add = true });
         }
 
         //When user wants to cancel the payment
@@ -231,6 +286,12 @@ namespace HSNHospitalProject.Models
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            //Check if the user has the permission (admin)
+            if (!IsAdmin()) {
+                //redirect to the home page
+                return RedirectToAction("../Home/Index");
             }
 
             //Debug Purpose to see if we are getting the id
@@ -278,7 +339,23 @@ namespace HSNHospitalProject.Models
             db.SaveChanges();
 
             //Go back to the list of Donation to see the removed Donation
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { delete = true });
+        }
+
+        public bool IsAdmin() {
+            //Check to see if user is logged in
+            if (System.Web.HttpContext.Current.User == null) {
+                return false;
+            }
+            else if (!System.Web.HttpContext.Current.User.Identity.IsAuthenticated) {
+                return false;
+            }
+            else if (HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).is_admin) {
+                //User is a admin
+                return true;
+            }
+            //The user is not a admin
+            return false;
         }
 
     }

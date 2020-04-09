@@ -6,6 +6,36 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HSNHospitalProject.Models.ViewModels
 {
+    public class DonationIndexViewModel {
+
+        //Constructor
+        public DonationIndexViewModel(Donation donation) {
+            id = donation.donationId;
+            name = donation.donationName;
+            //Convert to dollar value (CAD)
+            amount = (float)donation.donationAmount / 100;
+            email = donation.donationEmail;
+            anonymous = donation.donationAnonymous;
+        }
+
+        public int id;
+
+        [DataType(DataType.Text)]
+        [Display(Name = "Name")]
+        public string name { get; set; }
+
+        [Display(Name = "Amount($)")]
+        [DisplayFormat(DataFormatString = "{0:c}")]
+        public float amount { get; set; }
+
+        [DataType(DataType.EmailAddress)]
+        [Display(Name = "Email")]
+        public string email { get; set; }
+
+        [Display(Name = "Anonymous")]
+        public bool anonymous { get; set; }
+    }
+
     public class DonationCreateViewModel
     {
         [Required]
@@ -15,9 +45,9 @@ namespace HSNHospitalProject.Models.ViewModels
         public string name { get; set; }
 
         [Required]
-        [Range(1, int.MaxValue, ErrorMessage = "The amount must be greater than 0")]
-        [Display(Name = "Amount")]
-        public int amount { get; set; }
+        [Range(1, float.MaxValue, ErrorMessage = "The amount must be greater than 1")]
+        [Display(Name = "Amount($)")]
+        public float amount { get; set; }
 
         [Required]
         [DataType(DataType.EmailAddress)]
