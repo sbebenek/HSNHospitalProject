@@ -1,4 +1,4 @@
-﻿@model PagedList.IPagedList<HSNHospitalProject.Models.JobPost>
+﻿@model PagedList.IPagedList<HSNHospitalProject.Models.ViewModels.JobPostIndexViewModel>
 
 @using PagedList.Mvc;
 
@@ -6,58 +6,85 @@
     ViewBag.Title = "Index";
 }
 
-<p>
-    @Html.ActionLink("Create New Job Post", "Create")
-</p>
+<h2>Job Posts</h2>
 
-<table class="table">
-    <tr>
-        <th>
+<!-- Alert box indicating if jobpost was added, edited, or deleted -->
+@if (!String.IsNullOrEmpty(Request["add"]) && Request["add"].Equals("True"))
+{
+    <div class="alert alert-success">You have successfully added a new job post.</div>
+}
+else if (!String.IsNullOrEmpty(Request["update"]) && Request["update"].Equals("True"))
+{
+    <div class="alert alert-success">The job post has been updated.</div>
+}
+else if (!String.IsNullOrEmpty(Request["delete"]) && Request["delete"].Equals("True"))
+{
+    <div class="alert alert-danger">The job post has been deleted.</div>
+}
+
+<!-- Only Admin has the permission to add a new Job Post -->
+@if ((bool)ViewData["isAdmin"])
+{
+    <p>
+        @Html.ActionLink("Create New Job Post", "Create")
+    </p>
+}
+
+<div>
+    <div class="row">
+        <div class="col-lg-2">
             Name
-        </th>
-        <th>
+        </div>
+        <div class="col-lg-2">
             Type
-        </th>
-        <th>
+        </div>
+        <div class="col-lg-2">
             Experience
-        </th>
-        <th>
+        </div>
+        <div class="col-lg-2">
             Salary
-        </th>
-        <th>
+        </div>
+        <div class="col-lg-2">
             Posted Date
-        </th>
-    </tr>
+        </div>
+    </div>
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.jobPostName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.jobPostType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.jobPostExperience)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.jobPostSalary)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.jobPostPostedDate)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.jobPostId }) |
-                @Html.ActionLink("Details", "Details", new { id = item.jobPostId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.jobPostId })
-            </td>
-        </tr>
+        <div class="row">
+            <div class="col-lg-2">
+                @Html.DisplayFor(modelItem => item.name)
+            </div>
+            <div class="col-lg-2">
+                @Html.DisplayFor(modelItem => item.type)
+            </div>
+            <div class="col-lg-2">
+                @Html.DisplayFor(modelItem => item.experience)
+            </div>
+            <div class="col-lg-2">
+                @Html.DisplayFor(modelItem => item.salary)
+            </div>
+            <div class="col-lg-2">
+                @Html.DisplayFor(modelItem => item.postedDate)
+            </div>
+            <div class="col-lg-2">
+                <!-- Only Admin has the permission to edit a Job Post -->
+                @if ((bool)ViewData["isAdmin"])
+                {
+                    @:@Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                }
+                @Html.ActionLink("Details", "Details", new { id = item.id })
+                <!-- Only Admin has the permission to delete a Job Post -->
+                @if ((bool)ViewData["isAdmin"])
+                {
+                    @: | @Html.ActionLink("Delete", "Delete", new { id = item.id })
+                }
+            </div>
+        </div>
     }
-</table>
+</div>
 
 <div>
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
-    @Html.PagedListPager(Model, page => Url.Action("Index",
-        new { page }))
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
 </div>

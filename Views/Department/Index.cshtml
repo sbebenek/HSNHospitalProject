@@ -5,9 +5,26 @@
 }
 
 <h2>Department List</h2>
+
+<!-- Alert box indicating if department was added, edited, or deleted -->
+@if (!String.IsNullOrEmpty(Request["add"]) && Request["add"].Equals("True"))
+{
+    <div class="alert alert-success">You have successfully added a new job post.</div>
+}
+else if (!String.IsNullOrEmpty(Request["update"]) && Request["update"].Equals("True"))
+{
+    <div class="alert alert-success">The job post has been updated.</div>
+}
+else if (!String.IsNullOrEmpty(Request["delete"]) && Request["delete"].Equals("True"))
+{
+    <div class="alert alert-danger">The job post has been deleted.</div>
+}
+
+
 <div>
     @Html.ActionLink("Create New Department", "Create")
 </div>
+
 <table class="table">
     <tr>
         <th>

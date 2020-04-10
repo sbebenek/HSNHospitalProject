@@ -11,6 +11,47 @@ namespace HSNHospitalProject.Models.ViewModels
         Volunteer
     }
 
+    public class JobPostIndexViewModel {
+
+        //Constructor
+        public JobPostIndexViewModel(JobPost jobPost)
+        {
+            id = jobPost.jobPostId;
+            name = jobPost.jobPostName;
+            //Set the JobType
+            if (jobPost.jobPostType == "Job")
+            {
+                type = JobType.Job;
+            }
+            else
+            {
+                type = JobType.Volunteer;
+            }
+            experience = jobPost.jobPostExperience;
+            //Convert to dollar value (CAD)
+            salary = (float)jobPost.jobPostSalary / 100;
+            postedDate = jobPost.jobPostPostedDate;
+        }
+
+        public int id;
+
+        [Display(Name = "Name")]
+        public string name { get; set; }
+
+        [Display(Name = "Type")]
+        public JobType type { get; set; }
+
+        [Display(Name = "Experience")]
+        public int experience { get; set; }
+
+        [Display(Name = "Salary($)")]
+        [DisplayFormat(DataFormatString = "{0:c}")]
+        public float salary { get; set; }
+
+        [Display(Name = "PostedDate")]
+        public DateTime postedDate { get; set; }
+    }
+
     public class JobPostCreateViewModel
     {
         [Required]
@@ -35,7 +76,7 @@ namespace HSNHospitalProject.Models.ViewModels
 
         [Required]
         [Range(0, float.MaxValue, ErrorMessage = "The salary must be equal or greater than 0")]
-        [Display(Name = "Salary")]
+        [Display(Name = "Salary($)")]
         public float salary { get; set; }
 
         [Required]
@@ -75,7 +116,7 @@ namespace HSNHospitalProject.Models.ViewModels
 
         [Required]
         [Range(0, float.MaxValue, ErrorMessage = "The salary must be equal or greater than 0")]
-        [Display(Name = "Salary")]
+        [Display(Name = "Salary($)")]
         public float salary { get; set; }
 
         [Display(Name = "PostedDate")]

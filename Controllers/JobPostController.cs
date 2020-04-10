@@ -11,6 +11,7 @@ using System.Data.SqlClient;
 using HSNHospitalProject.Models;
 using HSNHospitalProject.Models.ViewModels;
 using PagedList;
+using HSNHospitalProject.Helpers;
 
 namespace HSNHospitalProject.Controllers
 {
@@ -21,12 +22,23 @@ namespace HSNHospitalProject.Controllers
         // GET: JobPost
         public ActionResult Index(int? page)
         {
+            //Only Admin has the permission to add, edit, and delete a Job Post
+            //Set a flag for the view to know what to show to the user (if admin show more control)
+            ViewData["isAdmin"] = LoggedInChecker.isAdmin();
+
             List<JobPost> jobPosts = db.JobPosts.ToList();
+            List<JobPostIndexViewModel> viewJobPost = new List<JobPostIndexViewModel>();
+            for (int i = 0; i < jobPosts.Count; i++)
+            {
+                viewJobPost.Add(new JobPostIndexViewModel(jobPosts[i]));
+            }
+
             //the amount of job posts per page
             int pageSize = 10;
             //set the page number to 1 if it is not already set
             int pageNumber = (page ?? 1);
-            return View(jobPosts.ToPagedList(pageNumber, pageSize));
+
+            return View(viewJobPost.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: JobPost/Details/8
@@ -36,6 +48,10 @@ namespace HSNHospitalProject.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
+            //Only Admin has the permission to edit a Job Post
+            //Set a flag for the view to know what to show to the user (if admin show edit link)
+            ViewData["isAdmin"] = LoggedInChecker.isAdmin();
 
             //Debug Purpose to see if we are getting the id
             Debug.WriteLine("I'm pulling data of " + id.ToString());
@@ -49,13 +65,36 @@ namespace HSNHospitalProject.Controllers
                 return HttpNotFound();
             }
 
+            //Check if the position is filled
+            //if filled then return back to the list if the user is not a admin
+            //otherwise show the detail
+            if (jobPost.jobPostFilled && !LoggedInChecker.isAdmin()) {
+                return RedirectToAction("Index");
+            }
+
+            ViewData["filled"] = jobPost.jobPostFilled;
+
             //return the JobPost data 
             return View(jobPost);
+        }
+
+        // POST: JobPost/Apply/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Apply(int id) {
+            //Must change the redirect to Applying Job (Not developed), so for now redirect to the back to the list
+            return RedirectToAction("Index");
         }
 
         // GET: JobPost/Create
         public ActionResult Create()
         {
+            //Only Admin has the permission to add a new Job Post
+            if (!LoggedInChecker.isAdmin())
+            {
+                return RedirectToAction("Index");
+            }
+
             JobPostCreateViewModel jobPostCreateViewModel = new JobPostCreateViewModel();
 
             //Method for creating the drop down list is referenced from: 
@@ -133,7 +172,8 @@ namespace HSNHospitalProject.Controllers
                 newJobPost.departmentId = model.departmentId;
                 newJobPost.jobPostExperience = model.experience;
                 newJobPost.jobPostFilled = false;
-                newJobPost.jobPostSalary = model.salary;
+                //Convert the Dollar CAD value to Cents value
+                newJobPost.jobPostSalary = (int)(model.salary * 100);
                 newJobPost.jobPostPostedDate = DateTime.Now;
                 newJobPost.jobPostClosedDate = null;
                 newJobPost.jobPostContent = model.content;
@@ -145,7 +185,7 @@ namespace HSNHospitalProject.Controllers
                 db.SaveChanges();
 
                 //Go back to the list of JobPost to see the added JobPost
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { add = true });
             }
 
             //Something failed, redisplay form
@@ -160,6 +200,12 @@ namespace HSNHospitalProject.Controllers
             {
                 //change to redirect to 
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            //Only Admin has the permission to edit a Job Post
+            if (!LoggedInChecker.isAdmin())
+            {
+                return RedirectToAction("Index");
             }
 
             //Debug Purpose to see if we are getting the id
@@ -189,7 +235,8 @@ namespace HSNHospitalProject.Controllers
             jobPostEditViewModel.allDepartments = GetAllDepartments();
             jobPostEditViewModel.experience = jobPost.jobPostExperience;
             jobPostEditViewModel.filled = jobPost.jobPostFilled;
-            jobPostEditViewModel.salary = jobPost.jobPostSalary;
+            //Convert the Dollar CAD value to Cents value
+            jobPostEditViewModel.salary = (float)jobPost.jobPostSalary / 100;
             jobPostEditViewModel.postedDate = jobPost.jobPostPostedDate;
             jobPostEditViewModel.closedDate = jobPost.jobPostClosedDate;
             jobPostEditViewModel.content = jobPost.jobPostContent;
@@ -231,7 +278,8 @@ namespace HSNHospitalProject.Controllers
                 jobPost.departmentId = model.departmentId;
                 jobPost.jobPostExperience = model.experience;
                 jobPost.jobPostFilled = model.filled;
-                jobPost.jobPostSalary = model.salary;
+                //Convert the Dollar CAD value to Cents value
+                jobPost.jobPostSalary = (int)(model.salary * 100);
                 jobPost.jobPostPostedDate = model.postedDate;
                 if (model.filled)
                 {
@@ -247,8 +295,8 @@ namespace HSNHospitalProject.Controllers
                 //Save the changes in the database
                 db.SaveChanges();
 
-                //Go back to the list of JobPost to see the added JobPost
-                return RedirectToAction("Index");
+                //Go back to the list of JobPost to see the updated JobPost
+                return RedirectToAction("Index", new { update = true });
             }
 
             //Something failed, redisplay form
@@ -262,6 +310,12 @@ namespace HSNHospitalProject.Controllers
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            //Only Admin has the permission to delete a Job Post
+            if (!LoggedInChecker.isAdmin())
+            {
+                return RedirectToAction("Index");
             }
 
             //Debug Purpose to see if we are getting the id
@@ -298,7 +352,7 @@ namespace HSNHospitalProject.Controllers
             db.SaveChanges();
 
             //Go back to the list of JobPost to see the removed JobPost
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { delete = true });
         }
 
         public List<SelectListItem> GetAllDepartments()

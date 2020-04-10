@@ -30,8 +30,8 @@ namespace HSNHospitalProject.Models
         //JobPost has a filled flag (if the job is taken or not)
         public bool jobPostFilled { get; set; }
 
-        //JobPost has a salary rate
-        public float jobPostSalary { get; set; }
+        //JobPost has a salary rate ($CAD and value is whole number by multiplying by 100) 
+        public int jobPostSalary { get; set; }
 
         //JobPost has a posted date
         public DateTime jobPostPostedDate { get; set; }
