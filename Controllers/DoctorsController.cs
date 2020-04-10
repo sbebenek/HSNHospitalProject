@@ -25,11 +25,15 @@ namespace HSNHospitalProject.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         // GET: Doctor
-        public ActionResult List(string searchkey, int pagenum =0)
+        public ActionResult List(string searchkey, int pagenum = 0)
         {
-           
-            if(LoggedIn.isLoggedIn() || LoggedIn.isAdmin())
+
+
+
+            if (LoggedIn.isLoggedIn())
             {
+                bool isAdmin = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).is_admin;
+                ViewData["isadmin"] = isAdmin;
                 string query = "select * from doctors";
                 List<SqlParameter> sqlparams = new List<SqlParameter>();
                 if (searchkey != "")
@@ -73,7 +77,7 @@ namespace HSNHospitalProject.Controllers
             else
             {
                 //if the user is not logged in then it take them to the register page
-                return Redirect("https://localhost:44315/Account/Register");
+                return RedirectToAction("Login","Account");
 
             }
 
@@ -103,24 +107,30 @@ namespace HSNHospitalProject.Controllers
             //}
 
         }
-        
+
 
         // GET: Doctor/Details/5
-        public ActionResult Show(int? id)
+        public ActionResult Show(int id)
         {
             string user = User.Identity.GetUserId();
-            
+
             if (LoggedIn.isAdmin())
             {
+                string query = "select * from Appointments where doctorId = @id";
+                var Parameter = new SqlParameter("@id", id);
+                List<Appointments> appointments = db.Appointments.SqlQuery(query, Parameter).ToList();
                 Doctors doctors = db.Doctors.Find(id);
-                return View(doctors);
+                AddAppointment viewmodel = new AddAppointment();
+                viewmodel.Appointments = appointments;
+                viewmodel.Doctor = doctors;
+                return View(viewmodel);
             }
             else
             {
                 return RedirectToAction("List", "Doctors");
             }
-            
-            
+
+
         }
 
         // GET: Doctor/Create
@@ -142,9 +152,9 @@ namespace HSNHospitalProject.Controllers
         // POST: Doctor/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Add( DoctorDepartment model ,string f_name, string l_name, string dob, string p_number, string e_address, string join_date, string work_days, int departmentId)
+        public ActionResult Add(DoctorDepartment model, string f_name, string l_name, string dob, string p_number, string e_address, string join_date, string work_days, int departmentId)
         {
-            
+
 
             if (ModelState.IsValid)
             {
@@ -168,7 +178,7 @@ namespace HSNHospitalProject.Controllers
                 }
 
             }
-              return View(model);
+            return View(model);
 
 
         }
@@ -194,13 +204,13 @@ namespace HSNHospitalProject.Controllers
                 return RedirectToAction("Index", "ErrorController");
             }
 
-           
+
 
         }
 
         // POST: Doctor/Edit/5
         [HttpPost]
-        public ActionResult Update(string id, string f_name, string l_name, string dob, string p_number, string e_address, string join_date, string work_days,int departmentId)
+        public ActionResult Update(string id, string f_name, string l_name, string dob, string p_number, string e_address, string join_date, string work_days, int departmentId)
         {
             if (LoggedIn.isAdmin())
             {
@@ -228,7 +238,7 @@ namespace HSNHospitalProject.Controllers
                 return RedirectToAction("Index", "ErrorController");
             }
 
-            
+
         }
 
         // GET: Doctor/Delete/5
@@ -255,7 +265,7 @@ namespace HSNHospitalProject.Controllers
                 return RedirectToAction("Index", "ErrorController");
 
             }
-            
+
         }
     }
 }

@@ -3,71 +3,85 @@
     ViewBag.Title = "List";
 }
 <form method="GET" action="/Doctors/List">
-    <input type="text" name="searchkey" id="searchkey" />
-    <input type="submit" name="submit" value="Search" />
+    <input type="text" class="form-control" style="float:right;margin-top:1em;" placeholder="Search" name="searchkey" id="searchkey" />
+    <input type="submit" class="btn btn-primary" style="float:right;margin-top:1em;" name="submit" value="Search" />
 </form>
-<a href="/Doctors/Add">Add Doctor Information</a>
+@{
+    if ((bool)ViewData["isadmin"] == true)
+    {
+        <a href="/Doctors/Add" style="margin-top:1em;" class="btn btn-success">Add Doctor Information</a>
+    }
+}
+
 @*<h2>Search by the department:</h2>
-<select style="margin-top:1em" id="departmentId" type="text" name="departmentId">
-    @{
-        foreach (var department in @Model.departments)
-        {
-            <option value="@department.departmentId">@department.departmentName</option>
+    <select style="margin-top:1em" id="departmentId" type="text" name="departmentId">
+        @{
+            foreach (var department in @Model.departments)
+            {
+                <option value="@department.departmentId">@department.departmentName</option>
+            }
         }
-    }
-</select>*@
-<div class="paginate">
-    @{
-        <a href="/Doctors/List?pagenum=@((int)ViewData["pagenum"]-1)&searchkey=@ViewData["searchkey"]">Prev</a>
-        @ViewData["pagesummary"]
-        <a href="/Doctors/List?pagenum=@((int)ViewData["pagenum"]+1)&searchkey=@ViewData["searchkey"]">Next</a>
-    }
-</div>
-<h2>List</h2>
+    </select>*@
+
+<h2>Doctor Information:</h2>
+<p>
+    From here you can find useful information about a doctor such as doctor name, specialty (In which department they are working) and their working hours.
+</p>
 <div>
     @foreach (var doctors in @Model)
     {
         <div style="margin-top:1em"><a href="/Doctors/show/@doctors.doctorId">@doctors.doctorFName @doctors.doctorLName</a></div>
-        <div style="margin-left:5em">Working Hours:@doctors.doctorWorkingDays</div>
+        <div style="margin-left:5em">Working days:@doctors.doctorWorkingDays</div>
+        <div style="margin-left:5em">Department:@doctors.Department.departmentName</div>
+
 
     }
 </div>
-@*
-    //this is the script file for ajax 
-    //get the value form the department dropdown and then show the doctor 
-    //who are working in that deparment
-
-    <script type="text/javascript">
-    $(document).ready(function () {
-        $('#departmentId').change(function () {
-            var selected_department = $(this).val();
-        });
-        $.ajax({
-            type: 'GET',
-            traditional: true,
-            async: false,
-            cache:false,
-            url: '/Doctors/List',
-            context: document.body,
-            success: function (result) {
-                alert(result);
-            }
-        })
-        function getDoctorList() {
-            var Doctor = {};
-            var DoctorList = [];
-            for (var i = 0; i <= 5; i++) {
-                Doctor["doctorFName"] = i;
-                Doctor["doctorLName"] = i;
-                DoctorList.push(Doctor);
-            }
-            return JSON.stringify(DoctorList);
+<nav aria-label="Page navigation example">
+    <div class="pagination pagination-lg">
+        @{
+            <a href="/Doctors/List?pagenum=@((int)ViewData["pagenum"]-1)&searchkey=@ViewData["searchkey"]" class="page-link">Prev</a>
+            @ViewData["pagesummary"]
+            <a href="/Doctors/List?pagenum=@((int)ViewData["pagenum"]+1)&searchkey=@ViewData["searchkey"]">Next</a>
         }
+    </div>
+</nav>
+@*
+        //this is the script file for ajax
+        //get the value form the department dropdown and then show the doctor
+        //who are working in that deparment
 
-    })
-</script>
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+        <script type="text/javascript">
+        $(document).ready(function () {
+            $('#departmentId').change(function () {
+                var selected_department = $(this).val();
+            });
+            $.ajax({
+                type: 'GET',
+                traditional: true,
+                async: false,
+                cache:false,
+                url: '/Doctors/List',
+                context: document.body,
+                success: function (result) {
+                    alert(result);
+                }
+            })
+            function getDoctorList() {
+                var Doctor = {};
+                var DoctorList = [];
+                for (var i = 0; i <= 5; i++) {
+                    Doctor["doctorFName"] = i;
+                    Doctor["doctorLName"] = i;
+                    DoctorList.push(Doctor);
+                }
+                return JSON.stringify(DoctorList);
+            }
+
+        })
+    </script>
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
 *@
 

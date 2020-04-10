@@ -75,3 +75,20 @@ textarea {
     flex-direction: row;
     justify-content: space-evenly;
 }
+
+.galleryDescription {
+    margin-right: 20%;
+}
+
+@media (max-width:1024px) {
+    .galleryDescription {
+        margin-right: 50%;
+    }
+}
+
+
+@media (max-width:600px) {
+    .galleryDescription {
+        margin-right: 0%;
+    }
+}

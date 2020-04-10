@@ -22,9 +22,9 @@ namespace HSNHospitalProject.Models.ViewModels
         public string date { get; set; }
 
 
-       
+
     }
-   
-    
+
+
 
 }

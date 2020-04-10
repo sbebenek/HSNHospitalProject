@@ -22,9 +22,9 @@ namespace HSNHospitalProject.Models
         public string patientDOB { get; set; }
         public string patientEAddress { get; set; }
 
-        [RegularExpression(@"^[+]*(1)*(\s)*[0-9]{3}(-|\s)*[0-9]{3}(-|\s)*[0-9]{4}*$")]
-        [Required]
-        [StringLength(30)]
+        //[RegularExpression(@"^[+]*(1)*(\s)*[0-9]{3}(-|\s)*[0-9]{3}(-|\s)*[0-9]{4}*$")]
+        //[Required]
+        //[StringLength(30)]
         public string patientPNumber { get; set; }
         public string patientHAddress { get; set; }
         public string patientHealthCard { get; set; }

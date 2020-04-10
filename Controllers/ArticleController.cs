@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Diagnostics;
 using System.Data.SqlClient;
+using HSNHospitalProject.Helpers;
 using HSNHospitalProject.Models;
 using HSNHospitalProject.Models.ViewModels;
 
@@ -19,6 +20,7 @@ namespace HSNHospitalProject.Controllers
 
         public ActionResult Index(string articleSearchKey,int pagenum=0)
         {
+            TempData["isAdmin"] = LoggedInChecker.isAdmin();
             List<Article> articles = db.Articles.Where(a => (articleSearchKey != null) ? a.articleTitle.Contains(articleSearchKey) : true).ToList();
             int perpage = 3;
             int articleCount = articles.Count();
@@ -47,20 +49,36 @@ namespace HSNHospitalProject.Controllers
 
         public ActionResult Create()
         {
-            return View();
+            if (LoggedInChecker.isAdmin())
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+            
         }
 
         public ActionResult Update(int id)
         {
-            Article article = db.Articles.SqlQuery("select * from articles where articleId=@articleId", new SqlParameter("@articleId", id)).FirstOrDefault();
-
-            if (article == null)
+            if (LoggedInChecker.isAdmin())
             {
-                return HttpNotFound();
+                Article article = db.Articles.SqlQuery("select * from articles where articleId=@articleId", new SqlParameter("@articleId", id)).FirstOrDefault();
 
+                if (article == null)
+                {
+                    return HttpNotFound();
+
+                }
+                return View(article);
             }
-            return View(article);
+            else
+            {
+                return RedirectToAction("Index");
+            }
         }
+            
 
         [HttpPost]
         public ActionResult Update(Article article, int id)
@@ -93,6 +111,21 @@ namespace HSNHospitalProject.Controllers
             db.Database.ExecuteSqlCommand(query, sqlParameters);
 
             return RedirectToAction("Index");
+        }
+
+        public ActionResult Delete(int? id)
+        {
+            if (LoggedInChecker.isAdmin())
+            {
+                Article article = db.Articles.Find(id);
+                db.Articles.Remove(article);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
         }
 
         protected override void Dispose(bool disposing)

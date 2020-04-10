@@ -1,26 +1,23 @@
-﻿@model List<HSNHospitalProject.Models.Patients>
+﻿@model HSNHospitalProject.Models.ViewModels.AddAppointment
 @{
     ViewBag.Title = "List";
 }
-<div>
-    @foreach (var patient in @Model)
-    {
+    <div>
+        <a class="btn btn-success" style="margin-top:1em" href="/Patients/Add">Add New</a>
+    </div>
+    <div style="float:right">
+        <a class="btn btn-success" style="margin-top:-4em" href="/Appointments/Add">Book an Appointment</a>
+    </div>
+    <div>
+        @foreach (var Patient in @Model.Patients)
+        {
+            <h2 style="margin-top:1em"><a href="/Patients/Show/@Patient.patientId">@Patient.patientFName @Patient.patientLName</a></h2>
+            <div style="margin-left:5em">Patient Email Address: @Patient.patientEAddress</div>
+            <div style="margin-left:5em">Patient Phone Number: @Patient.patientPNumber</div>
+        }
 
-        <h2 style="margin-top:1em">@patient.patientFName @patient.patientLName</h2>
-        <div style="margin-left:5em">Patient Date of Birth: @patient.patientDOB</div>
-        <div style="margin-left:5em">Patient Email Address: @patient.patientEAddress</div>
-        <div style="margin-left:5em">Patient Phone Number: @patient.patientPNumber</div>
-        <div style="margin-left:5em">Patient Home Address @patient.patientHAddress</div>
-        <div style="margin-left:5em">Patient Health Card Number @patient.patientHealthCard</div>
-        <div class="btn-warning" style="margin:1em;font-size:20px;text-align:center">
-            <a class="navlink" onClick="javascript: return confirm('Are you really want to delete this?');" href="/Patients/Delete/@patient.patientId">Delete</a>
-        </div>
-        <div class="btn-warning" style="margin:1em;font-size:20px;text-align:center">
-            <a class="navlink" href="/Patients/Edit/@patient.patientId">Edit</a>
-        </div>
-    }
-
-</div>
+    </div>
+    
 
 
 

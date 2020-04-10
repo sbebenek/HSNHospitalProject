@@ -6,11 +6,11 @@
 
 <h2>Update @Model.articleTitle</h2>
 
-<form method="post" action="">
+<form method="post" name="update" action="">
 
     @Html.LabelFor(model => model.articleTitle, "Title")
-    <div>
-        @Html.EditorFor(model => model.articleTitle, Model.articleTitle)
+    <div style="margin-bottom:1rem;">
+        @Html.EditorFor(model => model.articleTitle, Model.articleTitle ,new { htmlAttributes = new { @class = "form-control" } })
     </div>
 
     @*The empty div we will use to hold the RTE*@
@@ -23,7 +23,7 @@
             @Html.TextArea("articleBody", Model.articleBody, new { @class = "form-control form-control full articleBody", rows = 15, cols = 100 })
         </div>*@
     <div class="form-group">
-        <input type="submit" id="submit" class="btn btn-primary" value="Update Article" />
+        <input type="submit" style="margin-top:1rem;" id="submit" class="btn btn-primary" value="Update Article" />
     </div>
 
 </form>
@@ -63,7 +63,7 @@ var quill = new Quill('#articleBodyTextArea', options);
    
     
 
-var form = document.querySelector('form');
+var form = document.querySelector('form[name=update]');
 form.onsubmit = function () {
     // Populate hidden form on submit
     var description = document.querySelector('input[name=articleBody]');

@@ -1,0 +1,28 @@
+﻿@model HSNHospitalProject.Models.ViewModels.AddAppointment
+@{
+    ViewBag.Title = "Show";
+}
+
+
+<h2 style="margin-top:1em">@Model.Patient.patientFName @Model.Patient.patientLName</h2>
+<div style="margin-left:5em">Patient Date of Birth: @Model.Patient.patientDOB</div>
+<div style="margin-left:5em">Patient Email Address: @Model.Patient.patientEAddress</div>
+<div style="margin-left:5em">Patient Phone Number: @Model.Patient.patientPNumber</div>
+<div style="margin-left:5em">Patient Home Address @Model.Patient.patientHAddress</div>
+<div style="margin-left:5em">Patient Health Card Number @Model.Patient.patientHealthCard</div>
+<div style="margin:1em;" class="btn btn-warning">
+    <a style="font-size:20px;color:white" href="/Patients/Edit/@Model.Patient.patientId">Edit</a>
+</div>
+<div style="margin:1em;" class="btn btn-danger">
+    <a style="font-size:20px;color:white"  href="/Patients/Delete/@Model.Patient.patientId">Delete</a>
+</div>
+<div>
+    <h2>Booked Appointments</h2>
+    @foreach (var appointments in @Model.Appointments)
+    {
+        <h3><a href="/Appointments/show/@appointments.appointmentId">@appointments.appointmentDate.ToLongDateString() @appointments.appointmentDate.ToLongTimeString()</a></h3>
+        <div>Patient Name: @appointments.Doctor.doctorFName @appointments.Doctor.doctorLName</div>
+    }
+
+</div>
+       
