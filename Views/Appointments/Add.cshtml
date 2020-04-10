@@ -4,12 +4,12 @@
 }
 
 <form method="POST" action="/Appointments/Add">
-    <h2 style="color:darkgreen;text-align:center">Appointment Information</h2>
+    <h2 style="text-align:center">Appointment Information</h2>
     <div>
         <label>Appointment Date:</label>
         <input class="form-control" type="text" name="a_date" />
     </div>
-    <div>
+    <div style="margin-top:1em">
         <label>Appointment Time:</label>
         <select name="a_time">
             @{
@@ -29,7 +29,7 @@
             }
         </select>
     </div>
-    <div>
+    <div style="margin-top:1em">
         <label>Doctor Name:</label>
         <select name="d_name">
             @foreach (var doctor in Model.Doctors)
@@ -42,8 +42,8 @@
         <label>Appointment Reason:</label>
         <input class="form-control" type="text" name="a_reason" />
     </div>
-    <div class="btn-warning" style="margin:1em;text-align:center;">
-        <input type="submit" name="submit" class="btn-warning" style="font-size:20px;color:green" value="Book Now" />
+    <div  style="margin:1em;">
+        <input type="submit" name="submit" class="btn btn-success" style="font-size:20px;" value="Book Now" />
     </div>
 </form>
 

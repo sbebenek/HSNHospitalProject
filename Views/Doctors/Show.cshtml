@@ -1,22 +1,31 @@
-﻿@model HSNHospitalProject.Models.Doctors
+﻿@model HSNHospitalProject.Models.ViewModels.AddAppointment
 @{
     ViewBag.Title = "Show";
 }
 
 
 <div>
-    <div style="margin-top:1em;color:forestgreen;font-size:x-large">Detail of @Model.doctorFName @Model.doctorLName</div>
-    <div style="margin-left:5em">Email:@Model.doctorEAddress</div>
-    <div style="margin-left:5em">Date of Birth:@Model.doctorDOB</div>
-    <div style="margin-left:5em">Phone Number:@Model.doctorPNumber</div>
-    <div style="margin-left:5em">Join Date:@Model.doctorJoinDate</div>
-    <div style="margin-left:5em">Department:@Model.Department.departmentName</div>
-    <div style="margin-left:5em">Working Hours:@Model.doctorWorkingDays</div>
-    <div class="btn-warning" style="margin:1em;font-size:20px;text-align:center">
-        <a href="/Doctors/Update/@Model.doctorId">Update</a>
+    <div style="margin-top:1em;font-size:x-large">Detail of @Model.Doctor.doctorFName @Model.Doctor.doctorLName</div>
+    <div style="margin-left:5em">Email:@Model.Doctor.doctorEAddress</div>
+    <div style="margin-left:5em">Date of Birth:@Model.Doctor.doctorDOB</div>
+    <div style="margin-left:5em">Phone Number:@Model.Doctor.doctorPNumber</div>
+    <div style="margin-left:5em">Join Date:@Model.Doctor.doctorJoinDate</div>
+    <div style="margin-left:5em">Department:@Model.Doctor.Department.departmentName</div>
+    <div style="margin-left:5em">Working Hours:@Model.Doctor.doctorWorkingDays</div>
+    <div class="btn btn-warning" style="margin:1em;font-size:20px;text-align:center">
+        <a style="color:white" href="/Doctors/Update/@Model.Doctor.doctorId">Update</a>
     </div>
-    <div class="btn-warning" style="margin:1em;font-size:20px;text-align:center">
-        <a class="navlink" onClick="javascript: return confirm('Are you really want to delete this?');" href="/Doctors/Delete/@Model.doctorId">Delete</a>
+    <div class="btn btn-danger" style="margin:1em;font-size:20px;text-align:center">
+        <a style="color:white" onClick="javascript: return confirm('Are you really want to delete this?');" href="/Doctors/Delete/@Model.Doctor.doctorId">Delete</a>
     </div>
+</div>
+<div>
+    <h2>Booked Appointments</h2>
+    @foreach (var appointments in @Model.Appointments)
+    {
+        <h3><a href="/Appointments/show/@appointments.appointmentId">@appointments.appointmentDate.ToLongDateString() @appointments.appointmentDate.ToLongTimeString()</a></h3>
+        <div>Patient Name: @appointments.Patient.patientFName @appointments.Patient.patientLName</div>
+    }
+
 </div>
 

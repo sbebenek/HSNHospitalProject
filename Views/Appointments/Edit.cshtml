@@ -4,7 +4,7 @@
 }
 
 <form method="POST" action="/Appointments/Edit/@Model.Appointment.appointmentId">
-    <h2 style="color:darkgreen;text-align:center">Appointment Details:</h2>
+    <h2 style="text-align:center">Appointment Details:</h2>
     <div>
         @*store the date*@
         @{
@@ -55,8 +55,8 @@
         <label>Appointment Reason:</label>
         <input class="form-control" type="text" name="a_reason" value="@Model.Appointment.appointmentReason" />
     </div>
-    <div class="btn-warning" style="margin:1em;text-align:center;">
-        <input type="submit" name="submit" class="btn-warning" style="font-size:20px;color:green" value="Update" />
+    <div style="margin:1em">
+        <input type="submit" name="submit" class="btn btn-warning" style="font-size:20px" value="Update" />
     </div>
 </form>
 

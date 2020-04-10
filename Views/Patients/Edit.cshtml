@@ -4,7 +4,7 @@
 }
 
 <form method="POST" action="/Patients/Edit/@Model.patientId">
-    <h2 style="color:darkgreen;text-align:center">Update information of @Model.patientFName @Model.patientLName</h2>
+    <h2 style="text-align:center">Update information of @Model.patientFName @Model.patientLName</h2>
     <div>
         <label>First Name:</label>
         <input class="form-control" type="text" name="f_name" value="@Model.patientFName" />
@@ -33,7 +33,7 @@
         <label>Health Card Number:</label>
         <input class="form-control" type="text" name="health_number" value="@Model.patientHealthCard" />
     </div>
-    <div class="btn-warning" style="margin:1em;text-align:center;">
-        <input type="submit" name="submit" class="btn-warning" style="font-size:20px;color:green" value="Update" />
+    <div style="margin:1em">
+        <input type="submit" name="submit" class="btn btn-warning" style="font-size:20px" value="Edit" />
     </div>
 </form>

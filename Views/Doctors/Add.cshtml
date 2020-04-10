@@ -3,7 +3,7 @@
     ViewBag.Title = "Add";
 }
 
-<h2 style="color:darkgreen;text-align:center">Doctor Information</h2>
+<h2 style="text-align:center">Doctor Information</h2>
 <form method="POST" action="/Doctors/Add">
     @Html.AntiForgeryToken()
     <div>
@@ -16,7 +16,7 @@
     </div>
     <div>
         <label>Date of Birth:</label>
-        <input class="form-control" type="text" name="dob" /> 
+        <input class="form-control" type="text" name="dob" />
     </div>
     <div>
         <label>Phone Number:</label>
@@ -26,6 +26,10 @@
     <div>
         <label>Email Address:</label>
         <input class="form-control" type="text" name="e_address" />
+    </div>
+    <div>
+        <label>Working days:</label>
+        <input class="form-control" type="text" name="work_days" />
     </div>
     <div style="font-size:15px">
         <span style="color:black;font-weight:bold">Department:</span><br />
@@ -38,18 +42,17 @@
             }
         </select>
     </div>
-    <div>
-        <label>Join Date:</label>
+    <div style="margin-top:1em">
+
         @Html.ValidationSummary(true)
-        @Html.EditorFor(model => model.date, new { @name = "join_date" })
+        @Html.LabelFor(model => model.date)
+        <input name="join_date"
+               @Html.EditorFor(model => model.date) />
         @Html.ValidationMessageFor(model => model.date)
     </div>
-    <div>
-        <label>Working days:</label>
-        <input class="form-control" type="text" name="work_days" />
-    </div>
-    <div class="btn-warning" style="margin:1em;text-align:center;">
-        <input type="submit" name="submit" class="btn-warning" style="font-size:20px;color:green" value="Add" />
+
+    <div style="margin:1em;text-align:center;">
+        <input type="submit" name="submit" class="btn btn-success" style="font-size:20px" value="Add" />
     </div>
 </form>
 

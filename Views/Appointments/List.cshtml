@@ -2,19 +2,22 @@
 @{
     ViewBag.Title = "List";
 }
-<div class="navbar">
-    <a class="navlink" href="/Appointments/Add">Add New</a>
+<div>
+    <a class="btn btn-success" style="margin-top:1em" href="/Appointments/Add">Add New</a>
 </div>
-<div class="navbar">
-    <a class="navlink" href="/Patients/List">Patient Details:</a>
+<div style="float:right">
+    <a class="btn btn-warning" style="margin-top:-4em" href="/Patients/List">Patient Details</a>
 </div>
 <h2>Appointments</h2>
 <div>
     @foreach (var appointments in @Model)
     {
-        <h2 style="margin-top:1em;"><a href="/Appointments/show/@appointments.appointmentId">@appointments.appointmentDate</a></h2>
+        <h2 style="margin-top:1em;"><a class="btn btn-info" href="/Appointments/show/@appointments.appointmentId">@appointments.appointmentDate.ToLongDateString() @appointments.appointmentDate.ToLongTimeString()</a></h2>
         <div style="margin-left:5em"><a href="/Patients/List/@appointments.patientId">Patient Name:@appointments.Patient.patientFName @appointments.Patient.patientLName</a></div>
         <div style="margin-left:5em"><a href="/Doctors/List/">Doctor Name:@appointments.Doctor.doctorFName @appointments.Doctor.doctorLName</a></div>
     }
+</div>
+<div>
+    <a class="btn btn-danger" style="margin-top:1em" onClick="javascript: return confirm('Are you really want to delete this?');" href="/Appointments/DeleteMultiple">Delete Old Appointments</a>
 </div>
 

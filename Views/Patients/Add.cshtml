@@ -4,7 +4,7 @@
 }
 
 <form method="POST" action="/Patients/Add">
-    <h2 style="color:darkgreen;text-align:center">Patient Information</h2>
+    <h2 style="text-align:center">Patient Information</h2>
     <div>
         <label>First Name:</label>
         <input class="form-control" type="text" name="f_name" />
@@ -33,7 +33,10 @@
         <label>Health Card Number:</label>
         <input class="form-control" type="text" name="health_number" />
     </div>
-    <div class="btn-warning" style="margin:1em;text-align:center;">
-        <input type="submit" name="submit" class="btn-warning" style="font-size:20px;color:green" value="Add" />
+    <div style="margin:1em;text-align:center;">
+        <input type="submit" name="submit" class="btn btn-success" style="font-size:20px" value="Add" />
     </div>
 </form>
+<div>
+    @Html.ActionLink("Back to List", "List")
+</div>

@@ -2,22 +2,20 @@
 @{
     ViewBag.Title = "List";
 }
-<div class="navbar">
-    <a class="navlink" href="/Appointments/Add">Add New</a>
-</div>
+
 
 <div>
 
-    <h2 style="margin-top:1em"><a href="/Appointments/show/@Model.appointmentId">@Model.appointmentDate</a></h2>
+    <h2 style="margin-top:1em;"><a class="btn btn-info" href="/Appointments/show/@Model.appointmentId">@Model.appointmentDate.ToLongDateString() @Model.appointmentDate.ToLongTimeString()</a></h2>
     <div style="margin-left:5em">Patient Name:@Model.Patient.patientFName @Model.Patient.patientLName</div>
     <div style="margin-left:5em">Doctor Name:@Model.Doctor.doctorFName @Model.Doctor.doctorLName</div>
     <div style="margin-left:5em">Reason:@Model.appointmentReason</div>
     <div style="margin-left:5em">Reference Number: @Model.appointmentReferenceNumebr</div>
-    <div class="btn-warning" style="margin:1em;font-size:20px;text-align:center">
-        <a href="/Appointments/Edit/@Model.appointmentId">Update</a>
+    <div class="btn btn-warning" style="margin:1em;font-size:20px;text-align:center">
+        <a style="color:white" href="/Appointments/Edit/@Model.appointmentId">Update</a>
     </div>
-    <div class="btn-warning" style="margin:1em;font-size:20px;text-align:center">
-        <a class="navlink" onClick="javascript: return confirm('Are you really want to delete this?');" href="/Appointments/Delete/@Model.appointmentId">Delete</a>
+    <div class="btn btn-danger" style="margin:1em;font-size:20px;text-align:center">
+        <a style="color:white" onClick="javascript: return confirm('Are you really want to delete this?');" href="/Appointments/Delete/@Model.appointmentId">Delete</a>
     </div>
 
 </div>
