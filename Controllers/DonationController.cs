@@ -73,6 +73,8 @@ namespace HSNHospitalProject.Models
         // GET: Donation/Create
         public ActionResult Create()
         {
+            ViewData["isAdmin"] = LoggedInChecker.isAdmin();
+
             return View();
         }
 
