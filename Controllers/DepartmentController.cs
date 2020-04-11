@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Data.SqlClient;
 using HSNHospitalProject.Models;
 using HSNHospitalProject.Models.ViewModels;
+using HSNHospitalProject.Helpers;
 
 namespace HSNHospitalProject.Controllers
 {
@@ -20,7 +21,11 @@ namespace HSNHospitalProject.Controllers
         // GET: Department
         public ActionResult Index()
         {
-            return View(db.Departments.ToList());
+            //Only Admin has the permission to see any of the Department info.
+            if (LoggedInChecker.isAdmin()) {
+                return View(db.Departments.ToList());
+            }
+            return RedirectToAction("../Home/Index");
         }
 
         // GET: Department/Details/8
@@ -29,6 +34,12 @@ namespace HSNHospitalProject.Controllers
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            //Only Admin has the permission to see any of the Department info.
+            if (!LoggedInChecker.isAdmin())
+            {
+                return RedirectToAction("../Home/Index");
             }
 
             //Debug Purpose to see if we are getting the id
@@ -50,6 +61,11 @@ namespace HSNHospitalProject.Controllers
         // GET: Department/Create
         public ActionResult Create()
         {
+            //Only Admin has the permission to see any of the Department info.
+            if (!LoggedInChecker.isAdmin())
+            {
+                return RedirectToAction("../Home/Index");
+            }
             return View();
         }
 
@@ -72,7 +88,7 @@ namespace HSNHospitalProject.Controllers
                     db.Database.ExecuteSqlCommand(query, sqlparam);
 
                     //Go back to the list of Department to see the added Department
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index", new { add = true });
                 }               
             }
 
@@ -87,6 +103,12 @@ namespace HSNHospitalProject.Controllers
             {
                 //change to redirect to 
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            //Only Admin has the permission to see any of the Department info.
+            if (!LoggedInChecker.isAdmin())
+            {
+                return RedirectToAction("../Home/Index");
             }
 
             //Debug Purpose to see if we are getting the id
@@ -132,7 +154,7 @@ namespace HSNHospitalProject.Controllers
                     db.Database.ExecuteSqlCommand(query, sqlparams);
 
                     //Go back to the list of Department to see the edited Department
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index", new { update = true });
                 }
             }
 
@@ -146,6 +168,12 @@ namespace HSNHospitalProject.Controllers
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            //Only Admin has the permission to see any of the Department info.
+            if (!LoggedInChecker.isAdmin())
+            {
+                return RedirectToAction("../Home/Index");
             }
 
             //Debug Purpose to see if we are getting the id
@@ -182,7 +210,7 @@ namespace HSNHospitalProject.Controllers
             db.SaveChanges();
 
             //Go back to the list of Department to see the removed Department
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { delete = true });
         }
     }
 }

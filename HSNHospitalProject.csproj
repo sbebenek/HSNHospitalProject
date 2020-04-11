@@ -263,9 +263,17 @@
     <Compile Include="Migrations\202004090311418_DataAnnotations.Designer.cs">
       <DependentUpon>202004090311418_DataAnnotations.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004102035561_Change-datatype-for-salary-in-jobpost.cs" />
+    <Compile Include="Migrations\202004102035561_Change-datatype-for-salary-in-jobpost.Designer.cs">
+      <DependentUpon>202004102035561_Change-datatype-for-salary-in-jobpost.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\202004092346570_valid.cs" />
     <Compile Include="Migrations\202004092346570_valid.designer.cs">
       <DependentUpon>202004092346570_valid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004102155567_Fix-Merge-Error-Database-Update.cs" />
+    <Compile Include="Migrations\202004102155567_Fix-Merge-Error-Database-Update.designer.cs">
+      <DependentUpon>202004102155567_Fix-Merge-Error-Database-Update.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -275,7 +283,7 @@
     <Compile Include="Models\Department.cs" />
     <Compile Include="Models\Doctors.cs" />
     <Compile Include="Models\Donation.cs" />
-    <Compile Include="Models\DonationController.cs" />
+    <Compile Include="Controllers\DonationController.cs" />
     <Compile Include="Models\GalleryImages.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\JobPost.cs" />
@@ -498,8 +506,14 @@
     <EmbeddedResource Include="Migrations\202004090311418_DataAnnotations.resx">
       <DependentUpon>202004090311418_DataAnnotations.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004102035561_Change-datatype-for-salary-in-jobpost.resx">
+      <DependentUpon>202004102035561_Change-datatype-for-salary-in-jobpost.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004092346570_valid.resx">
       <DependentUpon>202004092346570_valid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004102155567_Fix-Merge-Error-Database-Update.resx">
+      <DependentUpon>202004102155567_Fix-Merge-Error-Database-Update.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

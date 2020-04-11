@@ -5,11 +5,20 @@
 }
 <h2>News</h2>
 
+@if ((bool)TempData["isAdmin"] == true)
+{
+<div class="container" style="margin-bottom:1rem;">
+    <a href="/Article/Create" class="btn btn-default">Add a new Article</a>
+</div>
+}    
 
-<form style="margin-bottom:1rem;" action="/Article/Index" method="GET">
+<div class="container">
+    <form style="margin-bottom:1rem;" class="mt-2" action="/Article/Index" method="GET">
     <input class="form-control" type="text" name="articleSearchKey" id="articleSearchKey" />
     <input style="margin-top:1rem" class="btn" type="submit" value="Search" />
-</form>
+    </form>
+</div>
+
 
 
 
@@ -19,7 +28,16 @@
     {
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h2 class="panel-title"><a href="/Article/Update/@article.articleId">@article.articleTitle</a></h2>
+                <h2 class="panel-title">
+                    @if ((bool)TempData["isAdmin"] == true)
+                    {
+                        <a href="/Article/Update/@article.articleId">@article.articleTitle</a>
+                    }
+                    else
+                    {
+                        @article.articleTitle
+                    }
+                </h2>
                 @*format the date*@
                 <p class="text-muted">@article.articleDatePosted.Date.ToString("dddd, dd MMMM yyyy")</p>
             </div>

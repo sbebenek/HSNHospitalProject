@@ -49,7 +49,7 @@
         </dd>
 
         <dt>
-            Salary
+            Salary($)
         </dt>
 
         <dd>
@@ -64,14 +64,17 @@
             @Html.DisplayFor(model => model.jobPostPostedDate)
         </dd>
 
-        <dt>
-            Closed Date
-        </dt>
+        <!-- Only show the closed date when the position is filled -->
+        @if ((bool)ViewData["filled"])
+        {
+            <dt>
+                Closed Date
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.jobPostClosedDate)
-        </dd>
-
+            <dd>
+                @Html.DisplayFor(model => model.jobPostClosedDate)
+            </dd>
+        }
         <dt>
             Content
         </dt>
@@ -83,6 +86,20 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.jobPostId }) |
+    <!-- Only Admin has the permission to edit a Job Post -->
+    @if ((bool)ViewData["isAdmin"])
+    {
+        @:@Html.ActionLink("Edit", "Edit", new { id = Model.jobPostId }) |
+    }
     @Html.ActionLink("Back to List", "Index")
 </p>
+<!-- Apply for the Job (This is a different feature for the job application). As of now it is not developed -->
+@if (!(bool)ViewData["filled"])
+{
+    <form action="/JobPost/Apply/@Model.jobPostId" method="post">
+        @Html.AntiForgeryToken()
+        <div class="form-actions no-color">
+            <input type="submit" value="Apply" class="btn btn-default" />
+        </div>
+    </form>
+}

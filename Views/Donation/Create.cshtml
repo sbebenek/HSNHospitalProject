@@ -92,7 +92,10 @@
         </div>
     </div>
 </form>
+@if ((bool)ViewData["isAdmin"])
+{
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+}
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>

@@ -14,6 +14,8 @@ using Stripe;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using PagedList;
+using HSNHospitalProject.Helpers;
+
 
 namespace HSNHospitalProject.Models
 {
@@ -25,7 +27,7 @@ namespace HSNHospitalProject.Models
         public ActionResult Index(int? page)
         {
             //Check if the user has the permission (admin)
-            if (!IsAdmin())
+            if (!LoggedInChecker.isAdmin())
             {
                 //redirect to the home page
                 return RedirectToAction("Create");
@@ -71,6 +73,8 @@ namespace HSNHospitalProject.Models
         // GET: Donation/Create
         public ActionResult Create()
         {
+            ViewData["isAdmin"] = LoggedInChecker.isAdmin();
+
             return View();
         }
 
@@ -252,7 +256,7 @@ namespace HSNHospitalProject.Models
             //Go back to see the added Donation
 
             //Go back to the list of Donation if user is admin            
-            if (IsAdmin())
+            if (LoggedInChecker.isAdmin())
             {
                 return RedirectToAction("Index", new { add = true });
             }
@@ -289,7 +293,7 @@ namespace HSNHospitalProject.Models
             }
 
             //Check if the user has the permission (admin)
-            if (!IsAdmin()) {
+            if (!LoggedInChecker.isAdmin()) {
                 //redirect to the home page
                 return RedirectToAction("../Home/Index");
             }
@@ -342,21 +346,21 @@ namespace HSNHospitalProject.Models
             return RedirectToAction("Index", new { delete = true });
         }
 
-        public bool IsAdmin() {
-            //Check to see if user is logged in
-            if (System.Web.HttpContext.Current.User == null) {
-                return false;
-            }
-            else if (!System.Web.HttpContext.Current.User.Identity.IsAuthenticated) {
-                return false;
-            }
-            else if (HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).is_admin) {
-                //User is a admin
-                return true;
-            }
-            //The user is not a admin
-            return false;
-        }
+        //public bool IsAdmin() {
+        //    //Check to see if user is logged in
+        //    if (System.Web.HttpContext.Current.User == null) {
+        //        return false;
+        //    }
+        //    else if (!System.Web.HttpContext.Current.User.Identity.IsAuthenticated) {
+        //        return false;
+        //    }
+        //    else if (HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId()).is_admin) {
+        //        //User is a admin
+        //        return true;
+        //    }
+        //    //The user is not a admin
+        //    return false;
+        //}
 
     }
 }
