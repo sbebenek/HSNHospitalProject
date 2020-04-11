@@ -24,13 +24,18 @@ namespace HSNHospitalProject.Controllers
         {
             //Only Admin has the permission to add, edit, and delete a Job Post
             //Set a flag for the view to know what to show to the user (if admin show more control)
-            ViewData["isAdmin"] = LoggedInChecker.isAdmin();
+            bool isAdmin = LoggedInChecker.isAdmin();
+            ViewData["isAdmin"] = isAdmin;
 
             List<JobPost> jobPosts = db.JobPosts.ToList();
             List<JobPostIndexViewModel> viewJobPost = new List<JobPostIndexViewModel>();
             for (int i = 0; i < jobPosts.Count; i++)
             {
-                viewJobPost.Add(new JobPostIndexViewModel(jobPosts[i]));
+                //if the user is not a admin don't show job that are already filled
+                if (isAdmin || !jobPosts[i].jobPostFilled)
+                {
+                    viewJobPost.Add(new JobPostIndexViewModel(jobPosts[i]));
+                }
             }
 
             //the amount of job posts per page
@@ -73,6 +78,12 @@ namespace HSNHospitalProject.Controllers
             }
 
             ViewData["filled"] = jobPost.jobPostFilled;
+
+            //if the user is not a admin don't show job detail that are already filled
+            if (!LoggedInChecker.isAdmin() && jobPost.jobPostFilled)
+            {
+                return RedirectToAction("Index");
+            }
 
             //return the JobPost data 
             return View(jobPost);
