@@ -25,7 +25,7 @@ namespace HSNHospitalProject.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         // GET: Doctor
-        public ActionResult List(string searchkey, int pagenum = 0)
+        public ActionResult List(int? departmentId,string searchkey, int pagenum = 0)
         {
 
 
@@ -42,7 +42,14 @@ namespace HSNHospitalProject.Controllers
                     sqlparams.Add(new SqlParameter("@searchkey", "%" + searchkey + "%"));
 
                 }
-
+               
+                if(departmentId != null)
+                {
+                    Debug.WriteLine("this is my department id " + departmentId);
+                    query = query + " WHERE departmentId=@id";
+                    sqlparams.Add(new SqlParameter("@id", departmentId));
+                   
+                }
 
                 List<Doctors> doctor = db.Doctors.SqlQuery(query, sqlparams.ToArray()).ToList();
                 //state of the page
@@ -71,7 +78,11 @@ namespace HSNHospitalProject.Controllers
                     string pagedquery = query + " order by doctorId offset @start rows fetch first @perpage rows only ";
                     doctor = db.Doctors.SqlQuery(pagedquery, newparams.ToArray()).ToList();
                 }
-                return View(doctor);
+                DoctorDepartment viewmodel = new DoctorDepartment();
+                List<Department> departments = db.Departments.ToList();
+                viewmodel.departments = departments;
+                viewmodel.doctors = doctor;
+                return View(viewmodel);
 
             }
             else

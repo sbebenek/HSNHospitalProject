@@ -127,6 +127,23 @@ namespace HSNHospitalProject.Controllers
                         return RedirectToAction("Add", "Patients");
                     }
 
+                    //write a query to get the value of date and time form the appointments table
+                    //convert user date and time input into the date time 
+                    //so that we can make a comparison
+                    //if there is alreay a entry with same date and tiem then he/she will not be able to book the appointment
+                    //otherwise they will be able to book the appointment
+
+
+                    //string query1 = "select appointmentDate from Appointments";
+                    //List<Appointments> appoint = db.Appointments.SqlQuery(query1).ToList();
+                    //DateTime bookedtime = Convert.ToDateTime(appoint);
+                    //Debug.WriteLine("my appointment date is" + bookedtime);
+                    //DateTime bookingtime = DateTime.Parse(a_date + a_time);
+                    //if(bookedtime == bookingtime)
+                    //{
+                    //    return RedirectToAction("Index", "Error");
+                    //}
+
                     //store the counts of appointments ID so that we can add it one on every new appointment
                     //for creating the appointment reference number
                     List<Appointments> appointments = db.Appointments.ToList();
@@ -211,10 +228,12 @@ namespace HSNHospitalProject.Controllers
 
         // POST: Appointments/Delete/5
         //[HttpPost]
-        public ActionResult DeleteMultiple()
+        public ActionResult DeleteM()
         {
             try
             {
+                //it will delete old appointments from the table 
+                //which is older then today's date
                 DateTime date = System.DateTime.Now;
                 string query = "delete from appointments where appointdate < @date ";
                 SqlParameter[] sqlparams = new SqlParameter[1];
@@ -225,8 +244,11 @@ namespace HSNHospitalProject.Controllers
             }
             catch
             {
-                return View();
+                return RedirectToAction("List");
             }
+            
+
+            
         }
     }
 }

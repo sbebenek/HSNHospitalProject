@@ -1,4 +1,4 @@
-﻿@model List<HSNHospitalProject.Models.Doctors>
+﻿@model HSNHospitalProject.Models.ViewModels.DoctorDepartment
 @{
     ViewBag.Title = "List";
 }
@@ -12,8 +12,8 @@
         <a href="/Doctors/Add" style="margin-top:1em;" class="btn btn-success">Add Doctor Information</a>
     }
 }
-
-@*<h2>Search by the department:</h2>
+<form method="GET" action="/Doctors/List">
+    <h2>Search by the department:</h2>
     <select style="margin-top:1em" id="departmentId" type="text" name="departmentId">
         @{
             foreach (var department in @Model.departments)
@@ -21,14 +21,16 @@
                 <option value="@department.departmentId">@department.departmentName</option>
             }
         }
-    </select>*@
+    </select>
+    <input type="submit" class="btn btn-primary" style="margin-top:1em;" name="submit" value="Search" />
+</form>
 
 <h2>Doctor Information:</h2>
 <p>
     From here you can find useful information about a doctor such as doctor name, specialty (In which department they are working) and their working hours.
 </p>
 <div>
-    @foreach (var doctors in @Model)
+    @foreach (var doctors in @Model.doctors)
     {
         <div style="margin-top:1em"><a href="/Doctors/show/@doctors.doctorId">@doctors.doctorFName @doctors.doctorLName</a></div>
         <div style="margin-left:5em">Working days:@doctors.doctorWorkingDays</div>
