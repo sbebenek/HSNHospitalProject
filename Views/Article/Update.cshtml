@@ -16,6 +16,7 @@
     @*The empty div we will use to hold the RTE*@
     <div id="articleBodyTextArea" name="articleBodyTextArea" class="form-control">@Html.Raw(Model.articleBody)</div>
 
+    @*hidden input so we can post the update*@
     <input asp-for="articleBody" name="articleBody" class="form-control" type="hidden" />
     @*Old textarea
         @Html.LabelFor(model => model.articleBody, "Content")
@@ -27,10 +28,11 @@
     </div>
 
 </form>
-@*RTE Stuff*@
+@*RTE script*@
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <script>
+    @*RTE Toolbar options*@
 var toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
     ['image'],
@@ -50,10 +52,11 @@ var toolbarOptions = [
     [{ 'align': [] }],
 
     ['clean']                                         // remove formatting button
-];
+
+    @*RTE placeholder is empty since we should have text present already*@
 var options = {
     theme: 'snow',
-    placeholder: 'Start writing here!',
+    placeholder: '',
     modules: {
         toolbar: toolbarOptions
     }
@@ -65,7 +68,7 @@ var quill = new Quill('#articleBodyTextArea', options);
 
 var form = document.querySelector('form[name=update]');
 form.onsubmit = function () {
-    // Populate hidden form on submit
+    // Populate hidden input on submit
     var description = document.querySelector('input[name=articleBody]');
     description.value = quill.root.innerHTML;
     //send the html from quill to the hidden input tag

@@ -11,8 +11,10 @@
     <div class="form-group">
         @Html.EditorFor(model => model.articleTitle, new { htmlAttributes = new { @class = "form-control" } })
     </div>
+    @*Holds the Rich text editor. QuillJS requires a div instead of a texbox*@
     <div id="articleBodyTextArea" name="articleBodyTextArea" class="form-control"></div>
 
+    @*This hidden input holds the string the DIV, once the form is submited the JS below takes the editors innerhtml and then stores it here so the Create method can gather the information*@
     <input asp-for="articleBody" name="articleBody" class="form-control" type="hidden" />
    
     @*Old textarea for input*@
@@ -26,16 +28,18 @@
     </div>
     
 </form>
+@*The RTE *@
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <script>
+    @*Here we grab the form, had to give the form a name since if a user is logged in there is a second form for logging off*@
     var form = document.querySelector('form[name=create]');
     form.onsubmit = function () {
         // Populate hidden form on submit
         var description = document.querySelector('input[name=articleBody]');
         description.value = quill.root.innerHTML;
     };
-    
+    @*Toolbar options for the RTE*@
 var toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
     ['image'],
@@ -56,14 +60,16 @@ var toolbarOptions = [
 
     ['clean']                                         // remove formatting button
 ];
+    @*options for the RTE and palceholder text*@
 var options = {
     theme: 'snow',
-    placeholder: 'Start writing here!',
+    placeholder: '...Enter text here...',
     modules: {
         toolbar: toolbarOptions
     }
 };
     var quill = new Quill('#articleBodyTextArea', options);
+    @*some testing*@
     console.log(quill.root.innerHTML);
   
 </script>

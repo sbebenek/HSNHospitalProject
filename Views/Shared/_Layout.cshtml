@@ -9,11 +9,9 @@
 
 </head>
 <body>
-    
-    
-
+@*LOGO and Banner belongs to HSN sudbury*@
     <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="jumbotron">
+        <div class="jumbotron jumbotron-main">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-1 col-sm-offset-2">
@@ -26,14 +24,19 @@
                                 <h2 style="margin-top:0px;">Horizon Santé-Nord</h2>
                             </div>
                         </div>
-                        
+
                     </div>
-                    
+                    @*Login/Logout links*@
                     <div class="col-xs-2 col-xs-offset-1">
                         @Html.Partial("_LoginPartial")
                     </div>
-                    <div class="col-md-3">
-                        <input style="box-shadow: 5px 7px #888888;" class="form-control" />
+                    @*Fake search bar*@
+                    <div class="col-md-3 col-md-pull-1">
+                        <input style="box-shadow: 5px 7px #888888;" placeholder="Search..." class="form-control" />
+                    </div>
+                    @*Donate button the bg color is the same orange from the logo*@
+                    <div class="col-xs-1 col-xs-offset-2">
+                        <button name="donateBTN" style="background-color:#EF8326;" class="btn btn-lg">Donate</button>
                     </div>
                 </div>
             </div>
@@ -46,13 +49,16 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("HSN Hospital", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                
+                @*Html.ActionLink("HSN Hospital", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li><a href="#">Patients and Vistors</a></li>
+                    <li><a href="#">Programs and Services</a></li>
                     @*<li>@Html.ActionLink("About", "About", "Home")</li>
-                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
+        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                     <li>@Html.ActionLink("News", "Index", "Article")</li>
                     <li>@Html.ActionLink("Image Gallery", "Index", "GalleryImages")</li>
                     <li>@Html.ActionLink("Department", "Index", "Department")</li>
@@ -60,24 +66,30 @@
                     <li>@Html.ActionLink("Appointments", "List", "Appointments")</li>
 
                 </ul>
-                
+
             </div>
         </div>
     </div>
     <div class="sidebar">
         <ul class="">
-            
-            <li><a href="#">Hospital Map</a></li>
-            <li><a href="#">Visting Hours</a></li>
-            <li><a href="#">Emergency Dept.</a></li>
-            <li><a href="#">Accessibility</a></li>
-            <li><a href="#">Join Newsletter</a></li>
+            @*dummy sidebar used glyphicons provided by bootstrap*@
+            <li><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span><a href="#"> Hospital Map</a></li>
+            <li><span class="glyphicon glyphicon-time" aria-hidden="true"></span><a href="#"> Visting Hours</a></li>
+            <li><span class="glyphicon glyphicon-plus" aria-hidden="true"></span><a href="#"> Emergency Dept.</a></li>
+            <li><span class="glyphicon glyphicon-user" aria-hidden="true"></span><a href="#"> Accessibility</a></li>
+            <li><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span><a href="#"> Join Newsletter</a></li>
         </ul>
     </div>
+  
+
     <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
+
+            <a href="#">Terms of Use</a> |
+            <a href="#">Site Map</a> |
+            <a href="#">Terms of Use</a> |
             <p>&copy; @DateTime.Now.Year - Humber HSNSudbury</p>
         </footer>
     </div>
@@ -85,6 +97,8 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+    
+  
 </body>
 </html>
 

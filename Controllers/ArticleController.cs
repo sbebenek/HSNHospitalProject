@@ -18,11 +18,23 @@ namespace HSNHospitalProject.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+
+
+        /// <summary>
+        /// List Method for Article's returns a list of articles depending on the search string and page number
+        /// </summary>
+        /// <param name="articleSearchKey">The Search string entered in hte search input box in the view</param>
+        /// <param name="pagenum"> the page which has to be displayed</param>
+        /// <returns>Returns a List of Articles to the View.</returns>
         public ActionResult Index(string articleSearchKey,int pagenum=0)
         {
             
-
+            //pass a value to the view without using a view model
+            //here we can send a boolean which is used in the view to display create/update buttons and links if the user is an admin
             TempData["isAdmin"] = LoggedInChecker.isAdmin();
+
+            //using Christine Bittle's method for pagination from PetGroomingMVC
+            //https://github.com/christinebittle/PetGroomingMVC/blob/master/PetGrooming/Controllers/GroomServiceController.cs
             List<Article> articles = db.Articles.Where(a => (articleSearchKey != null) ? a.articleTitle.Contains(articleSearchKey) : true).ToList();
             int perpage = 3;
             int articleCount = articles.Count();
@@ -49,23 +61,40 @@ namespace HSNHospitalProject.Controllers
             return View(articles);
         }
 
+
+        /// <summary>
+        /// Create method for Articles, checks if the current user is an admin and allows access to ../Article/Create otherwise returns users to the List page
+        /// </summary>
+        /// <returns>Returns the Create View if the current user is an admin</returns>
         public ActionResult Create()
         {
+            //using the helper method  to check if the current user is an admin
             if (LoggedInChecker.isAdmin())
             {
                 return View();
             }
             else
-            {
+            {//if they are not they are sent back to the list of articles
                 return RedirectToAction("Index");
             }
             
         }
 
-        public ActionResult Update(int id)
+
+        /// <summary>
+        /// Update method for articles, checks if the current user is an admin and allows access to ../Article/Update/id otherwise returns users to the List page 
+        /// </summary>
+        /// <param name="id">The is the id of the article which is to be updated</param>
+        /// <returns>Returns the view containing the article who matches the id param</returns>
+        public ActionResult Update(int? id)
         {
+            //using the helper method  to check if the current user is an admin
             if (LoggedInChecker.isAdmin())
             {
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
                 Article article = db.Articles.SqlQuery("select * from articles where articleId=@articleId", new SqlParameter("@articleId", id)).FirstOrDefault();
 
                 if (article == null)
@@ -77,12 +106,20 @@ namespace HSNHospitalProject.Controllers
             }
             else
             {
+                //if they are not they are sent back to the list of articles
                 return RedirectToAction("Index");
             }
         }
             
-
+        
+        /// <summary>
+        /// The POST update method for articles, grabs the variables from the view and uses parametezied queries to add the changes to the database
+        /// </summary>
+        /// <param name="article">The article returned from the view</param>
+        /// <param name="id">The id of the article which is going to be updated. </param>
+        /// <returns></returns>
         [HttpPost]
+        //since the non-POST method checks if the user is an admin there is no need to check again. 
         public ActionResult Update(Article article, int id)
         {
             string query = "update articles set articleTitle = @articleTitle, articleBody = @articleBody,articleDateLastEdit = @articleDateLastEdit where articleId = @id";
@@ -98,7 +135,13 @@ namespace HSNHospitalProject.Controllers
 
         }
 
+        /// <summary>
+        /// The POST Create method for articles 
+        /// </summary>
+        /// <param name="article">contains the article values from the view</param>
+        /// <returns></returns>
         [HttpPost]
+        //since the non-POST method checks if the user is an admin there is no need to check again. 
         public ActionResult Create(Article article)
         {
             
@@ -116,17 +159,28 @@ namespace HSNHospitalProject.Controllers
             
         }
 
+
+        /// <summary>
+        /// Delete Method for article, currently only used in the Update view.
+        /// </summary>
+        /// <param name="id">The id of the article to be deleted</param>
+        /// <returns></returns>
         public ActionResult Delete(int? id)
         {
+            //Check if the current user is an admin. 
             if (LoggedInChecker.isAdmin())
             {
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
                 Article article = db.Articles.Find(id);
                 db.Articles.Remove(article);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
             else
-            {
+            {//if they are not return them to the list of articles
                 return RedirectToAction("Index");
             }
         }
