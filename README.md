@@ -49,7 +49,7 @@
  <li>GraphGenerator script (Scripts/GraphGenerator.js)</li>
   <li>GraphValueHolder helper class, a class that stores ActivityRecords table information so that it can be passed to the GenerateGraph script (Helpers/LoggedInChecker.cs)</li>
  <li>Adding the graph and AJAX script to the home page (Views/Home/Index.cshtml)</li>
-  
+  <br />
  <li>Gallery Images model (Models/GalleryImages.cs)</li>
  <li>Gallery Images controller (Controllers/GalleryImagesController.cs)</li>
  <li>Gallery Images list, create, delete, and edit views (Views/GalleryImages/Create.cshtml, Views/GalleryImages/Edit.cshtml, Views/GalleryImages/Delete.cshtml, Views/GalleryImages/Index.cshtml)</li>
@@ -57,6 +57,8 @@
  </ul>
  
  <li>LoggedInChecker class, a class that contains methods that can determine if a user is logged in, if a user is an admin, or what the id of the logged in user is (Helpers/LoggedInChecker.cs)</li>
+ <li>Created wireframes for my features and contributed to the documentation inside the Documentation folder.</li>
+ 
  <li>The repo notes at the end of this README file, consisting of tips for anyone who has or is trying to avoid merge errors.</li>
 </ul>
 
