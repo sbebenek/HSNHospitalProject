@@ -27,6 +27,38 @@
 <h3>Jashanpreet Kaur (N01289670)</h3>
 
 <h4>What I have done:</h4>
+<ul>
+ <li>Doctor Directory and Book an appointment features:</li>
+</ul>
+ <ul>Doctor Directory:
+ <li>Doctor Directory Database (Models/Doctors.cs)</li>
+ <li>Doctor Directory Controller (Controllers/DoctorsControllers.cs)</li>
+ <li>Doctor Directory create, read, update and delete views (Views/Add.cshtml, Views/DeleteConfirm.cshtml, Views/List.cshtml, Views/Show.cshtml, Views/Update.cshtml)</li>
+ </ul>
+ <ul>Book an Appointment
+ <li>Book an Appointment Database (Models/Appointments.cs)</li>
+ <li>Book an Appointment Controller (Controllers/AppointmentsControllers.cs) </li>
+ <li>Book an Appointment create, read, update and delete views (Views/Add.cshtml, Views/DeleteM.cshtml, Views/Edit.cshtml, Views/List.cshtml, Views/Show.cshtml)<li>
+ </ul>
+ <ul>Book an Appointment is related to the patient so I created:
+ <li>Patients Database (Models/Patients.cs)</li>
+ <li>Patients Controller (Controllers/PatientsControllers.cs)</li>
+ <li>Patients read, create, update and delete views (Views/Add.cshtml, Views/Edit.cshtml, Views/List.cshtml, Views/Show.cshtml)</li>
+ </ul>
+ <ul>Error Page(Access Denied):
+ <li>Error Controller (Controllers/ErrorController.cs)</li>
+ <li>Error View (Views/Index.cshtml)</li>
+ </ul>
+ <ul>ViewModels
+ <li>To show the Departments on the Doctor's page (Models/ViewModels/DoctorDepartment.cs)</li>
+ <li>To show the booked appointments (Models/ViewModel/AddAppointment.cs)</li>
+ </ul>
+ <ul>Logs Class
+ <li>create a Logs class (Logs/LoggedIn.cs)</li>
+ <li>This class check the user is logged in or not if logged in then its a user or admin.</li>
+ </ul>
+ </ul>
+ 
 
 
 <h3>Joshua Silveira (N01404730)</h3>
