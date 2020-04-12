@@ -36,7 +36,9 @@
                     </div>
                     @*Donate button the bg color is the same orange from the logo*@
                     <div class="col-xs-1 col-xs-offset-2">
-                        <button name="donateBTN" style="background-color:#EF8326;" class="btn btn-lg">Donate</button>
+                        <button name="donateBTN" style="background-color:#EF8326;" class="btn btn-lg">
+                            @Html.ActionLink("Donate", "Index", "Donation")
+                        </button>
                     </div>
                 </div>
             </div>
@@ -61,7 +63,7 @@
         <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                     <li>@Html.ActionLink("News", "Index", "Article")</li>
                     <li>@Html.ActionLink("Image Gallery", "Index", "GalleryImages")</li>
-                    <li>@Html.ActionLink("Donation", "Index", "Donation")</li>
+                    <li>@Html.ActionLink("Department", "Index", "Department")</li>
                     <li>@Html.ActionLink("Doctors", "List", "Doctors")</li>
                     <li>@Html.ActionLink("Appointments", "List", "Appointments")</li>
                     <li>@Html.ActionLink("Job Posts", "Index", "JobPost")</li>
