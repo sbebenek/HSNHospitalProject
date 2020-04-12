@@ -1,3 +1,50 @@
+<h1>HSN Hospital Project</h1>
+
+<h2>The Team</h2>
+
+<h3>Christopher Maeda (N00768018)</h3>
+
+<h4>What I have done:</h4>
+
+- Features worked on was Job Post and Donation
+
+- CRUD implemented for Department, Job Post, and Donation with feedback to user
+
+- Validation implemented for the Department, Job Post, and Donation
+
+- Implement view model for the Department, Job Post, and Donation
+
+- Implement admin, anonymous, and user for different control and view for Department, Job Post, and Donation
+
+- For Donation feature implement using Stripe API for the payment
+
+- Set up meeting with the professor and deadline for the team
+
+- Created the wireframe for my features
+
+- Created the ERD diagram with the team
+
+<h3>Jashanpreet Kaur (N01289670)</h3>
+
+<h4>What I have done:</h4>
+
+
+<h3>Joshua Silveira (N01404730)</h3>
+
+<h4>What I have done:</h4>
+
+
+<h3>Sam Bebenek (N00831998)</h3>
+
+<h4>What I have done:</h4>
+
+
+<h3>Shikha Goyal (N01329988)</h3>
+
+<h4>What I have done:</h4>
+
+<h2>Repo Notes</h2>
+
 <h3>If you are on a different repo and are trying to get on a new one OR you've pulled and tried to update the database but you got errors and need to start from scratch:</h3>
 
  1. Copy your own features Model files, Controller, and and views and move them somewhere else where you'll remember them.
