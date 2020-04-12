@@ -20,6 +20,8 @@ namespace HSNHospitalProject.Controllers
 
         public ActionResult Index(string articleSearchKey,int pagenum=0)
         {
+            
+
             TempData["isAdmin"] = LoggedInChecker.isAdmin();
             List<Article> articles = db.Articles.Where(a => (articleSearchKey != null) ? a.articleTitle.Contains(articleSearchKey) : true).ToList();
             int perpage = 3;
@@ -111,6 +113,7 @@ namespace HSNHospitalProject.Controllers
             db.Database.ExecuteSqlCommand(query, sqlParameters);
 
             return RedirectToAction("Index");
+            
         }
 
         public ActionResult Delete(int? id)

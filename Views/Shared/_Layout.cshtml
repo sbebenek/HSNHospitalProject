@@ -9,8 +9,37 @@
 
 </head>
 <body>
+    
+    
+
     <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="jumbotron">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-1 col-sm-offset-2">
+                        <img class="img-responsive" style="max-height:150px;" src="~/Content/img/logo.png" />
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <h1>Health Science North</h1>
+                            <div class="col-sm-5 col-sm-offset-3">
+                                <h2 style="margin-top:0px;">Horizon Santé-Nord</h2>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="col-xs-2 col-xs-offset-1">
+                        @Html.Partial("_LoginPartial")
+                    </div>
+                    <div class="col-md-3">
+                        <input style="box-shadow: 5px 7px #888888;" class="form-control" />
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="container">
+
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
@@ -23,22 +52,33 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     @*<li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
+                    <li>@Html.ActionLink("News", "Index", "Article")</li>
                     <li>@Html.ActionLink("Image Gallery", "Index", "GalleryImages")</li>
                     <li>@Html.ActionLink("Department", "Index", "Department")</li>
                     <li>@Html.ActionLink("Doctors", "List", "Doctors")</li>
                     <li>@Html.ActionLink("Appointments", "List", "Appointments")</li>
-                    
+
                 </ul>
-                @Html.Partial("_LoginPartial")
+                
             </div>
         </div>
+    </div>
+    <div class="sidebar">
+        <ul class="">
+            
+            <li><a href="#">Hospital Map</a></li>
+            <li><a href="#">Visting Hours</a></li>
+            <li><a href="#">Emergency Dept.</a></li>
+            <li><a href="#">Accessibility</a></li>
+            <li><a href="#">Join Newsletter</a></li>
+        </ul>
     </div>
     <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Humber HSNSudbury</p>
         </footer>
     </div>
 
@@ -47,3 +87,4 @@
     @RenderSection("scripts", required: false)
 </body>
 </html>
+
