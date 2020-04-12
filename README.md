@@ -38,7 +38,7 @@
  <ul>Book an Appointment
  <li>Book an Appointment Database (Models/Appointments.cs)</li>
  <li>Book an Appointment Controller (Controllers/AppointmentsControllers.cs) </li>
- <li>Book an Appointment create, read, update and delete views (Views/Add.cshtml, Views/DeleteM.cshtml, Views/Edit.cshtml, Views/List.cshtml, Views/Show.cshtml)<li>
+ <li>Book an Appointment create, read, update and delete views (Views/Add.cshtml, Views/DeleteM.cshtml, Views/Edit.cshtml, Views/List.cshtml, Views/Show.cshtml)</li>
  </ul>
  <ul>Book an Appointment is related to the patient so I created:
  <li>Patients Database (Models/Patients.cs)</li>
