@@ -37,7 +37,11 @@
 <h3>Sam Bebenek (N00831998)</h3>
 
 <h4>What I have done:</h4>
-
+<ul>
+ <li>Activity Graph and Image Gallery features</li>
+ <li></li>
+ <li>The repo notes at the end of this README file, consisting of tips for anyone who has or is trying to avoid merge errors.</li>
+</ul>
 
 <h3>Shikha Goyal (N01329988)</h3>
 
@@ -45,9 +49,9 @@
 
 <h2>Repo Notes</h2>
 
-<h3>If you are on a different repo and are trying to get on a new one OR you've pulled and tried to update the database but you got errors and need to start from scratch:</h3>
+<h3>If you are on a different version of the repo and are trying to get on the newest one OR you've pulled and tried to update the database but you got errors and need to start from scratch:</h3>
 
- 1. Copy your own features Model files, Controller, and and views and move them somewhere else where you'll remember them.
+ 1. Copy your own feature's Model files, Controller, and and views and move them somewhere else where you'll remember them.
  
  2. Delete your database for the HSNHospitalProject.
  
