@@ -25,23 +25,23 @@ else if (!String.IsNullOrEmpty(Request["delete"]) && Request["delete"].Equals("T
     @Html.ActionLink("Create New Department", "Create")
 </div>
 
-<table class="table">
-    <tr>
-        <th>
+<div>
+    <div class="row">
+        <div class="col-lg-2">
             Name
-        </th>
-    </tr>
+        </div>
+    </div>
     @foreach (var department in Model)
     {
-        <tr>
-            <td>
+        <div class="row">
+            <div class="col-lg-2">
                 @Html.DisplayFor(modelItem => department.departmentName)
-            </td>
-            <td>
+            </div>
+            <div class="col-lg-2">
                 @Html.ActionLink("Edit", "Edit", new { id = department.departmentId }) |
                 @Html.ActionLink("Details", "Details", new { id = department.departmentId }) |
                 @Html.ActionLink("Delete", "Delete", new { id = department.departmentId })
-            </td>
-        </tr>
+            </div>
+        </div>
     }
-</table>
+</div>
