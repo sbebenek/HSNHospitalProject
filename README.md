@@ -38,8 +38,25 @@
 
 <h4>What I have done:</h4>
 <ul>
- <li>Activity Graph and Image Gallery features</li>
- <li></li>
+ <li>Setting up the visual studio project and github repo</li>
+ <li>Adding 'is_admin' column to users table</li>
+ <li>Activity Graph and Image Gallery features including:</li>
+ <ul>
+ <li>Activity Records model (Models/ActivityRecords.cs)</li>
+ <li>Activity Records controller (Controllers/ActivityRecordsController.cs)</li>
+ <li>Activity Records list, create, update, and delete views (Views/ActivityRecords/Create.cshtml, Views/ActivityRecords/Delete.cshtml, Views/ActivityRecords/DeleteMultiple.cshtml, Views/ActivityRecords/Edit.cshtml, Views/ActivityRecords/Index.cshtml)</li>
+ <li>_StartGraph partial view (Views/Shared/_StartGraph.cshtml)</li>
+ <li>GraphGenerator script (Scripts/GraphGenerator.js)</li>
+  <li>GraphValueHolder helper class, a class that stores ActivityRecords table information so that it can be passed to the GenerateGraph script (Helpers/LoggedInChecker.cs)</li>
+ <li>Adding the graph and AJAX script to the home page (Views/Home/Index.cshtml)</li>
+  
+ <li>Gallery Images model (Models/GalleryImages.cs)</li>
+ <li>Gallery Images controller (Controllers/GalleryImagesController.cs)</li>
+ <li>Gallery Images list, create, delete, and edit views (Views/GalleryImages/Create.cshtml, Views/GalleryImages/Edit.cshtml, Views/GalleryImages/Delete.cshtml, Views/GalleryImages/Index.cshtml)</li>
+ <li>_ShowImage partial view, to fill the modal window on the Gallery Images index page (Views/Shared/_ShowImage.cshtml)</li>
+ </ul>
+ 
+ <li>LoggedInChecker class, a class that contains methods that can determine if a user is logged in, if a user is an admin, or what the id of the logged in user is (Helpers/LoggedInChecker.cs)</li>
  <li>The repo notes at the end of this README file, consisting of tips for anyone who has or is trying to avoid merge errors.</li>
 </ul>
 
