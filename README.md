@@ -108,6 +108,21 @@
 
 <h4>What I have done:</h4>
 
+Features worked on was Faq and Feedback
+
+- CRUD implemented for feedback and Faq to user
+
+- Implement view model CRUD for the Feedback with the foreign key of services table(ONE to MANY realtionship)-LINQ
+
+- Created UpdateUserFeedback viewmodel which used to update feedback
+
+- Implement CRUD for the FAQ with the foreign key of department table(ONE to MANY realtionship)-SQL
+
+- Implement different control and view for Feedback and Faq
+
+- Created the wireframe for my features
+
+
 <h2>Repo Notes</h2>
 
 <h3>If you are on a different version of the repo and are trying to get on the newest one OR you've pulled and tried to update the database but you got errors and need to start from scratch:</h3>
