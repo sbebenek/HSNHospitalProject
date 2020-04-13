@@ -65,7 +65,16 @@
 <h3>Joshua Silveira (N01404730)</h3>
 
 <h4>What I have done:</h4>
-
+<ul>
+ <li>Articles Model (Models/Articles.cs)</li>
+ <li>Activity Records controller (Controllers/ArticleController.cs)</li>
+ <li>Activity Records list, create, update(contains a delete button with a confirmation modal) views (Views/Articles/Create.cshtml, Views/Articles/Update.cshtml, Views/Articles/Index.cshtml)</li>
+ <li>Added a Rich text editor to both the update and create views in (Views/Articles/Create.cshtml, Views/Articles/Update.cshtml) </li>
+ <li>Articles Model (Models/Articles.cs)</li>
+ <li>Created a transulent logo image in adobe illustrator from the orignal HSN sudbury logo from https://www.facebook.com/HSNSudbury/photos/a.244932238896630/1572964369426737/?type=1&theater</li>
+ <li>implemented a site design (Shared/_layout.cshtml)</li>
+ <li>created wireframes for my feature</li>
+ <li>Created user stories for my feature</li>
 
 <h3>Sam Bebenek (N00831998)</h3>
 
