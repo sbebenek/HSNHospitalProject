@@ -73,7 +73,7 @@
  <li>Articles Model (Models/Articles.cs)</li>
  <li>Created a transulent logo image in adobe illustrator from the orignal HSN sudbury logo from https://www.facebook.com/HSNSudbury/photos/a.244932238896630/1572964369426737/?type=1&theater</li>
  <li>implemented a site design (Shared/_layout.cshtml)</li>
- <li>site design can be viewed in the root github folder (HSNwebsite.png) </li>
+ <li>site design can be viewed in the root github folder (HSNwebsite.jpg) </li>
  <li>created wireframes for my feature</li>
  <li>Created user stories for my feature</li>
 
